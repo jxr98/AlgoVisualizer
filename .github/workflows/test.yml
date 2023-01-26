@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup Node.js
+      uses: actions/setup-node@v1
+      with:
+          node-version: "19.5"
+    # Install required deps for action
+    - name: Install Dependencies
+      run: npm install
+    # Finally, run our tests
+    - name: Run the tests
+      run: npm test
