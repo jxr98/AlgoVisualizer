@@ -8,6 +8,8 @@ assignees: ''
 ---
 
 User Story:
-Who:
-What:
-Why:
+As a:
+
+I want:
+
+So that:
