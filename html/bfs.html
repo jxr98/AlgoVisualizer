@@ -21,11 +21,14 @@
     <div class="row">
       <div class="col-1"></div>
       <div class="col-2">
-        <button id="start-button" type="button" class="btn btn-dark">Start</button>
+        <button id="start-button" type="button" class="btn btn-dark" onclick="clickOnStartButton()">Start</button>
         <button id="reset-button" type="button" class="btn btn-dark">Reset</button>
       </div>
       <div class="col-10">
-
+        <div class="form-group">
+          <label for="formControlTextarea1">please input edges(format 0 1 \n)</label>
+          <textarea class="form-control" id="formControlTextarea1" rows="4"></textarea>
+        </div>
       </div>
 
     </div>
@@ -44,6 +47,9 @@
     integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
   </script>
   <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="../js/graph_bfs.js"></script>
+  <script src="../js/lib/graph.js"></script>
+  <script src="../js/lib/linkedList.js"></script>
 </body>
 
 </html>
