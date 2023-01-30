@@ -5,7 +5,7 @@ class BreadthFirstPaths{
     #visited; // record visited nodes in each step
 
     constructor(graph,s){
-        this.#marked=new Array(graph.getV()).fill(false);
+        this.#marked=new Array(graph.getNumVertices()).fill(false);
         this.#edgeTo=[];
         this.#sourcePoint=s;
         this.#visited=new LinkedList();
@@ -59,35 +59,37 @@ class BreadthFirstPaths{
         return this.#visited;
     }
 }
+
 class Graph{
-    #V; // number of vertices
-    #E; // number of edges
-    #adjacent; // adjacent
+    #numVertices;
+    #numEdges;
+    #adjacent; // adjacency list
 
-    constructor(V){
-        this.#V=V;
-        this.#E=0;
+    constructor(){
+        this.#numVertices=0;
+        this.#numEdges=0;
         this.#adjacent=[];
-        for(let v=0;v<V;v++){
-            this.#adjacent[v]=new LinkedList();
-        }
     }
 
-    getV(){
-        return this.#V;
+    getNumVertices(){ return this.#numVertices; }
+    getNumEdges(){ return this.#numEdges; }
+   
+    // create a new node, return index of new node
+    addNode() {
+        const newNodeIndex = this.#numVertices++;
+        this.#adjacent[newNodeIndex]=new LinkedList();
+        console.log(newNodeIndex);
+        return newNodeIndex;
     }
 
-    getE(){
-        return this.#E;
-    }
-
-    addEdge(v,w){
+    addEdge(v,w) {
+        // what happens if edge already exist? should we use a set instead of list?
         this.#adjacent[v].addAtStart(w);
         this.#adjacent[w].addAtStart(v);
-        this.#E++;
+        this.#numEdges++;
     }
 
-    //get adjacent list of point v
+    //get neibours of v
     getAdjacent(v){
         return this.#adjacent[v];
     }
