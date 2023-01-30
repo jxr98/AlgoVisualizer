@@ -3,8 +3,7 @@ var width = 960,
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
-
-var graph = {
+let graph = {
     nodes: [],
     links: [],
 }
@@ -46,7 +45,8 @@ function update() {
         .attr('class', 'node');
     g.append('circle')
         .attr("r", 20)
-        .style("fill", "#d9d9d9");
+        .style("fill", "#d9d9d9")
+        .on("click", function () { d3.select(this).style("fill", "magenta"); });
     g.append('text')
         .attr("class", "text")
         .text(function (d) { return d.name });
@@ -59,6 +59,7 @@ function update() {
         .nodes(graph.nodes)
         .force("link", d3.forceLink(graph.links).distance(100))
         .force("charge", d3.forceManyBody().strength(-200))
+        .alpha(1) // need to reset alpha as well here
         .restart()
 };
 
