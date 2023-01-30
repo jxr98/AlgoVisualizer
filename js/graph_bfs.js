@@ -1,41 +1,37 @@
 //set up a svg
 var width = 1200,
     height = 600;
-
 var svg=d3.select('body')
     .append('svg')
     .attr('width',width)
     .attr('height',height);
+var graph = new Graph();
 
+function addNode(x,y)
+{
+    const nodeIdx = graph.addNode();
+    svg.append('circle')
+        .attr('cx',x)
+        .attr('cy',y)
+        .attr('r',30)
+        .attr('stroke','black')
+        .attr('fill','#a1d99b')
+        .attr('id',"c"+nodeIdx);
+    svg.append('text')
+        .attr('x', x)
+        .attr('y', y)
+        .attr('stroke', 'black')
+        .style("font-size", 17)
+        .text(nodeIdx);
+}
 
 function mouseDown() {
     var coordinates = d3.mouse(this);
-
-    svg.append('circle')
-    .attr('cx',coordinates[0])
-    .attr('cy',coordinates[1])
-    .attr('r',30)
-    .attr('stroke','black')
-    .attr('fill','#a1d99b')
-    .attr('id',"c"+E)
-
-    svg.append('text')
-        .attr('x', coordinates[0])
-        .attr('y', coordinates[1])
-        .attr('stroke', 'black')
-        .style("font-size",17 )
-        .text(E);
-    E++;
-}
-
-function restart(){
-    initiateGraph();
-    E=2;
-    graph=null;
+    addNode(coordinates[0], coordinates[1]);
 }
 
 function clickOnConnectButton(){
-    graph=new Graph(E);
+    
 
     //read edges from user input
     var edgeInput=$("#formControlTextarea1").val();
@@ -76,36 +72,8 @@ function clickOnStartButton() {
 }
 
 function initiateGraph(){
-    svg.append('circle')
-        .attr('cx',300)
-        .attr('cy',200)
-        .attr('r',30)
-        .attr('stroke','black')
-        .attr('fill','#a1d99b')
-        .attr('id',"c0");
-
-    svg.append('text')
-        .attr('x', 300)
-        .attr('y', 200)
-        .attr('stroke', 'black')
-        .style("font-size", 17)
-        .text(0)
-
-    svg.append('circle')
-        .attr('cx',1100)
-        .attr('cy',200)
-        .attr('r',30)
-        .attr('stroke','black')
-        .attr('fill','#a1d99b')
-        .attr('id',"c1");
-
-    svg.append('text')
-        .attr('x', 1100)
-        .attr('y', 200)
-        .attr('stroke', 'black')
-        .style("font-size", 17)
-        .text(1)
-
+    addNode(300, 200);
+    addNode(1100, 200);
 }
 
 //draw a line between nodeOne(int index) and nodeTwo(int index)
@@ -123,7 +91,6 @@ function drawLinesBetweenCircles(nodeOne,nodeTwo){
         .attr('stroke','black');
 }
 
-var E=2//number of vertices
-var graph;
+
 initiateGraph();
 svg.on('mousedown',mouseDown);

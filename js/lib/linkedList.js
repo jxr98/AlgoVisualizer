@@ -66,8 +66,6 @@ class LinkedList {
         return item.element;
     }
 
-
-
     // checks the list for empty
     isEmpty() {
         return this.#size == 0;
@@ -77,5 +75,4 @@ class LinkedList {
     getSize() {
         return this.#size;
     }
-
 }
