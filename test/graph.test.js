@@ -1,4 +1,3 @@
-import { jest } from '@jest/globals'
 import { Graph } from '../js/lib/graph'
 
 test('default graph', () => {

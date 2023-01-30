@@ -1,11 +1,19 @@
+//import 
+import { Graph, BreadthFirstPaths } from "./lib/graph.js";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
 //set up a svg
-var width = 1200,
-    height = 600;
-var svg=d3.select('body')
+const width = 1200;
+const height = 600;
+var svg = d3.select('body')
     .append('svg')
     .attr('width',width)
     .attr('height',height);
 var graph = new Graph();
+svg.on('mousedown',mouseDown);
+initiateGraph();
+document.getElementById("connect-button").onclick = clickOnConnectButton;
+document.getElementById("start-button").onclick = clickOnStartButton;
 
 function addNode(x,y)
 {
@@ -25,14 +33,12 @@ function addNode(x,y)
         .text(nodeIdx);
 }
 
-function mouseDown() {
-    var coordinates = d3.mouse(this);
+function mouseDown(e) {
+    var coordinates = d3.pointer(e);
     addNode(coordinates[0], coordinates[1]);
 }
 
 function clickOnConnectButton(){
-    
-
     //read edges from user input
     var edgeInput=$("#formControlTextarea1").val();
     var edges=edgeInput.split(/\n/);
@@ -92,5 +98,4 @@ function drawLinesBetweenCircles(nodeOne,nodeTwo){
 }
 
 
-initiateGraph();
-svg.on('mousedown',mouseDown);
+
