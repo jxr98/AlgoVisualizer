@@ -1,3 +1,5 @@
+import { LinkedList } from "./linkedList.js";
+
 class BreadthFirstPaths{
     #marked;// boolean[] is a shortest path to this vertex known
     #edgeTo;// int[] last vertex on known path to this vertex
@@ -94,3 +96,5 @@ class Graph{
         return this.#adjacent[v];
     }
 }
+
+export {Graph, BreadthFirstPaths}

@@ -76,3 +76,5 @@ class LinkedList {
         return this.#size;
     }
 }
+
+export {Node, LinkedList}
