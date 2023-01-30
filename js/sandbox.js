@@ -1,3 +1,6 @@
+// NOTE: use v7 of D3 library
+
+// setup svg
 var width = 960,
     height = 500;
 var svg = d3.select("body").append("svg")
@@ -8,6 +11,15 @@ let graph = {
     links: [],
 }
 
+// a message
+let msg = "1) double click on a node to toggle color. 2) can drag node around. 3) two additional nodes are added & connected after a delay";
+svg.append('text')
+    .attr("class", "text")
+    .attr("x", 20)
+    .attr("y", 20)
+    .text(msg);
+
+// create a simulation
 var simulation = d3.forceSimulation()
     .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
     .nodes(graph.nodes)
@@ -42,11 +54,23 @@ function update() {
     var node = svg.selectAll('.node').data(graph.nodes);
     var g = node.enter()
         .append('g')
-        .attr('class', 'node');
+        .attr('class', 'node')
+        .call(d3.drag()
+            .on('start', dragStart)
+            .on('drag', dragging)
+            .on('end', dragEnd));
     g.append('circle')
         .attr("r", 20)
         .style("fill", "#d9d9d9")
-        .on("click", function () { d3.select(this).style("fill", "magenta"); });
+        .on("dblclick", function () {
+            // on double click circle
+            // toggle color between magenta and gray
+            if (d3.select(this).style("fill") == "magenta") {
+                d3.select(this).style("fill", "rgb(217, 217, 217)");
+            } else {
+                d3.select(this).style("fill", "magenta");
+            }
+        })
     g.append('text')
         .attr("class", "text")
         .text(function (d) { return d.name });
@@ -81,6 +105,26 @@ addNode({
     name: "you",
 });
 
+// dragging handles
+function dragStart(event, d) {
+    d3.select(this).raise().attr("stroke", "black");
+}
+function dragging(event, d) {
+    //simulation.alpha(1).restart();
+    d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
+        .attr("transform", "translate(" + d.x + "," + d.y + ")");
+    // fix location to drag location, so forces are ignored (otherwise cause jittering)
+    d.fx = event.x;
+    d.fy = event.y;
+}
+function dragEnd(event, d) {
+    d3.select(this).attr("stroke", null);
+    // re-enable forces
+    d.fx = null;
+    d.fy = null;
+    simulation.alpha(1).restart();
+}
+
 let index = 1;
 
 // add a new node every three seconds and connect to 'you'
@@ -94,9 +138,9 @@ const interval = window.setInterval(() => {
 
     connectNodes(0, index);
     index++;
-}, 3000);
+}, 1000);
 
 // no more than 8 nodes
 setTimeout(() => {
     clearInterval(interval)
-}, 3000 * 8);
+}, 1000 * 2);
