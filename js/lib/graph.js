@@ -2,11 +2,13 @@ class BreadthFirstPaths{
     #marked;// boolean[] is a shortest path to this vertex known
     #edgeTo;// int[] last vertex on known path to this vertex
     #sourcePoint; // the source point
+    #visited; // record visited nodes in each step
 
     constructor(graph,s){
         this.#marked=new Array(graph.getV()).fill(false);
         this.#edgeTo=[];
         this.#sourcePoint=s;
+        this.#visited=new LinkedList();
         this.bfs(graph,s);
     }
 
@@ -15,16 +17,22 @@ class BreadthFirstPaths{
         this.#marked[s]=true;
         queue.push(s);
         while(queue.length!=0){
-            let v=queue.shift();
-            var adjacent=graph.getAdjacent(v);
-            for(let i=0;i<adjacent.getSize();i++){
-                var w=adjacent.getAtIndex(i);
-                if(!this.#marked[w]){
-                    this.#edgeTo[w]=v;
-                    this.#marked[w]=true;
-                    queue.push(w);
+            let size=queue.length;
+            let sameStepVertices=[];
+            for (let i = 0; i < size; i++) {
+                let v=queue.shift();
+                sameStepVertices.push(v);
+                var adjacent=graph.getAdjacent(v);
+                for(let i=0;i<adjacent.getSize();i++) {
+                    var w = adjacent.getAtIndex(i);
+                    if (!this.#marked[w]) {
+                        this.#edgeTo[w] = v;
+                        this.#marked[w] = true;
+                        queue.push(w);
+                    }
                 }
             }
+            this.#visited.addAtEnd(sameStepVertices);
         }
     }
 
@@ -45,6 +53,10 @@ class BreadthFirstPaths{
         }
         path.push(this.#sourcePoint);
         return path;
+    }
+
+    getProcess() {
+        return this.#visited;
     }
 }
 class Graph{

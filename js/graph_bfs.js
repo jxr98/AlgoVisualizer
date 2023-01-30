@@ -34,7 +34,7 @@ function restart(){
     graph=null;
 }
 
-function clickOnStartButton(){
+function clickOnConnectButton(){
     graph=new Graph(E);
 
     //read edges from user input
@@ -45,17 +45,33 @@ function clickOnStartButton(){
         var points=edges[i].split(" ");
         drawLinesBetweenCircles(points[0],points[1]);
     }
+}
 
-    var breadthFirstPaths=new BreadthFirstPaths(graph,0)
-    var theLastPoint=E-1;
-    var path= "From point 0 to point " + theLastPoint +  ": "
-    if(!breadthFirstPaths.hasPathTo(theLastPoint)){
-        window.alert("Point 0 and point "+ theLastPoint + " are not connected");
+function clickOnStartButton() {
+    let vertices=$("#formControlTextarea2").val().split(" ");
+    let breadthFirstPaths=new BreadthFirstPaths(graph,0)
+    let path= "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": "
+    if(!breadthFirstPaths.hasPathTo(vertices[1])){
+        window.alert("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
     }else{
-        breadthFirstPaths.pathTo(theLastPoint).forEach(function(item){
-            path +=" "+ item;
-        });
+        let result = breadthFirstPaths.pathTo(vertices[1]);
+        path += " " + result[result.length - 1];
+        for(let i = result.length - 2; i >= 0; i--){
+            path += " -> " + result[i];
+        };
         window.alert(path);
+        let processVertices = breadthFirstPaths.getProcess();
+        let size = processVertices.getSize();
+        for (let i = 0; i < size; i++) {
+            let sameStepVertices = processVertices.getAtIndex(i);
+            let n = sameStepVertices.length;
+            for (let j = 0; j < n; j++) {
+                setTimeout(function(){d3.select("#c"+sameStepVertices[j]).attr('fill','yellow')}, 1000 * i);
+            }
+        }
+        result.forEach(function(vertex) {
+            setTimeout(function(){d3.select("#c"+vertex).attr('fill','red')}, 1000 * size);
+        });
     }
 }
 
@@ -104,7 +120,7 @@ function drawLinesBetweenCircles(nodeOne,nodeTwo){
         .attr('y1',y1)
         .attr('x2',x2)
         .attr('y2',y2)
-        .attr('stroke','#a1d99b');
+        .attr('stroke','black');
 }
 
 var E=2//number of vertices
