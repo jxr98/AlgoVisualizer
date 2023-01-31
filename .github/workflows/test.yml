@@ -15,6 +15,10 @@ jobs:
     # Install required deps for action
     - name: Install Dependencies
       run: npm install
-    # Finally, run our tests
+    # Finally, run our tests and collect coverage
     - name: Run the tests
-      run: npm test
+      run: npm test --coverage
+    - name: Upload coverage reports to Codecov
+      run: curl -Os https://uploader.codecov.io/latest/linux/codecov
+          chmod +x codecov
+          ./codecov -t 2a961002-7363-486a-a553-54281d768bfa
