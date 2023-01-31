@@ -22,8 +22,6 @@ jobs:
     - name: Run the tests
       run: npm test --coverage
     - name: Upload coverage reports to Codecov
-      env:
-        CODECOV_TOKEN: 2a961002-7363-486a-a553-54281d768bfa
-      run: curl -Os https://uploader.codecov.io/latest/linux/codecov
-          chmod +x codecov
-          ./codecov -t ${CODECOV_TOKEN}
+      uses: codecov/codecov-action@v1
+      with:
+        token: 2a961002-7363-486a-a553-54281d768bfa
