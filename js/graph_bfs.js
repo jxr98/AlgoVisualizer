@@ -63,9 +63,9 @@ function clickOnStartButton() {
         };
         window.alert(path);
         let processVertices = breadthFirstPaths.getProcess();
-        let size = processVertices.getSize();
+        let size = processVertices.length;
         for (let i = 0; i < size; i++) {
-            let sameStepVertices = processVertices.getAtIndex(i);
+            let sameStepVertices = processVertices[i];
             let n = sameStepVertices.length;
             for (let j = 0; j < n; j++) {
                 setTimeout(function(){d3.select("#c"+sameStepVertices[j]).attr('fill','yellow')}, 1000 * i);

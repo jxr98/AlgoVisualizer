@@ -10,7 +10,7 @@ class BreadthFirstPaths{
         this.#marked=new Array(graph.getNumVertices()).fill(false);
         this.#edgeTo=[];
         this.#sourcePoint=s;
-        this.#visited=new LinkedList();
+        this.#visited=[];
         this.bfs(graph,s);
     }
 
@@ -34,7 +34,7 @@ class BreadthFirstPaths{
                     }
                 }
             }
-            this.#visited.addAtEnd(sameStepVertices);
+            this.#visited.push(sameStepVertices);
         }
     }
 
