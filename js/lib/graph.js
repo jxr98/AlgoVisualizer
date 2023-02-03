@@ -66,28 +66,34 @@ class Graph{
     #numVertices;
     #numEdges;
     #adjacent; // adjacency list
+    #nodeProp;
 
     constructor(){
         this.#numVertices=0;
         this.#numEdges=0;
         this.#adjacent=[];
+        this.#nodeProp=[];
     }
 
     getNumVertices(){ return this.#numVertices; }
     getNumEdges(){ return this.#numEdges; }
    
     // create a new node, return index of new node
-    addNode() {
+    addNode(x = 0, y = 0) {
         const newNodeIndex = this.#numVertices++;
         this.#adjacent[newNodeIndex]=new LinkedList();
+        this.#nodeProp[newNodeIndex]={x:x, y:y};
         return newNodeIndex;
     }
-
     addEdge(v,w) {
         // what happens if edge already exist? should we use a set instead of list?
         this.#adjacent[v].addAtStart(w);
         this.#adjacent[w].addAtStart(v);
         this.#numEdges++;
+    }
+    updateNodeProp(node, prop)
+    {
+        this.#nodeProp[node]= Object.assign(this.#nodeProp[node], prop);
     }
 
     //get neibours of v
@@ -95,6 +101,7 @@ class Graph{
         return this.#adjacent[v];
     }
 
+    // this interface is designed for D3.force simulation
     getNodes()
     {
         let ret = [];
@@ -103,11 +110,15 @@ class Graph{
             ret[i] = {
                 id: i,
                 name: i,
+                x: this.#nodeProp[i].x,
+                y: this.#nodeProp[i].y
             };
+            // other props are merged
+            ret[i] = Object.assign(ret[i], this.#nodeProp[i]);
         }
         return ret;
     }
-
+    // this interface is designed for D3.force simulation
     getLinks()
     {
         const lookup = new Map();
@@ -139,7 +150,7 @@ class Graph{
                 lookup.get(w).add(i);
                 ret.push({
                     source: i,
-                    target: w
+                    target: parseInt(w)
                 });
             }
         }
