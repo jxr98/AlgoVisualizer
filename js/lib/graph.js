@@ -80,7 +80,6 @@ class Graph{
     addNode() {
         const newNodeIndex = this.#numVertices++;
         this.#adjacent[newNodeIndex]=new LinkedList();
-        console.log(newNodeIndex);
         return newNodeIndex;
     }
 
@@ -94,6 +93,57 @@ class Graph{
     //get neibours of v
     getAdjacent(v){
         return this.#adjacent[v];
+    }
+
+    getNodes()
+    {
+        let ret = [];
+        for (let i = 0; i < this.#numVertices; i++) 
+        {
+            ret[i] = {
+                id: i,
+                name: i,
+            };
+        }
+        return ret;
+    }
+
+    getLinks()
+    {
+        const lookup = new Map();
+        let ret = [];
+        for (let i = 0; i < this.#numVertices; i++) 
+        {
+            if (!lookup.has(i))
+            {
+                lookup.set(i, new Set());
+            }
+
+            // check links for node i
+            var adjacent=this.#adjacent[i];
+            for(let j=0;j<adjacent.getSize();j++) {
+                var w = adjacent.getAtIndex(j);
+
+                // if a link already exist, continue
+                if (lookup.get(i).has(w))
+                { 
+                    continue;
+                }
+
+                // since we are doing bi-directional links, add for both direction
+                lookup.get(i).add(w);
+                if (!lookup.has(w))
+                {
+                    lookup.set(w, new Set());
+                }
+                lookup.get(w).add(i);
+                ret.push({
+                    source: i,
+                    target: w
+                });
+            }
+        }
+        return ret;
     }
 }
 

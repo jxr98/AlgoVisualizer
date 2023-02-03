@@ -29,3 +29,7 @@
 .node.fixed {
     fill: #f00;
 }
+
+circle:hover {
+    fill:red;
+}
