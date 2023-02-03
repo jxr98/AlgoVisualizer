@@ -9,25 +9,50 @@ class ForceSimulationGraph
 
     constructor(svg, width, height)
     {
+        const self = this;
         this.#graph = new Graph()
         this.svg = svg
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
-            .nodes(this.#graph.getNodes())
-            .force("link", d3.forceLink(this.#graph.getLinks()).distance(100))
+            .nodes([])
+            .force("link", d3.forceLink([]).distance(100))
             .on("tick", this.tick).on("tick", function () {
-                        svg.selectAll('.link')
-                            .attr("x1", function (d) { return d.source.x })
-                            .attr("y1", function (d) { return d.source.y })
-                            .attr("x2", function (d) { return d.target.x })
-                            .attr("y2", function (d) { return d.target.y })
-                        svg.selectAll('.node')
-                            .attr("cx", function (d) { return d.x })
-                            .attr("cy", function (d) { return d.y })
-                            .attr("transform", function (d) {
-                                return "translate(" + d.x + "," + d.y + ")";
-                            })
-                    }).alphaDecay(0.002) // just added alpha decay to delay end of execution
+                // update graphics
+                // update node locations back to our model
+                svg.selectAll('.link')
+                    .attr("x1", function (d) { return d.source.x })
+                    .attr("y1", function (d) { return d.source.y })
+                    .attr("x2", function (d) { return d.target.x })
+                    .attr("y2", function (d) { return d.target.y })
+                svg.selectAll('.node')
+                    .attr("cx", function (d, i) { 
+                        self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
+                        return d.x;
+                    })
+                    .attr("cy", function (d, i) { 
+                        return d.y;
+                    })
+                    .attr("transform", function (d) {
+                        return "translate(" + d.x + "," + d.y + ")";
+                    })
+            }).alphaDecay(0.002) // just added alpha decay to delay end of execution
+    }
+
+    getGraphModel()
+    {
+        return this.#graph;
+    }
+
+    changeColor(node, color)
+    {
+        this.#graph.updateNodeProp(node, {color: color});
+        this.update();
+        this.svg.selectAll("g").each(function(d)
+        {
+            d3.select(this).select("circle").style("fill", function(d){
+                return d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)";
+            });
+        });
     }
 
     update() {
@@ -36,6 +61,7 @@ class ForceSimulationGraph
         // update links
         const graphNodes = this.#graph.getNodes();
         const graphLinks = this.#graph.getLinks();
+        
         var link = this.svg.selectAll('.link').data(graphLinks);
         link.enter()
             .insert('line', '.node')
@@ -71,23 +97,15 @@ class ForceSimulationGraph
 
         g.append('circle')
             .attr("r", 20)
-            .style("fill", "#d9d9d9")
-            .on("dblclick", function () {
-                // on double click circle
-                // toggle color between magenta and gray
-                if (d3.select(this).style("fill") == "magenta") {
-                    d3.select(this).style("fill", "rgb(217, 217, 217)");
-                } else {
-                    d3.select(this).style("fill", "magenta");
-                }
+            .attr("id", function(d){return "c"+d.id;})
+            .style("fill", function(d){
+                return d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)";
             })
-            .on("mouseover", function(){
-                console.log(1)
+            .on("mouseover", function(d){
                 d3.select(this).style("fill", "red");
             })
-            .on("mouseout", function(){
-                console.log(2)
-                d3.select(this).style("fill", "rgb(217, 217, 217)");
+            .on("mouseout", function(d){
+                d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)");
             })
 
         g.append('text')
@@ -101,13 +119,13 @@ class ForceSimulationGraph
         this.simulation
             .nodes(graphNodes)
             .force("link", d3.forceLink(graphLinks).distance(100))
-            .force("charge", d3.forceManyBody().strength(-200))
+            .force("charge", d3.forceManyBody().strength(-2))
             .alpha(1) // need to reset alpha as well here
             .restart()
     }
 
-    addNode(node) {
-        const ret = this.#graph.addNode();
+    addNode(x=0, y=0) {
+        const ret = this.#graph.addNode(x, y);
         this.update();
         return ret;
     }
