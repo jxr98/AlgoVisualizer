@@ -1,17 +1,28 @@
 import { Graph } from "./graph.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
+const DefaultMouseDownNode=-1;
+
+class Link{
+    source;
+    target;
+}
+
 class ForceSimulationGraph
 {
     #graph; // graph model
     svg; // handle to svg DOM element
     simulation; // handle to the force simulation model
+    mouseDownNode;
+    link;
 
     constructor(svg, width, height)
     {
         const self = this;
         this.#graph = new Graph()
         this.svg = svg
+        this.link=new Link();
+        this.mouseDownNode=DefaultMouseDownNode;
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
@@ -80,13 +91,13 @@ class ForceSimulationGraph
                 .on('start', function (event, d){
                     d3.select(this).raise().attr("stroke", "black");
                 })
-                .on('drag', function (event, d){
-                    d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
-                    .attr("transform", "translate(" + d.x + "," + d.y + ")");
-                    // fix location to drag location, so forces are ignored (otherwise cause jittering)
-                    d.fx = event.x;
-                    d.fy = event.y;
-                })
+                // .on('drag', function (event, d){
+                //     d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
+                //     .attr("transform", "translate(" + d.x + "," + d.y + ")");
+                //     // fix location to drag location, so forces are ignored (otherwise cause jittering)
+                //     d.fx = event.x;
+                //     d.fy = event.y;
+                // })
                 .on('end', function (event, d){
                     d3.select(this).attr("stroke", null);
                     // re-enable forces
@@ -103,9 +114,21 @@ class ForceSimulationGraph
             })
             .on("mouseover", function(d){
                 d3.select(this).style("fill", "red");
+
+                var targetID=d.target.id.slice(1);
+
+                if(d.buttons==1&&self.mouseDownNode!=null&&self.mouseDownNode!=DefaultMouseDownNode&&self.mouseDownNode!=targetID){// left mouse button is clicked and a node is selected
+                    self.link.source=self.mouseDownNode;
+                    self.link.target=targetID;
+                    self.connectNodes(self.link.source,self.link.target);
+                    self.mouseDownNode=DefaultMouseDownNode;
+                }
             })
             .on("mouseout", function(d){
                 d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)");
+                if(d.buttons==1){
+                    self.mouseDownNode=d.target.id.slice(1);
+                }
             })
 
         g.append('text')
