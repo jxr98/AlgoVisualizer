@@ -1,25 +1,25 @@
 //import 
 import { BreadthFirstPaths } from "./lib/graph.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-import { ForceSimulationGraph } from "./lib/svg_graph.js";
+import {ForceSimulationGraph} from "./lib/svg_graph.js";
 
 //set up a svg
 const width = 1200;
 const height = 600;
 var svg = d3.select('body')
     .append('svg')
-    .attr('width',width)
-    .attr('height',height);
+    .attr('width', width)
+    .attr('height', height);
 
 const fGraph = new ForceSimulationGraph(svg, width, height);
 
-svg.on('mousedown', function(e){
+svg.on('mousedown', function (e) {
     var coordinates = d3.pointer(e);
     fGraph.addNode(coordinates[0], coordinates[1]);
+    fGraph.mouseDownNode=-1;
 });
 
-document.getElementById("connect-button").onclick = function () 
-{
+document.getElementById("connect-button").onclick = function () {
     var edgeInput=$("#formControlTextarea1").val();
     var edges=edgeInput.split(/\n/);
     for(var i=0;i<edges.length;i++){
