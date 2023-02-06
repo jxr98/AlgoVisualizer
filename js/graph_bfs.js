@@ -13,12 +13,6 @@ var svg = d3.select('body')
 
 const fGraph = new ForceSimulationGraph(svg, width, height);
 
-svg.on('mousedown', function (e) {
-    var coordinates = d3.pointer(e);
-    fGraph.addNode(coordinates[0], coordinates[1]);
-    fGraph.mouseDownNode=-1;
-});
-
 document.getElementById("connect-button").onclick = function () {
     var edgeInput=$("#formControlTextarea1").val();
     var edges=edgeInput.split(/\n/);

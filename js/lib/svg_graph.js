@@ -47,6 +47,12 @@ class ForceSimulationGraph
                         return "translate(" + d.x + "," + d.y + ")";
                     })
             }).alphaDecay(0.002) // just added alpha decay to delay end of execution
+        
+        svg.on('mousedown', function (e) {
+            var coordinates = d3.pointer(e);
+            self.addNode(coordinates[0], coordinates[1]);
+            self.mouseDownNode=-1;
+        });
     }
 
     getGraphModel()
