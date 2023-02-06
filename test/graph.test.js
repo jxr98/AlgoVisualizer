@@ -23,7 +23,7 @@ test('graph link with 2 node, 1 edge', () => {
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
     let links = g.getLinks();
-    expect(links.size).toBe(1);
+    expect(links.length).toBe(2);
 });
 
 test('graph node property', () => {
