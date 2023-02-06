@@ -13,8 +13,8 @@ test('graph with 2 node, 1 edge', () => {
     g.addEdge(nodeA, nodeB);
     expect(g.getNumVertices()).toBe(2);
     expect(g.getNumEdges()).toBe(1);
-    // expect(g.getAdjacent(nodeA).getAtIndex(0)).toBe(nodeB);
-    // expect(g.getAdjacent(nodeB).getAtIndex(0)).toBe(nodeA);
+    expect(g.getAdjacent(nodeA).has(nodeB)).toBe(true);
+    expect(g.getAdjacent(nodeB).has(nodeA)).toBe(true);
 });
 
 test('graph link with 2 node, 1 edge', () => {
@@ -23,7 +23,8 @@ test('graph link with 2 node, 1 edge', () => {
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
     let links = g.getLinks();
-    expect(links.length).toBe(2);
+    expect(links.length).toBe(1);
+    
 });
 
 test('graph node property', () => {
