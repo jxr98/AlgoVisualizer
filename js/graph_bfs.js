@@ -1,5 +1,5 @@
 //import 
-import { BreadthFirstPaths } from "./lib/graph.js";
+import { BFS_search } from "./lib/BFS_search.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 
@@ -31,7 +31,7 @@ document.getElementById("connect-button").onclick = function () {
 document.getElementById("start-button").onclick = function()
 {
     let vertices=$("#formControlTextarea2").val().split(" ");
-    let breadthFirstPaths=new BreadthFirstPaths(fGraph.getGraphModel(), vertices[0])
+    let breadthFirstPaths=new BFS_search(fGraph.getGraphModel(), vertices[0])
     let path= "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": "
     if(!breadthFirstPaths.hasPathTo(vertices[1])){
         window.alert("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
