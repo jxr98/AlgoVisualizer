@@ -15,6 +15,7 @@ class BreadthFirstPaths{
     bfs(graph,s){
         var queue=[];
         this.#marked[s]=true;
+        let self = this;
         queue.push(s);
         while(queue.length!=0){
             let size=queue.length;
@@ -23,14 +24,14 @@ class BreadthFirstPaths{
                 let v=queue.shift();
                 sameStepVertices.push(v);
                 var adjacent=graph.getAdjacent(v);
-                for(let i=0;i<adjacent.getSize();i++) {
-                    var w = adjacent.getAtIndex(i);
-                    if (!this.#marked[w]) {
-                        this.#edgeTo[w] = v;
-                        this.#marked[w] = true;
-                        queue.push(w);
+                adjacent.forEach(function(value)
+                {
+                    if (!self.#marked[value]) {
+                        self.#edgeTo[value] = v;
+                        self.#marked[value] = true;
+                        queue.push(value);
                     }
-                }
+                });
             }
             this.#visited.push(sameStepVertices);
         }
@@ -84,7 +85,6 @@ class Graph{
         return newNodeIndex;
     }
     addEdge(v,w) {
-        // what happens if edge already exist? should we use a set instead of list?
         this.#adjacent[v].add(w);
         this.#adjacent[w].add(v);
         this.#numEdges++;
@@ -94,7 +94,7 @@ class Graph{
         this.#nodeProp[node]= Object.assign(this.#nodeProp[node], prop);
     }
 
-    //get neibours of v
+    //get neibours of v (returns a set)
     getAdjacent(v){
         return this.#adjacent[v];
     }
@@ -133,23 +133,23 @@ class Graph{
             adjacent.forEach(function (value) {
                 var w = value;
 
-                // // if a link already exist, continue
-                // if (lookup.get(i).has(w))
-                // {
-                //     continue;
-                // }
-
-                // since we are doing bi-directional links, add for both direction
-                lookup.get(i).add(w);
-                if (!lookup.has(w))
+                // if a link already exist, continue
+                // this check here make sure that we dont have 2 links for each edge
+                if (!lookup.get(i).has(w))
                 {
-                    lookup.set(w, new Set());
+                    // since we are doing bi-directional links, add for both direction
+                    lookup.get(i).add(w);
+                    if (!lookup.has(w))
+                    {
+                        lookup.set(w, new Set());
+                    }
+                    lookup.get(w).add(i);
+                    ret.push({
+                        source: i,
+                        target: parseInt(w)
+                    });
                 }
-                lookup.get(w).add(i);
-                ret.push({
-                    source: i,
-                    target: parseInt(w)
-                });
+                
             });
         }
         return ret;
