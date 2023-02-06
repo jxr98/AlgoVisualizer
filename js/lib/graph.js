@@ -1,5 +1,3 @@
-import { LinkedList } from "./linkedList.js";
-
 class BreadthFirstPaths{
     #marked;// boolean[] is a shortest path to this vertex known
     #edgeTo;// int[] last vertex on known path to this vertex
@@ -81,14 +79,14 @@ class Graph{
     // create a new node, return index of new node
     addNode(x = 0, y = 0) {
         const newNodeIndex = this.#numVertices++;
-        this.#adjacent[newNodeIndex]=new LinkedList();
+        this.#adjacent[newNodeIndex]=new Set();
         this.#nodeProp[newNodeIndex]={x:x, y:y};
         return newNodeIndex;
     }
     addEdge(v,w) {
         // what happens if edge already exist? should we use a set instead of list?
-        this.#adjacent[v].addAtStart(w);
-        this.#adjacent[w].addAtStart(v);
+        this.#adjacent[v].add(w);
+        this.#adjacent[w].add(v);
         this.#numEdges++;
     }
     updateNodeProp(node, prop)
@@ -132,14 +130,14 @@ class Graph{
 
             // check links for node i
             var adjacent=this.#adjacent[i];
-            for(let j=0;j<adjacent.getSize();j++) {
-                var w = adjacent.getAtIndex(j);
+            adjacent.forEach(function (value) {
+                var w = value;
 
-                // if a link already exist, continue
-                if (lookup.get(i).has(w))
-                { 
-                    continue;
-                }
+                // // if a link already exist, continue
+                // if (lookup.get(i).has(w))
+                // {
+                //     continue;
+                // }
 
                 // since we are doing bi-directional links, add for both direction
                 lookup.get(i).add(w);
@@ -152,7 +150,7 @@ class Graph{
                     source: i,
                     target: parseInt(w)
                 });
-            }
+            });
         }
         return ret;
     }
