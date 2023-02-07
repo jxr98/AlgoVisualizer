@@ -26,7 +26,9 @@ class ForceSimulationGraph
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
-            .force("link", d3.forceLink([]).distance(100))
+            .force("link", d3.forceLink([]).distance(100).id(function(d){
+                return d.id
+            }))
             .on("tick", this.tick).on("tick", function () {
                 // update graphics
                 // update node locations back to our model
@@ -93,10 +95,10 @@ class ForceSimulationGraph
         var g = node.enter()
             .append('g')
             .attr('class', 'node')
-            .call(d3.drag()
-                .on('start', function (event, d){
-                    d3.select(this).raise().attr("stroke", "black");
-                })
+            // .call(d3.drag()
+            //     .on('start', function (event, d){
+            //         d3.select(this).raise().attr("stroke", "black");
+            //     }))
                 // .on('drag', function (event, d){
                 //     d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
                 //     .attr("transform", "translate(" + d.x + "," + d.y + ")");
@@ -104,13 +106,13 @@ class ForceSimulationGraph
                 //     d.fx = event.x;
                 //     d.fy = event.y;
                 // })
-                .on('end', function (event, d){
-                    d3.select(this).attr("stroke", null);
-                    // re-enable forces
-                    d.fx = null;
-                    d.fy = null;
-                    self.simulation.alpha(1).restart();
-                }));
+                // .on('end', function (event, d){
+                //     d3.select(this).attr("stroke", null);
+                //     // re-enable forces
+                //     d.fx = null;
+                //     d.fy = null;
+                //     self.simulation.alpha(1).restart();
+                // }));
 
         g.append('circle')
             .attr("r", 20)
@@ -145,9 +147,13 @@ class ForceSimulationGraph
             .remove();
     
         // update simulation
+        let links = d3.forceLink(graphLinks).distance(100).id(function(d){
+            return d.index;
+        });
+
         this.simulation
             .nodes(graphNodes)
-            .force("link", d3.forceLink(graphLinks).distance(100))
+            .force("link", links)
             .force("charge", d3.forceManyBody().strength(-2))
             .alpha(1) // need to reset alpha as well here
             .restart()
@@ -160,6 +166,7 @@ class ForceSimulationGraph
     }
 
     connectNodes(source, target) {
+        console.log(source, target);
         this.#graph.addEdge(source, target);
         this.update();
     }

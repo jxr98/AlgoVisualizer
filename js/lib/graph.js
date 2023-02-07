@@ -68,22 +68,22 @@ class Graph{
             // check links for node i
             var adjacent=this.#adjacent[i];
             adjacent.forEach(function (value) {
-                var w = value;
+                let neighborNode = parseInt(value);
 
                 // if a link already exist, continue
                 // this check here make sure that we dont have 2 links for each edge
-                if (!lookup.get(i).has(w))
+                if (!lookup.get(i).has(neighborNode))
                 {
                     // since we are doing bi-directional links, add for both direction
-                    lookup.get(i).add(w);
-                    if (!lookup.has(w))
+                    lookup.get(i).add(neighborNode);
+                    if (!lookup.has(neighborNode))
                     {
-                        lookup.set(w, new Set());
+                        lookup.set(neighborNode, new Set());
                     }
-                    lookup.get(w).add(i);
+                    lookup.get(neighborNode).add(i);
                     ret.push({
                         source: i,
-                        target: parseInt(w)
+                        target: neighborNode
                     });
                 }
                 
