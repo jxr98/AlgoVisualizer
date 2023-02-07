@@ -13,15 +13,6 @@ var svg = d3.select('body')
 
 const fGraph = new ForceSimulationGraph(svg, width, height);
 
-document.getElementById("connect-button").onclick = function () {
-    var edgeInput=$("#formControlTextarea1").val();
-    var edges=edgeInput.split(/\n/);
-    for(var i=0;i<edges.length;i++){
-        var points=edges[i].split(" ");
-        fGraph.connectNodes(points[0],points[1]);
-    }
-};
-
 document.getElementById("start-button").onclick = function()
 {
     let vertices=$("#formControlTextarea2").val().split(" ");
