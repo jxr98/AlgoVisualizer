@@ -15,6 +15,7 @@ class ForceSimulationGraph
     simulation; // handle to the force simulation model
     mouseDownNode;
     link;
+    mouseHover;
 
     constructor(svg, width, height)
     {
@@ -22,7 +23,8 @@ class ForceSimulationGraph
         this.#graph = new Graph()
         this.svg = svg
         this.link=new Link();
-        this.mouseDownNode=DefaultMouseDownNode;
+        this.mouseDownNode = DefaultMouseDownNode;
+        this.mouseHoverNode = DefaultMouseDownNode;
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
@@ -51,9 +53,12 @@ class ForceSimulationGraph
             }).alphaDecay(0.002) // just added alpha decay to delay end of execution
         
         svg.on('mousedown', function (e) {
-            var coordinates = d3.pointer(e);
-            self.addNode(coordinates[0], coordinates[1]);
-            self.mouseDownNode=-1;
+            if (self.mouseHoverNode == DefaultMouseDownNode)
+            {
+                var coordinates = d3.pointer(e);
+                self.addNode(coordinates[0], coordinates[1]);
+                self.mouseDownNode=DefaultMouseDownNode;
+            }
         });
     }
 
@@ -124,6 +129,7 @@ class ForceSimulationGraph
                 d3.select(this).style("fill", "red");
 
                 var targetID=d.target.id.slice(1);
+                self.mouseHoverNode = targetID;
 
                 if(d.buttons==1&&self.mouseDownNode!=null&&self.mouseDownNode!=DefaultMouseDownNode&&self.mouseDownNode!=targetID){// left mouse button is clicked and a node is selected
                     self.link.source=self.mouseDownNode;
@@ -131,13 +137,16 @@ class ForceSimulationGraph
                     self.connectNodes(self.link.source,self.link.target);
                     self.mouseDownNode=DefaultMouseDownNode;
                 }
+                
             })
             .on("mouseout", function(d){
                 d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)");
                 if(d.buttons==1){
                     self.mouseDownNode=d.target.id.slice(1);
                 }
+                self.mouseHoverNode = DefaultMouseDownNode;
             })
+            
 
         g.append('text')
             .attr("class", "text")
