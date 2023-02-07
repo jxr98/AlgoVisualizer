@@ -56,37 +56,44 @@ class Graph{
     // this interface is designed for D3.force simulation
     getLinks()
     {
-        const lookup = new Map();
-        let ret = [];
-        for (let i = 0; i < this.#numVertices; i++) 
-        {
-            if (!lookup.has(i))
-            {
-                lookup.set(i, new Set());
-            }
-
-            // check links for node i
-            var adjacent=this.#adjacent[i];
-            adjacent.forEach(function (value) {
-                let neighborNode = parseInt(value);
-
-                // if a link already exist, continue
-                // this check here make sure that we dont have 2 links for each edge
-                if (!lookup.get(i).has(neighborNode))
-                {
-                    // since we are doing bi-directional links, add for both direction
-                    lookup.get(i).add(neighborNode);
-                    if (!lookup.has(neighborNode))
-                    {
-                        lookup.set(neighborNode, new Set());
-                    }
-                    lookup.get(neighborNode).add(i);
-                    ret.push({
-                        source: i,
-                        target: neighborNode
-                    });
-                }
-                
+        // const lookup = new Map();
+        // let ret = [];
+        // for (let i = 0; i < this.#numVertices; i++)
+        // {
+        //     if (!lookup.has(i))
+        //     {
+        //         lookup.set(i, new Set());
+        //     }
+        //
+        //     // check links for node i
+        //     var adjacent=this.#adjacent[i];
+        //     adjacent.forEach(function (value) {
+        //         let neighborNode = parseInt(value);
+        //
+        //         // if a link already exist, continue
+        //         // this check here make sure that we dont have 2 links for each edge
+        //         if (!lookup.get(i).has(neighborNode))
+        //         {
+        //             // since we are doing bi-directional links, add for both direction
+        //             lookup.get(i).add(neighborNode);
+        //             if (!lookup.has(neighborNode))
+        //             {
+        //                 lookup.set(neighborNode, new Set());
+        //             }
+        //             lookup.get(neighborNode).add(i);
+        //             ret.push({
+        //                 source: i,
+        //                 target: neighborNode
+        //             });
+        //         }
+        //
+        //     });
+        // }
+        // return ret;
+        var ret=[];
+        for(var i=0;i<this.#numVertices;i++){
+            this.#adjacent[i].forEach(function(node){
+                ret.push({source:i,target:parseInt(node)});
             });
         }
         return ret;
