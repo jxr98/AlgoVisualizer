@@ -1,11 +1,13 @@
 {
   "devDependencies": {
+    "cypress": "^12.5.1",
     "jest": "^29.4.1",
     "jest-environment-jsdom": "^29.4.1"
   },
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "run_cypress": "cypress run"
   },
   "jest": {
     "transform": {},
