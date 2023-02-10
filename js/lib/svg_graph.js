@@ -81,6 +81,7 @@ class ForceSimulationGraph
 
     update() {
         const self = this;
+        this.defineArrowMarkers();
 
         // update links
         const graphNodes = this.#graph.getNodes();
@@ -90,7 +91,12 @@ class ForceSimulationGraph
         link.enter()
             .insert('line', '.node')
             .attr('class', 'link')
-            .style('stroke', '#d9d9d9');
+            .style('stroke', '#d9d9d9')
+            .attr("marker-end","url(#startArrow)");
+
+        if($('#flexSwitchCheckDefault').is(":checked")){
+        }
+
         link
             .exit()
             .remove()
@@ -100,24 +106,6 @@ class ForceSimulationGraph
         var g = node.enter()
             .append('g')
             .attr('class', 'node')
-            // .call(d3.drag()
-            //     .on('start', function (event, d){
-            //         d3.select(this).raise().attr("stroke", "black");
-            //     }))
-                // .on('drag', function (event, d){
-                //     d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
-                //     .attr("transform", "translate(" + d.x + "," + d.y + ")");
-                //     // fix location to drag location, so forces are ignored (otherwise cause jittering)
-                //     d.fx = event.x;
-                //     d.fy = event.y;
-                // })
-                // .on('end', function (event, d){
-                //     d3.select(this).attr("stroke", null);
-                //     // re-enable forces
-                //     d.fx = null;
-                //     d.fy = null;
-                //     self.simulation.alpha(1).restart();
-                // }));
 
         g.append('circle')
             .attr("r", 20)
@@ -183,9 +171,24 @@ class ForceSimulationGraph
     }
 
     connectNodes(source, target) {
-        console.log(source, target);
         this.#graph.addEdge(source, target);
         this.update();
+    }
+
+    defineArrowMarkers(){
+        this.svg.append("svg:def")
+            .attr("id","startArrow")
+            .attr("markerUnits","strokeWidth")
+            .attr("markerWidth","8")
+            .attr("markerHeight","8")
+            .attr("viewBox","0 0 12 12")
+            .attr("refX","13")
+            .attr("refY","6")
+            .attr("orient","auto")
+            .append("path")
+            .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
+            .attr("fill","black");
+
     }
 }
 export {ForceSimulationGraph}
