@@ -150,7 +150,15 @@ class ForceSimulationGraph
 
         g.append('text')
             .attr("class", "text")
-            .text(function (d) { return d.id });
+            .text(function (d) { return d.id })
+            .attr("pointer-events", "none")
+            .attr('style', '-webkit-touch-callout: none;\
+                        -webkit-user-select: none;\
+                        -khtml-user-select: none;\
+                        -moz-user-select: none;\
+                        -ms-user-select: none;\
+                        user-select: none;');
+            
         node
             .exit()
             .remove();
