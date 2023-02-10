@@ -91,6 +91,20 @@ class ForceSimulationGraph
             .insert('line', '.node')
             .attr('class', 'link')
             .style('stroke', '#d9d9d9');
+
+        if($('#flexSwitchCheckDefault').val()=="on"){
+            link.append('svg:defs').append('svg:marker')
+                .attr('id', 'end-arrow')
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 6)
+                .attr('markerWidth', 3)
+                .attr('markerHeight', 3)
+                .attr('orient', 'auto')
+                .append('svg:path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', '#000');
+        }
+
         link
             .exit()
             .remove()
@@ -175,7 +189,6 @@ class ForceSimulationGraph
     }
 
     connectNodes(source, target) {
-        console.log(source, target);
         this.#graph.addEdge(source, target);
         this.update();
     }
