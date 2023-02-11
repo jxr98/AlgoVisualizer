@@ -25,6 +25,7 @@ class ForceSimulationGraph
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;
         this.mouseHoverNode = DefaultMouseDownNode;
+        //this.defineArrowMarkers();
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
@@ -60,6 +61,8 @@ class ForceSimulationGraph
                 self.mouseDownNode=DefaultMouseDownNode;
             }
         });
+
+        this.defineArrowMarkers();
     }
 
     getGraphModel()
@@ -81,6 +84,7 @@ class ForceSimulationGraph
 
     update() {
         const self = this;
+        
 
         // update links
         const graphNodes = this.#graph.getNodes();
@@ -90,7 +94,14 @@ class ForceSimulationGraph
         link.enter()
             .insert('line', '.node')
             .attr('class', 'link')
-            .style('stroke', '#d9d9d9');
+            .style('stroke', '#000')
+            .style('stroke-width', 4)
+            .style('marker-start', 'url(#start-arrow)')
+            .style('marker-end', 'url(#end-arrow)')
+
+        // if($('#flexSwitchCheckDefault').is(":checked")){
+        // }
+
         link
             .exit()
             .remove()
@@ -100,24 +111,6 @@ class ForceSimulationGraph
         var g = node.enter()
             .append('g')
             .attr('class', 'node')
-            // .call(d3.drag()
-            //     .on('start', function (event, d){
-            //         d3.select(this).raise().attr("stroke", "black");
-            //     }))
-                // .on('drag', function (event, d){
-                //     d3.select(this).attr("cx", d.x = event.x).attr("cy", d.y = event.y)
-                //     .attr("transform", "translate(" + d.x + "," + d.y + ")");
-                //     // fix location to drag location, so forces are ignored (otherwise cause jittering)
-                //     d.fx = event.x;
-                //     d.fy = event.y;
-                // })
-                // .on('end', function (event, d){
-                //     d3.select(this).attr("stroke", null);
-                //     // re-enable forces
-                //     d.fx = null;
-                //     d.fy = null;
-                //     self.simulation.alpha(1).restart();
-                // }));
 
         g.append('circle')
             .attr("r", 20)
@@ -183,9 +176,33 @@ class ForceSimulationGraph
     }
 
     connectNodes(source, target) {
-        console.log(source, target);
         this.#graph.addEdge(source, target);
         this.update();
+    }
+
+    defineArrowMarkers(){
+        this.svg.append('svg:defs').append('svg:marker')
+            .attr('id', 'end-arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 6)
+            .attr('markerWidth', 3)
+            .attr('markerHeight', 3)
+            .attr('orient', 'auto')
+            .append('svg:path')
+            .attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', '#000');
+
+        this.svg.append('svg:defs').append('svg:marker')
+            .attr('id', 'start-arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 4)
+            .attr('markerWidth', 3)
+            .attr('markerHeight', 3)
+            .attr('orient', 'auto')
+            .append('svg:path')
+            .attr('d', 'M10,-5L0,0L10,5')
+            .attr('fill', '#000');
+
     }
 }
 export {ForceSimulationGraph}

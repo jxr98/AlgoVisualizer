@@ -19,14 +19,16 @@
   <div class="container-fluid">
     <h1 class="text-center text-primary">BFS</h1>
     <div class="row">
-      <div class="col-10">
+      <div class="col-9">
         <div class="form-group">
           <label for="formControlTextarea2">please input start vertex and end vertex(format 0 1 \n)</label>
           <textarea class="form-control" id="formControlTextarea2" rows="1"></textarea>
         </div>
       </div>
 
-      <div class="col-2">
+      <div class="col-3">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+        <label class="form-check-label" for="flexSwitchCheckDefault">Directed Graph</label>
         <button id="start-button" type="button" class="btn btn-dark">Start</button>
         <button id="reset-button" type="button" class="btn btn-dark" onclick="javascript:location.reload();">Reset</button>
       </div>
