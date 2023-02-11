@@ -2,7 +2,6 @@ import { Graph } from "./graph.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const DefaultMouseDownNode=-1;
-const CircleRadius = 20;
 
 class Link{
     source;
@@ -37,26 +36,8 @@ class ForceSimulationGraph
             .force("link", d3.forceLink([]).distance(100).id(function(d){
                 return d.id
             }))
-            .on("tick", this.tick).on("tick", function () {
-                // update graphics
-                // update node locations back to our model
-                svg.selectAll('.link')
-                    .attr("x1", function (d) { return d.source.x+(self.circleRadius+self.markerWH)*(d.target.x-d.source.x)/Math.sqrt(Math.pow(d.target.x-d.source.x,2)+ Math.pow(d.target.y-d.source.y,2)) })
-                    .attr("y1", function (d) { return d.source.y + (self.circleRadius+self.markerWH) * (d.target.y-d.source.y)/Math.sqrt(Math.pow(d.target.x-d.source.x,2)+ Math.pow(d.target.y-d.source.y,2))})
-                    .attr("x2", function (d) { return d.target.x-(self.circleRadius+self.markerWH)*(d.target.x-d.source.x)/Math.sqrt(Math.pow(d.target.x-d.source.x,2)+ Math.pow(d.target.y-d.source.y,2))})
-                    .attr("y2", function (d) { return d.target.y - (self.circleRadius+self.markerWH) * (d.target.y-d.source.y)/Math.sqrt(Math.pow(d.target.x-d.source.x,2)+ Math.pow(d.target.y-d.source.y,2)) })
-                svg.selectAll('.node')
-                    .attr("cx", function (d, i) { 
-                        self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
-                        return d.x;
-                    })
-                    .attr("cy", function (d, i) { 
-                        return d.y;
-                    })
-                    .attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                    })
-            }).alphaDecay(0.002) // just added alpha decay to delay end of execution
+            .on("tick", function(){self.tick(self)})
+            .alphaDecay(0.002) // just added alpha decay to delay end of execution
         
         svg.on('mousedown', function (e) {
             if (self.mouseHoverNode == DefaultMouseDownNode)
@@ -73,14 +54,14 @@ class ForceSimulationGraph
     tick(self)
     {
         // update links and arrows
-        self.svg.selectAll('.link').each(function(d, i){
+        self.svg.selectAll('.link').each(function(d){
             let deltaX = d.target.x - d.source.x,
             deltaY = d.target.y - d.source.y,
             dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
             normX = deltaX / dist,
             normY = deltaY / dist,
-            sourcePadding = CircleRadius + 3,
-            targetPadding = CircleRadius + 3,
+            sourcePadding = self.circleRadius + self.markerWH,
+            targetPadding = self.circleRadius + self.markerWH,
             sourceX = d.source.x + (sourcePadding * normX),
             sourceY = d.source.y + (sourcePadding * normY),
             targetX = d.target.x - (targetPadding * normX),
