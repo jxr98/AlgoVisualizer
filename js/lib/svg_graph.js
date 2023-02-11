@@ -2,6 +2,7 @@ import { Graph } from "./graph.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const DefaultMouseDownNode=-1;
+const CircleRadius = 20;
 
 class Link{
     source;
@@ -25,33 +26,14 @@ class ForceSimulationGraph
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;
         this.mouseHoverNode = DefaultMouseDownNode;
-        //this.defineArrowMarkers();
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
             .force("link", d3.forceLink([]).distance(100).id(function(d){
                 return d.id
             }))
-            .on("tick", this.tick).on("tick", function () {
-                // update graphics
-                // update node locations back to our model
-                svg.selectAll('.link')
-                    .attr("x1", function (d) { return d.source.x })
-                    .attr("y1", function (d) { return d.source.y })
-                    .attr("x2", function (d) { return d.target.x })
-                    .attr("y2", function (d) { return d.target.y })
-                svg.selectAll('.node')
-                    .attr("cx", function (d, i) { 
-                        self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
-                        return d.x;
-                    })
-                    .attr("cy", function (d, i) { 
-                        return d.y;
-                    })
-                    .attr("transform", function (d) {
-                        return "translate(" + d.x + "," + d.y + ")";
-                    })
-            }).alphaDecay(0.002) // just added alpha decay to delay end of execution
+            .on("tick", function(){self.tick(self)})
+            .alphaDecay(0.002) // just added alpha decay to delay end of execution
         
         svg.on('mousedown', function (e) {
             if (self.mouseHoverNode == DefaultMouseDownNode)
@@ -61,8 +43,34 @@ class ForceSimulationGraph
                 self.mouseDownNode=DefaultMouseDownNode;
             }
         });
-
         this.defineArrowMarkers();
+    }
+
+    // this function updates the rendering for D3 simulation
+    tick(self)
+    {
+        // update links and arrows
+        self.svg.selectAll('.link').each(function(d, i){
+            let deltaX = d.target.x - d.source.x,
+            deltaY = d.target.y - d.source.y,
+            dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
+            normX = deltaX / dist,
+            normY = deltaY / dist,
+            sourcePadding = CircleRadius + 3,
+            targetPadding = CircleRadius + 3,
+            sourceX = d.source.x + (sourcePadding * normX),
+            sourceY = d.source.y + (sourcePadding * normY),
+            targetX = d.target.x - (targetPadding * normX),
+            targetY = d.target.y - (targetPadding * normY);
+            d3.select(this).attr("x1", sourceX).attr("y1", sourceY).attr("x2", targetX).attr("y2", targetY)
+        })
+
+        // update node locations and sync to our graph model
+        self.svg.selectAll('.node').each(function(d, i)
+        {
+            self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
+            d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", "translate(" + d.x + "," + d.y + ")")
+        })
     }
 
     getGraphModel()
@@ -82,14 +90,8 @@ class ForceSimulationGraph
         });
     }
 
-    update() {
-        const self = this;
-        
-
-        // update links
-        const graphNodes = this.#graph.getNodes();
-        const graphLinks = this.#graph.getLinks();
-        
+    updateLink(graphLinks)
+    {
         var link = this.svg.selectAll('.link').data(graphLinks);
         link.enter()
             .insert('line', '.node')
@@ -98,22 +100,22 @@ class ForceSimulationGraph
             .style('stroke-width', 4)
             .style('marker-start', 'url(#start-arrow)')
             .style('marker-end', 'url(#end-arrow)')
-
-        // if($('#flexSwitchCheckDefault').is(":checked")){
-        // }
-
         link
             .exit()
             .remove()
-    
-        // update nodes
-        var node = this.svg.selectAll('.node').data(graphNodes);
-        var g = node.enter()
+    }
+
+    // main update function for when there are changes to nodes/links
+    updateNodes(graphNodes)
+    {
+        const self = this;
+        let node = this.svg.selectAll('.node').data(graphNodes);
+        let g = node.enter()
             .append('g')
             .attr('class', 'node')
 
         g.append('circle')
-            .attr("r", 20)
+            .attr("r", CircleRadius)
             .attr("id", function(d){return "c"+d.id;})
             .style("fill", function(d){
                 return d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)";
@@ -121,10 +123,12 @@ class ForceSimulationGraph
             .on("mouseover", function(d){
                 d3.select(this).style("fill", "red");
 
-                var targetID=d.target.id.slice(1);
+                let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
 
-                if(d.buttons==1&&self.mouseDownNode!=null&&self.mouseDownNode!=DefaultMouseDownNode&&self.mouseDownNode!=targetID){// left mouse button is clicked and a node is selected
+                // left mouse button is clicked and a node is selected
+                if(d.buttons==1&&self.mouseDownNode!=null&&self.mouseDownNode!=DefaultMouseDownNode&&self.mouseDownNode!=targetID)
+                {
                     self.link.source=self.mouseDownNode;
                     self.link.target=targetID;
                     self.connectNodes(self.link.source,self.link.target);
@@ -151,19 +155,24 @@ class ForceSimulationGraph
                         -moz-user-select: none;\
                         -ms-user-select: none;\
                         user-select: none;');
-            
         node
             .exit()
             .remove();
+    }
+
+    update() {
+        // update links
+        const graphLinks = this.#graph.getLinks();
+        this.updateLink(graphLinks)
+    
+        // update nodes
+        const graphNodes = this.#graph.getNodes();
+        this.updateNodes(graphNodes)
     
         // update simulation
-        let links = d3.forceLink(graphLinks).distance(100).id(function(d){
-            return d.index;
-        });
-
         this.simulation
             .nodes(graphNodes)
-            .force("link", links)
+            .force("link", d3.forceLink(graphLinks).distance(100))
             .force("charge", d3.forceManyBody().strength(-2))
             .alpha(1) // need to reset alpha as well here
             .restart()
