@@ -117,13 +117,22 @@ class ForceSimulationGraph
     #updateLink(graphLinks)
     {
         var link = this.svg.selectAll('.link').data(graphLinks);
-        link.enter()
-            .insert('line', '.node')
-            .attr('class', 'link')
-            .style('stroke', '#000')
-            .style('stroke-width', 1.9)
-            .style('marker-start', 'url(#start-arrow)')
-            .style('marker-end', 'url(#end-arrow)')
+        if($('#flexSwitchCheckDefault').is(":checked")){
+            link.enter()
+                .insert('line', '.node')
+                .attr('class', 'link')
+                .style('stroke', '#000')
+                .style('stroke-width', 1.9)
+                .style('marker-end', 'url(#end-arrow)')
+        }else{
+            link.enter()
+                .insert('line', '.node')
+                .attr('class', 'link')
+                .style('stroke', '#000')
+                .style('stroke-width', 1.9)
+                .style('marker-end', 'url(#end-arrow)')
+                .style('marker-start', 'url(#start-arrow)')
+        }
         link
             .exit()
             .remove()
