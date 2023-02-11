@@ -49,7 +49,7 @@ class DFS {
 
     // return the shortest path from start vertex to v
     getPath () {
-        let minLength = this.graph.getNumVertices();
+        let minLength = this.graph.getNumVertices() + 1;
         let minPath = [];
         for (let i = 0; i < this.allPaths.length; i++) {
             if (minLength > this.allPaths[i].length) {
