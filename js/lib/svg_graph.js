@@ -25,6 +25,7 @@ class ForceSimulationGraph
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;
         this.mouseHoverNode = DefaultMouseDownNode;
+        //this.defineArrowMarkers();
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
@@ -60,6 +61,8 @@ class ForceSimulationGraph
                 self.mouseDownNode=DefaultMouseDownNode;
             }
         });
+
+        this.defineArrowMarkers();
     }
 
     getGraphModel()
@@ -81,7 +84,7 @@ class ForceSimulationGraph
 
     update() {
         const self = this;
-        this.defineArrowMarkers();
+        
 
         // update links
         const graphNodes = this.#graph.getNodes();
@@ -91,11 +94,13 @@ class ForceSimulationGraph
         link.enter()
             .insert('line', '.node')
             .attr('class', 'link')
-            .style('stroke', '#d9d9d9')
-            .attr("marker-end","url(#startArrow)");
+            .style('stroke', '#000')
+            .style('stroke-width', 4)
+            .style('marker-start', 'url(#start-arrow)')
+            .style('marker-end', 'url(#end-arrow)')
 
-        if($('#flexSwitchCheckDefault').is(":checked")){
-        }
+        // if($('#flexSwitchCheckDefault').is(":checked")){
+        // }
 
         link
             .exit()
@@ -176,18 +181,27 @@ class ForceSimulationGraph
     }
 
     defineArrowMarkers(){
-        this.svg.append("svg:def")
-            .attr("id","startArrow")
-            .attr("markerUnits","strokeWidth")
-            .attr("markerWidth","8")
-            .attr("markerHeight","8")
-            .attr("viewBox","0 0 12 12")
-            .attr("refX","13")
-            .attr("refY","6")
-            .attr("orient","auto")
-            .append("path")
-            .attr("d","M2,2 L10,6 L2,10 L6,6 L2,2")
-            .attr("fill","black");
+        this.svg.append('svg:defs').append('svg:marker')
+            .attr('id', 'end-arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 6)
+            .attr('markerWidth', 3)
+            .attr('markerHeight', 3)
+            .attr('orient', 'auto')
+            .append('svg:path')
+            .attr('d', 'M0,-5L10,0L0,5')
+            .attr('fill', '#000');
+
+        this.svg.append('svg:defs').append('svg:marker')
+            .attr('id', 'start-arrow')
+            .attr('viewBox', '0 -5 10 10')
+            .attr('refX', 4)
+            .attr('markerWidth', 3)
+            .attr('markerHeight', 3)
+            .attr('orient', 'auto')
+            .append('svg:path')
+            .attr('d', 'M10,-5L0,0L10,5')
+            .attr('fill', '#000');
 
     }
 }
