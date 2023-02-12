@@ -2,7 +2,6 @@ import { Graph } from "./graph.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 
 const DefaultMouseDownNode=-1;
-const CircleRadius = 20;
 
 class Link{
     source;
@@ -16,10 +15,15 @@ class ForceSimulationGraph
     simulation; // handle to the force simulation model
     mouseDownNode;
     link;
-    mouseHover;
+    circleRadius;
+    circleColour;
+    markerWH;//marker width and height
 
     constructor(svg, width, height)
     {
+        this.circleRadius=25;//default
+        this.circleColour="rgb(217, 217, 217)"; //default
+        this.markerWH=3;//default
         const self = this;
         this.#graph = new Graph()
         this.svg = svg
@@ -50,14 +54,14 @@ class ForceSimulationGraph
     tick(self)
     {
         // update links and arrows
-        self.svg.selectAll('.link').each(function(d, i){
+        self.svg.selectAll('.link').each(function(d){
             let deltaX = d.target.x - d.source.x,
             deltaY = d.target.y - d.source.y,
             dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
             normX = deltaX / dist,
             normY = deltaY / dist,
-            sourcePadding = CircleRadius + 3,
-            targetPadding = CircleRadius + 3,
+            sourcePadding = self.circleRadius + self.markerWH,
+            targetPadding = self.circleRadius + self.markerWH,
             sourceX = d.source.x + (sourcePadding * normX),
             sourceY = d.source.y + (sourcePadding * normY),
             targetX = d.target.x - (targetPadding * normX),
@@ -85,7 +89,7 @@ class ForceSimulationGraph
         this.svg.selectAll("g").each(function(d)
         {
             d3.select(this).select("circle").style("fill", function(d){
-                return d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)";
+                return d.hasOwnProperty("color") ? d.color : self.circleColour;
             });
         });
     }
@@ -97,7 +101,7 @@ class ForceSimulationGraph
             .insert('line', '.node')
             .attr('class', 'link')
             .style('stroke', '#000')
-            .style('stroke-width', 4)
+            .style('stroke-width', 1.9)
             .style('marker-start', 'url(#start-arrow)')
             .style('marker-end', 'url(#end-arrow)')
         link
@@ -115,10 +119,10 @@ class ForceSimulationGraph
             .attr('class', 'node')
 
         g.append('circle')
-            .attr("r", CircleRadius)
+            .attr("r", this.circleRadius)
             .attr("id", function(d){return "c"+d.id;})
             .style("fill", function(d){
-                return d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)";
+                return d.hasOwnProperty("color") ? d.color : self.circleColour;
             })
             .on("mouseover", function(d){
                 d3.select(this).style("fill", "red");
@@ -137,7 +141,7 @@ class ForceSimulationGraph
                 
             })
             .on("mouseout", function(d){
-                d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : "rgb(217, 217, 217)");
+                d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : self.circleColour);
                 if(d.buttons==1){
                     self.mouseDownNode=d.target.id.slice(1);
                 }
@@ -193,9 +197,9 @@ class ForceSimulationGraph
         this.svg.append('svg:defs').append('svg:marker')
             .attr('id', 'end-arrow')
             .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 6)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
+            .attr('refX', 5.5)
+            .attr('markerWidth', self.markerWH)
+            .attr('markerHeight', self.markerWH)
             .attr('orient', 'auto')
             .append('svg:path')
             .attr('d', 'M0,-5L10,0L0,5')
@@ -204,9 +208,9 @@ class ForceSimulationGraph
         this.svg.append('svg:defs').append('svg:marker')
             .attr('id', 'start-arrow')
             .attr('viewBox', '0 -5 10 10')
-            .attr('refX', 4)
-            .attr('markerWidth', 3)
-            .attr('markerHeight', 3)
+            .attr('refX', 5.5)
+            .attr('markerWidth', self.markerWH)
+            .attr('markerHeight', self.markerWH)
             .attr('orient', 'auto')
             .append('svg:path')
             .attr('d', 'M10,-5L0,0L10,5')
