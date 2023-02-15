@@ -9,7 +9,7 @@ https://jxr98.github.io/AlgoVisualizer/
 
 ## Context diagram
 
-![architecture-diagram](https://user-images.githubusercontent.com/22283515/218625272-b32fc72c-7f49-4b03-86c3-ab7014f3d7bb.png)
+![architecture-diagram (1)](https://user-images.githubusercontent.com/22283515/219033719-76fc1b69-99c5-4c95-91ab-7913a3cd5a0b.png)
 
 
 ## Testing
