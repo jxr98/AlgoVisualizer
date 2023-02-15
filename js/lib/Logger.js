@@ -61,8 +61,8 @@ function redirectConsoleOutput(textarea)
     window.console.log = function(...args){
         console_log(...args);
         args.forEach(function (arg){
+            // textarea.text(textarea.text() + "\n" + `${JSON.stringify(arg)}`)
             textarea.text(textarea.text() + "\n" + arg)
-            //arg=>textarea.text() += `${JSON.stringify(arg)}\n`)
         })
         // scroll to bottom to show new texts
         textarea.property("scrollTop", textarea.property("scrollHeight"))
