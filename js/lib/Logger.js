@@ -1,13 +1,9 @@
-
-// Logger has two modes
-// First mode is output to console log if not given a textarea
-// Second mode is to output to a given textarea
-// Has the option to mute entirely
 class Logger
 {
     #textAreaHandle = null;
     #mute = false;
 
+    // if textArea is not given, output to standard console output with prefix
     constructor(textArea = null)
     {
         this.#textAreaHandle = textArea
@@ -17,6 +13,7 @@ class Logger
         }
     }
 
+    // surpress/allow messages to go through
     mute(bool)
     {
         if (bool === true)
@@ -29,6 +26,7 @@ class Logger
         }
     }
 
+    // main API to log something
     log(str)
     {
         if (this.#mute === true) return
@@ -39,11 +37,11 @@ class Logger
         } 
         else
         {
-            this.appendToTextArea(str)
+            this.#appendToTextArea(str)
         }
     }
 
-    appendToTextArea(str)
+    #appendToTextArea(str)
     {
         if (this.#textAreaHandle == null) return
         this.#textAreaHandle.text(this.#textAreaHandle.text() + "\n" + str)
@@ -54,6 +52,8 @@ class Logger
 
 }
 
+// mirrors console.log to given textarea
+// NOTE: this applies to ALL console.log, if you want more control/selectivity, use the Logger
 function redirectConsoleOutput(textarea)
 {   
     if(!textarea) return;
@@ -67,6 +67,10 @@ function redirectConsoleOutput(textarea)
         // scroll to bottom to show new texts
         textarea.property("scrollTop", textarea.property("scrollHeight"))
     }
+
+    // messages to indicate attachement
+    if (textarea.text() == "") textarea.text("// Mirrored logs:");
+
 }
 
 export {Logger, redirectConsoleOutput}

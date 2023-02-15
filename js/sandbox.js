@@ -20,7 +20,7 @@ let logger = new Logger(textArea)
 
 redirectConsoleOutput(textArea)
 
-const g = new ForceSimulationGraph(svg, width, height);
+const g = new ForceSimulationGraph(svg);
 let a = g.addNode();
 let b = g.addNode();
 let c = g.addNode();

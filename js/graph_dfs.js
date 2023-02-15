@@ -2,16 +2,31 @@
 import { DFS } from "./lib/DFS.js";
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
+import {redirectConsoleOutput} from './lib/Logger.js'
+
+// TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
+// as opposed to creating svg, textarea, etc. DOM on the fly.
 
 //set up a svg
 const width = 1200;
 const height = 600;
-let svg = d3.select('body')
+var svg = d3.select('body')
     .append('svg')
     .attr('width', width)
     .attr('height', height);
 
-const fGraph = new ForceSimulationGraph(svg, width, height);
+// setup log panel
+let textArea = d3.select("body").append("textarea")
+textArea.attr("readonly", true)
+.attr("row", 2)
+.attr("cols", 100)
+.style("width", "800px")
+.style("height", "100px")
+
+// console.log now mirrors to text area
+redirectConsoleOutput(textArea)
+
+const fGraph = new ForceSimulationGraph(svg);
 
 document.getElementById("start-button").onclick = function()
 {

@@ -19,8 +19,9 @@ class ForceSimulationGraph
     circleColour;
     markerWH;//marker width and height
 
-    constructor(svg, width, height)
+    constructor(svg)
     {
+        let width = svg.attr("width"), height = svg.attr("height");
         this.circleRadius=25;//default
         this.circleColour="rgb(217, 217, 217)"; //default
         this.markerWH=3;//default
@@ -36,7 +37,7 @@ class ForceSimulationGraph
             .force("link", d3.forceLink([]).distance(100).id(function(d){
                 return d.id
             }))
-            .on("tick", function(){self.tick(self)})
+            .on("tick", function(){self.#tick(self)})
             .alphaDecay(0.002) // just added alpha decay to delay end of execution
         
         svg.on('mousedown', function (e) {
@@ -47,11 +48,47 @@ class ForceSimulationGraph
                 self.mouseDownNode=DefaultMouseDownNode;
             }
         });
-        this.defineArrowMarkers();
+        this.#defineArrowMarkers();
     }
 
+    ////////////////////////////////////////////////////////////////////
+    //////// public interface
+
+    addNode(x=0, y=0) {
+        console.log(`Add node @(x,y): ${x.toFixed(0)}, ${y.toFixed(0)}`);
+        const ret = this.#graph.addNode(x, y);
+        this.#update();
+        return ret;
+    }
+
+    connectNodes(source, target) {
+        console.log(`Connecting nodes ${source} <-> ${target}`);
+        this.#graph.addEdge(source, target);
+        this.#update();
+    }
+
+    getGraphModel()
+    {
+        return this.#graph;
+    }
+
+    changeColor(node, color)
+    {
+        this.#graph.updateNodeProp(node, {color: color});
+        this.#update();
+        this.svg.selectAll("g").each(function(d)
+        {
+            d3.select(this).select("circle").style("fill", function(d){
+                return d.hasOwnProperty("color") ? d.color : self.circleColour;
+            });
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    //////// private functions
+
     // this function updates the rendering for D3 simulation
-    tick(self)
+    #tick(self)
     {
         // update links and arrows
         self.svg.selectAll('.link').each(function(d){
@@ -77,24 +114,7 @@ class ForceSimulationGraph
         })
     }
 
-    getGraphModel()
-    {
-        return this.#graph;
-    }
-
-    changeColor(node, color)
-    {
-        this.#graph.updateNodeProp(node, {color: color});
-        this.update();
-        this.svg.selectAll("g").each(function(d)
-        {
-            d3.select(this).select("circle").style("fill", function(d){
-                return d.hasOwnProperty("color") ? d.color : self.circleColour;
-            });
-        });
-    }
-
-    updateLink(graphLinks)
+    #updateLink(graphLinks)
     {
         var link = this.svg.selectAll('.link').data(graphLinks);
         link.enter()
@@ -110,7 +130,7 @@ class ForceSimulationGraph
     }
 
     // main update function for when there are changes to nodes/links
-    updateNodes(graphNodes)
+    #updateNodes(graphNodes)
     {
         const self = this;
         let node = this.svg.selectAll('.node').data(graphNodes);
@@ -164,14 +184,14 @@ class ForceSimulationGraph
             .remove();
     }
 
-    update() {
+    #update() {
         // update links
         const graphLinks = this.#graph.getLinks();
-        this.updateLink(graphLinks)
+        this.#updateLink(graphLinks)
     
         // update nodes
         const graphNodes = this.#graph.getNodes();
-        this.updateNodes(graphNodes)
+        this.#updateNodes(graphNodes)
     
         // update simulation
         this.simulation
@@ -182,18 +202,7 @@ class ForceSimulationGraph
             .restart()
     }
 
-    addNode(x=0, y=0) {
-        const ret = this.#graph.addNode(x, y);
-        this.update();
-        return ret;
-    }
-
-    connectNodes(source, target) {
-        this.#graph.addEdge(source, target);
-        this.update();
-    }
-
-    defineArrowMarkers(){
+    #defineArrowMarkers(){
         this.svg.append('svg:defs').append('svg:marker')
             .attr('id', 'end-arrow')
             .attr('viewBox', '0 -5 10 10')
