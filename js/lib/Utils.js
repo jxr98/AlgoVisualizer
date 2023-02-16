@@ -1,7 +1,7 @@
 function position2ID(x, y, xRangeSize)
-    {
-        return y * xRangeSize + x
-    }
+{
+    return y * xRangeSize + x
+}
 
 function ID2Position(id, xRangeSize)
 {
