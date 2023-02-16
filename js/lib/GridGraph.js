@@ -8,7 +8,7 @@ class GridGraph
     #grid; 
     #numRow;
     #numCol;
-    #squareSize = 200; // must be even number
+    #squareSize = 100; // must be even number
     #defaultColour = "rgb(217, 217, 217)";
     
     // svg handle
@@ -23,6 +23,13 @@ class GridGraph
         let width = svg.attr("width"), height = svg.attr("height");
         this.#numRow = Math.floor(height / this.#squareSize);
         this.#numCol = Math.floor(width / this.#squareSize);
+        let reducedHeight = this.#numRow*this.#squareSize,
+        reducedWidth = this.#numCol*this.#squareSize
+
+        
+        this.#svg.attr("width", reducedWidth).attr("height", reducedHeight)
+        //console.log("trimmed width and height to fit")
+
         this.#grid = new Array(this.#numRow).fill(new Array(this.#numCol).fill(0));
         console.log("#row:" + this.#numRow)
         console.log("#col:" + this.#numCol)
@@ -37,12 +44,13 @@ class GridGraph
                     id: position2ID(x, y, this.#numCol),
                     name: `${x},${y}`,
                     fx: this.#squareSize/2 + this.#squareSize * x,
-                    fy: this.#squareSize/2 + this.#squareSize * y
+                    fy: this.#squareSize/2 + this.#squareSize * y,
+                    color : this.#defaultColour
                 }
                 idx++;
             }
         }
-        console.log("Node array:", `${JSON.stringify(this.#nodes)}`)
+        //console.log("Node array:", `${JSON.stringify(this.#nodes)}`)
         
         const self = this;
         this.simulation = d3.forceSimulation()
@@ -66,9 +74,53 @@ class GridGraph
     {
         return this.#numCol;
     }
+    getNodeID(x, y)
+    {
+        return position2ID(x, y, this.#numCol);
+    }
+    getAdjacent(nodeID)
+    {
+        let {x, y} = ID2Position(nodeID, this.#numCol)
+        let neighbors = [
+            this.#getNodeAt(x+1, y),
+            this.#getNodeAt(x-1, y),
+            this.#getNodeAt(x, y+1),
+            this.#getNodeAt(x, y-1)
+        ]
+        let ret = []
+        neighbors.forEach(function(val){
+            if (val != -1) ret[ret.length] = val
+        })
+        return ret
+    }
+    getGridArray()
+    {
+        return new Array(this.#numRow).fill(new Array(this.#numCol).fill(0));
+    }
+
+    changeColor(nodeID, color)
+    {
+        // change the color property in our model first
+        //let nodeID = this.#getNodeAt(x, y);
+        this.#nodes[nodeID].color = color
+
+        let self = this
+        this.#svg.selectAll("g").each(function(d)
+        {
+            d3.select(this).select("rect").style("fill", function(d){
+                return d.hasOwnProperty("color") ? d.color : self.#defaultColour;
+            });
+        });
+    }
 
     ////////////////////////////////////////////////////////////////////
     //////// private functions
+    #getNodeAt(x, y)
+    {
+        
+        if (x<0 || y <0 || x >= this.#numCol || y >= this.#numRow ) return -1;
+        return position2ID(x, y, this.#numCol);
+    }
 
     #tick(self)
     {
@@ -92,47 +144,31 @@ class GridGraph
             .attr("height", this.#squareSize)
             .attr("id", function(d){return "c"+d.id;})
             .style("fill", function(d){
-                //return d.hasOwnProperty("color") ? d.color : self.circleColour;
-                return self.#defaultColour;
+                return d.hasOwnProperty("color") ? d.color : self.#defaultColour;
             })
-            .on("mouseover", function(d){
-                d3.select(this).style("fill", "red");
-
-                // let targetID=d.target.id.slice(1);
-                // self.mouseHoverNode = targetID;
-
-                // left mouse button is clicked and a node is selected
-                // if(d.buttons==1&&self.mouseDownNode!=null&&self.mouseDownNode!=DefaultMouseDownNode&&self.mouseDownNode!=targetID)
-                // {
-                //     self.link.source=self.mouseDownNode;
-                //     self.link.target=targetID;
-                //     self.connectNodes(self.link.source,self.link.target);
-                //     self.mouseDownNode=DefaultMouseDownNode;
-                // }
-                
-            })
-            .on("mouseout", function(d){
-                //d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : self.circleColour);
-                d3.select(this).style("fill", self.#defaultColour);
-                // if(d.buttons==1){
-                //     self.mouseDownNode=d.target.id.slice(1);
-                // }
-                // self.mouseHoverNode = DefaultMouseDownNode;
-            })
+            .style("stroke-width", 1)
+            .style("stroke", "rgb(0,0,0)")
+            // .on("mouseover", function(d){
+            //     d3.select(this).style("fill", "red");
+            // })
+            // .on("mouseout", function(d){
+            //     d3.select(this).style("fill", self.#defaultColour);
+            // })
             
-
+        const offset = this.#squareSize / 2;
         g.append('text')
             .attr("class", "text")
-            .attr("x", "50%")
-            .attr("y", "50%")
+            .attr("x", offset)
+            .attr("y", offset)
             .text(function (d) { return d.name })
             .attr("pointer-events", "none")
-            .attr('style', '-webkit-touch-callout: none;\
-                        -webkit-user-select: none;\
-                        -khtml-user-select: none;\
-                        -moz-user-select: none;\
-                        -ms-user-select: none;\
-                        user-select: none;');
+            .style("-webkit-touch-callout", "none")
+            .style("-khtml-user-select", "none")
+            .style("-moz-user-select", "none")
+            .style("-ms-user-select", "none")
+            .style("user-select", "none")
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
         node
             .exit()
             .remove();
