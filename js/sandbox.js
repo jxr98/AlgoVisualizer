@@ -1,6 +1,5 @@
 // NOTE: use v7 of D3 library
-import {ForceSimulationGraph} from './lib/svg_graph.js'
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
 import { GridGraph } from './lib/GridGraph.js';
 
