@@ -1,15 +1,18 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import {ID2Position, position2ID } from "./Utils.js";
 
+const obstacleNodeID = -1;
+
 // graph with well defined coordinate system for each node
 class GridGraph
 {
-    // 2D grid model
-    #grid; 
-    #numRow;
-    #numCol;
+    // grid model
+    #yRange;
+    #xRange;
     #squareSize = 100; // must be even number
     #defaultColour = "rgb(217, 217, 217)";
+    #obstacleColor = "black";
+    #maxNodeID = 0;
     
     // svg handle
     #svg = null
@@ -21,37 +24,145 @@ class GridGraph
     {
         this.#svg = svg
         let width = svg.attr("width"), height = svg.attr("height");
-        this.#numRow = Math.floor(height / this.#squareSize);
-        this.#numCol = Math.floor(width / this.#squareSize);
-        let reducedHeight = this.#numRow*this.#squareSize,
-        reducedWidth = this.#numCol*this.#squareSize
+        this.#yRange = Math.floor(height / this.#squareSize);
+        this.#xRange = Math.floor(width / this.#squareSize);
+        let reducedHeight = this.#yRange*this.#squareSize,
+        reducedWidth = this.#xRange*this.#squareSize
 
         
         this.#svg.attr("width", reducedWidth).attr("height", reducedHeight)
-        //console.log("trimmed width and height to fit")
-
-        this.#grid = new Array(this.#numRow).fill(new Array(this.#numCol).fill(0));
-        console.log("#row:" + this.#numRow)
-        console.log("#col:" + this.#numCol)
-        console.log("Grid array:", `${JSON.stringify(this.#grid)}`)
+        console.log("#yRange:" + this.#yRange)
+        console.log("#xRange:" + this.#xRange)
 
         let idx = 0;
-        for (let y = 0; y < this.#numRow; y++)
+        for (let y = 0; y < this.#yRange; y++)
         {
-            for (let x = 0; x < this.#numCol; x++)
+            for (let x = 0; x < this.#xRange; x++)
             {
+                let nodeID = position2ID(x, y, this.#xRange);
+                this.#maxNodeID = Math.max(this.#maxNodeID, nodeID);
                 this.#nodes[idx] = {
-                    id: position2ID(x, y, this.#numCol),
+                    id: nodeID,
                     name: `${x},${y}`,
                     fx: this.#squareSize/2 + this.#squareSize * x,
                     fy: this.#squareSize/2 + this.#squareSize * y,
-                    color : this.#defaultColour
+                    color : this.#defaultColour,
+                    isObstacle : false
                 }
                 idx++;
             }
         }
-        //console.log("Node array:", `${JSON.stringify(this.#nodes)}`)
+
+        svg.on("click", function(e){
+            //console.log("svg")
+        })
         
+        this.#setupSimulation();
+    }
+    
+    ////////////////////////////////////////////////////////////////////
+    //////// public interface
+
+    getYRange()
+    {
+        return this.#yRange;
+    }
+    getXRange()
+    {
+        return this.#xRange;
+    }
+    getNodeID(x, y)
+    {
+        if (!this.#isValidX(x) || !this.#isValidY(y))
+        {
+            console.error("Invalid coordinates recieved")
+        }
+        return position2ID(x, y, this.#xRange);
+    }
+    getNodePosition(nodeID)
+    {
+        if (!this.#isValidID(nodeID))
+        {
+            console.error("Invalid nodeID (getNodePosition)")
+        }
+        return ID2Position(nodeID, this.#xRange)
+    }
+    isObstacle(nodeID)
+    {
+        let {x, y} = ID2Position(nodeID, this.#xRange)
+        return this.#getNodeAt(x, y) == obstacleNodeID
+    }
+    getAdjacent(nodeID)
+    {
+        if (!this.#isValidID(nodeID))
+        {
+            console.error("Invalid nodeID (getAdjacent)")
+        }
+        let {x, y} = ID2Position(nodeID, this.#xRange)
+        let neighbors = [
+            this.#getNodeAt(x+1, y),
+            this.#getNodeAt(x-1, y),
+            this.#getNodeAt(x, y+1),
+            this.#getNodeAt(x, y-1)
+        ]
+
+        // prune obstacle nodes
+        let ret = []
+        neighbors.forEach(function(val){
+            if (val != obstacleNodeID) ret[ret.length] = val
+        })
+        return ret
+    }
+    getGridArray()
+    {
+        return new Array(this.#yRange).fill(new Array(this.#xRange).fill(0));
+    }
+
+    changeColor(nodeID, color)
+    {
+        if (!this.#isValidID(nodeID))
+        {
+            console.error("Invalid nodeID (changeColor)")
+        }
+        //let nodeID = this.#getNodeAt(x, y);
+        this.#nodes[nodeID].color = color
+    }
+
+    setObstacle(nodeID)
+    {
+        if (!this.#isValidID(nodeID))
+        {
+            console.error("Invalid nodeID (setObstacle)")
+        }
+        this.#nodes[nodeID].isObstacle = true
+    }
+
+    unsetObstacle(nodeID)
+    {
+        if (!this.#isValidID(nodeID))
+        {
+            console.error("Invalid nodeID (unsetObstacle)")
+        }
+        this.#nodes[nodeID].isObstacle = false
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    //////// private functions
+    #isValidX(x)
+    {
+        return x >=0 && x <this.#xRange
+    }
+    #isValidY(y)
+    {
+        return y >=0 && y <this.#yRange
+    }
+    #isValidID(nodeID)
+    {
+        return nodeID >= 0 && nodeID <= this.#maxNodeID
+    }
+
+    #setupSimulation()
+    {
         const self = this;
         this.simulation = d3.forceSimulation()
             .nodes(this.#nodes)
@@ -59,67 +170,20 @@ class GridGraph
             .on("tick", function(){self.#tick(self)})
             .alphaDecay(0.002)
         
-        // run update to render graphics
-        this.#update()
-    }
-    
-    ////////////////////////////////////////////////////////////////////
-    //////// public interface
+        // call update immediately to render graphics
+        self.#update()
 
-    getNumRow()
-    {
-        return this.#numRow;
-    }
-    getNumCol()
-    {
-        return this.#numCol;
-    }
-    getNodeID(x, y)
-    {
-        return position2ID(x, y, this.#numCol);
-    }
-    getAdjacent(nodeID)
-    {
-        let {x, y} = ID2Position(nodeID, this.#numCol)
-        let neighbors = [
-            this.#getNodeAt(x+1, y),
-            this.#getNodeAt(x-1, y),
-            this.#getNodeAt(x, y+1),
-            this.#getNodeAt(x, y-1)
-        ]
-        let ret = []
-        neighbors.forEach(function(val){
-            if (val != -1) ret[ret.length] = val
-        })
-        return ret
-    }
-    getGridArray()
-    {
-        return new Array(this.#numRow).fill(new Array(this.#numCol).fill(0));
+        // call update to keep the simulation running
+        // otherwise, simulation stops and certain aspects of the grid may become non-responsive
+        // NOTE: interval here should not be too long, otherwise simulation could end before update() is refreshed
+        setInterval(function(){self.#update()}, 5000)
     }
 
-    changeColor(nodeID, color)
-    {
-        // change the color property in our model first
-        //let nodeID = this.#getNodeAt(x, y);
-        this.#nodes[nodeID].color = color
-
-        let self = this
-        this.#svg.selectAll("g").each(function(d)
-        {
-            d3.select(this).select("rect").style("fill", function(d){
-                return d.hasOwnProperty("color") ? d.color : self.#defaultColour;
-            });
-        });
-    }
-
-    ////////////////////////////////////////////////////////////////////
-    //////// private functions
     #getNodeAt(x, y)
     {
         
-        if (x<0 || y <0 || x >= this.#numCol || y >= this.#numRow ) return -1;
-        return position2ID(x, y, this.#numCol);
+        if (x<0 || y <0 || x >= this.#xRange || y >= this.#yRange ) return obstacleNodeID;
+        return position2ID(x, y, this.#xRange);
     }
 
     #tick(self)
@@ -127,7 +191,15 @@ class GridGraph
         const offset = this.#squareSize / 2;
         self.#svg.selectAll('.node').each(function(d, i)
         {
+            // manage tile locations
+            // TODO: since tile locations don't need to change every tick, maybe refactor this out?
             d3.select(this).attr("transform", "translate(" + (d.x - offset) + "," + (d.y - offset) + ")")
+
+            // manage color
+            d3.select(this).select("rect").style("fill", function(d){
+                if (d.isObstacle) return self.#obstacleColor; // disallow change color on obstacles
+                return d.hasOwnProperty("color") ? d.color : self.#defaultColour;
+            });
         })
     }
 
@@ -148,9 +220,14 @@ class GridGraph
             })
             .style("stroke-width", 1)
             .style("stroke", "rgb(0,0,0)")
-            // .on("mouseover", function(d){
-            //     d3.select(this).style("fill", "red");
-            // })
+            .on('click', function (e, d) {
+                d.isObstacle = !d.isObstacle
+                 console.log("rect")
+            })
+            //  .on("mouseover", function(d){
+            //      d3.select(this).style("fill", "red");
+            //      console.log(1)
+            //  })
             // .on("mouseout", function(d){
             //     d3.select(this).style("fill", self.#defaultColour);
             // })
@@ -183,7 +260,7 @@ class GridGraph
             .nodes(this.#nodes)
             //.force("link", d3.forceLink(graphLinks).distance(100))
             //.force("charge", d3.forceManyBody().strength(-2))
-            //.alpha(1) // need to reset alpha as well here
+            .alpha(1) // need to reset alpha as well here
             .restart()
     }
 }

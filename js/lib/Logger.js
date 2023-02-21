@@ -68,6 +68,18 @@ function redirectConsoleOutput(textarea)
         textarea.property("scrollTop", textarea.property("scrollHeight"))
     }
 
+    const console_error = window.console.error;
+    window.console.error = function(...args){
+        console_error(...args);
+        args.forEach(function (arg){
+            // textarea.text(textarea.text() + "\n" + `${JSON.stringify(arg)}`)
+            // TODO: can we make error msg red color
+            textarea.text(textarea.text() + "\nERROR: " + arg)
+        })
+        // scroll to bottom to show new texts
+        textarea.property("scrollTop", textarea.property("scrollHeight"))
+    }
+
     // messages to indicate attachement
     if (textarea.text() == "") textarea.text("// Mirrored logs:");
 
