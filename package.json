@@ -11,6 +11,10 @@
   },
   "jest": {
     "transform": {},
-    "testEnvironment": "jsdom"
+    "testEnvironment": "jsdom",
+    "coveragePathIgnorePatterns" : [
+      "<rootDir>/js/thirdParty/"
+    ]
+
   }
 }
