@@ -16,15 +16,26 @@ var svg = d3.select('body')
     .attr('height', height);
 
 // setup log panel
-let textArea = d3.select("body").append("textarea")
+var visualizationDiv=d3.select("body").append("div");
+visualizationDiv.attr("class","col-12");
+let textArea = visualizationDiv.append("textarea")
 textArea.attr("readonly", true)
-.attr("row", 2)
-.attr("cols", 100)
-.style("width", "800px")
-.style("height", "100px")
+.attr("cols", 30)
+ .style("height", "100px")
 
 // console.log now mirrors to text area
-redirectConsoleOutput(textArea)
+redirectConsoleOutput(textArea);
+
+//queue visualization
+visualizationDiv.append("svg")
+    .attr('width',1000)
+    .attr('height',200)
+    .style('border','1px solid #000')
+    .attr('id','queueSvg')
+    .append('text')
+    .text('Queue')
+    .attr('x',450)
+    .attr('y',15);
 
 const fGraph = new ForceSimulationGraph(svg);
 
@@ -42,7 +53,8 @@ document.getElementById("start-button").onclick = function()
             path += " -> " + result[i];
         };
         window.alert(path);
-        let processVertices = breadthFirstPaths.getProcess();
+        let processVertices = breadthFirstPaths.getProcess().TwoDArray;
+        let OneDArray=breadthFirstPaths.getProcess().OneDArray;
         let size = processVertices.length;
         for (let i = 0; i < size; i++) {
             let sameStepVertices = processVertices[i];
@@ -58,5 +70,29 @@ document.getElementById("start-button").onclick = function()
                 fGraph.changeColor(vertex, "red");
             }, 1000 * size);
         });
+
+        var rectangles=d3.select("#queueSvg").selectAll(".recQueue").data(OneDArray);
+        let recG=rectangles.enter()
+            .append('g')
+            .attr('class','recQueue');
+
+        recG.append('rect')
+            .attr('width',15)
+            .attr('height',100)
+            .attr('x',function (d,index) {
+                return 1000-30-index*20;
+            })
+            .attr('y',50)
+            .style('fill','#00ff0080');
+
+        recG.append("text")
+            .attr("class", "text")
+            .attr('x',function (d,index) {
+                return 1000-30-index*19;
+            })
+            .attr('y',110)
+            .text(function (d) {
+                return d;
+            })
     }
 };
