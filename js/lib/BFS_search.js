@@ -57,7 +57,13 @@ class BFS_search{
     }
 
     getProcess() {
-        return this.#visited;
+        let queueArr=[];// int[] of visited[][]
+        for(var i=0;i<this.#visited.length;i++){
+            for(var j=0;j<this.#visited[i].length;j++){
+                queueArr.push(this.#visited[i][j]);
+            }
+        }
+        return {"TwoDArray":this.#visited,"OneDArray":queueArr};
     }
 }
 
