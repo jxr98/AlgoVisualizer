@@ -21,8 +21,8 @@ describe('Home page website', () => {
     cy.visit('https://jxr98.github.io/AlgoVisualizer/')
     /* ==== Generated with Cypress Studio ==== */
     cy.get('[href="html/bfs.html"]').click();
-    cy.get('svg').click(100, 100);
-    cy.get('svg').click(500, 500);
+    cy.get('svg:first').click(100, 100);
+    cy.get('svg:first').click(500, 500);
     /* ==== End Cypress Studio ==== */
 
     // wait for force simulation to move nodes apart
