@@ -89,8 +89,9 @@ class GridGraph
     }
     isObstacle(nodeID)
     {
+        // if node is out of bound or has obstacle property
         let {x, y} = ID2Position(nodeID, this.#xRange)
-        return this.#getNodeAt(x, y) == obstacleNodeID
+        return this.#getNodeAt(x, y) == obstacleNodeID || this.#nodes[nodeID].isObstacle === true
     }
     getAdjacent(nodeID)
     {
@@ -113,16 +114,17 @@ class GridGraph
         })
         return ret
     }
-    getGridArray()
-    {
-        return new Array(this.#yRange).fill(new Array(this.#xRange).fill(0));
-    }
+    // getGridArray()
+    // {
+    //     return new Array(this.#yRange).fill(new Array(this.#xRange).fill(0));
+    // }
 
     changeColor(nodeID, color)
     {
         if (!this.#isValidID(nodeID))
         {
-            console.error("Invalid nodeID (changeColor)")
+            console.error("Invalid nodeID (changeColor)");
+            return;
         }
         //let nodeID = this.#getNodeAt(x, y);
         this.#nodes[nodeID].color = color
@@ -132,7 +134,8 @@ class GridGraph
     {
         if (!this.#isValidID(nodeID))
         {
-            console.error("Invalid nodeID (setObstacle)")
+            console.error("Invalid nodeID (setObstacle)");
+            return;
         }
         this.#nodes[nodeID].isObstacle = true
     }
@@ -141,7 +144,8 @@ class GridGraph
     {
         if (!this.#isValidID(nodeID))
         {
-            console.error("Invalid nodeID (unsetObstacle)")
+            console.error("Invalid nodeID (unsetObstacle)");
+            return;
         }
         this.#nodes[nodeID].isObstacle = false
     }
@@ -187,6 +191,7 @@ class GridGraph
     }
 
     #tick(self)
+    /* istanbul ignore next */
     {
         const offset = this.#squareSize / 2;
         self.#svg.selectAll('.node').each(function(d, i)
@@ -221,8 +226,8 @@ class GridGraph
             .style("stroke-width", 1)
             .style("stroke", "rgb(0,0,0)")
             .on('click', function (e, d) {
+                /* istanbul ignore next */
                 d.isObstacle = !d.isObstacle
-                 console.log("rect")
             })
             //  .on("mouseover", function(d){
             //      d3.select(this).style("fill", "red");
