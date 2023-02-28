@@ -36,6 +36,11 @@ visualizationDiv.append("svg")
     .text('Queue')
     .attr('x',450)
     .attr('y',15);
+    d3.select("#queueSvg")
+        .append('text')
+        .text('Head')
+        .attr('x',1000-45)
+        .attr('y',20);
 
 const fGraph = new ForceSimulationGraph(svg);
 
@@ -56,12 +61,49 @@ document.getElementById("start-button").onclick = function()
         let processVertices = breadthFirstPaths.getProcess().TwoDArray;
         let OneDArray=breadthFirstPaths.getProcess().OneDArray;
         let size = processVertices.length;
+
+        //append queueSVG
+        var rectangles=d3.select("#queueSvg").selectAll(".recQueue").data(OneDArray);
+        let recG=rectangles.enter()
+            .append('g')
+            .attr('class','recQueue');
+        recG.append('rect')
+            .attr('id', function (d) {
+                return "rect" +d;
+            })
+            .attr('width',15)
+            .attr('height',100)
+            .attr('x',function (d,index) {
+                return 1000-30-index*20;
+            })
+            .attr('y',50)
+            .style('fill','#00ff0080')
+            .attr('visibility','hidden');;
+
+        recG.append("text")
+            .attr("class", "text")
+            .attr('id',function (d) {
+                return "rectText" + d;
+            })
+            .attr('x',function (d,index) {
+                return 1000-30-index*19;
+            })
+            .attr('y',110)
+            .attr('visibility','hidden')
+            .text(function (d) {
+                return d;
+            });
+
         for (let i = 0; i < size; i++) {
             let sameStepVertices = processVertices[i];
             let n = sameStepVertices.length;
             for (let j = 0; j < n; j++) {
                 setTimeout(function(){
                     fGraph.changeColor(sameStepVertices[j], "yellow");
+                    var rectangleID="#rect" + sameStepVertices[j];
+                    var rectangleTextId="#rectText" + sameStepVertices[j];
+                    d3.select(rectangleID).attr('visibility','visible');
+                    d3.select(rectangleTextId).attr('visibility','visible');
                 }, 1000 * i);
             }
         }
@@ -70,29 +112,5 @@ document.getElementById("start-button").onclick = function()
                 fGraph.changeColor(vertex, "red");
             }, 1000 * size);
         });
-
-        var rectangles=d3.select("#queueSvg").selectAll(".recQueue").data(OneDArray);
-        let recG=rectangles.enter()
-            .append('g')
-            .attr('class','recQueue');
-
-        recG.append('rect')
-            .attr('width',15)
-            .attr('height',100)
-            .attr('x',function (d,index) {
-                return 1000-30-index*20;
-            })
-            .attr('y',50)
-            .style('fill','#00ff0080');
-
-        recG.append("text")
-            .attr("class", "text")
-            .attr('x',function (d,index) {
-                return 1000-30-index*19;
-            })
-            .attr('y',110)
-            .text(function (d) {
-                return d;
-            })
     }
 };
