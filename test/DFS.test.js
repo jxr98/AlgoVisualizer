@@ -15,6 +15,7 @@ test('DFS on graph with 2 node, 1 edge', () => {
     expect(path.length).toBe(2);
     expect(path[0]).toBe(nodeA);
     expect(path[1]).toBe(nodeB);
+    expect(search.getProcess()).toMatchObject([0,1,1,0]);
 });
 
 test('DFS, no path found', () => {
