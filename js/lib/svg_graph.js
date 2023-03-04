@@ -92,6 +92,7 @@ class ForceSimulationGraph
     {
         // update links and arrows
         self.svg.selectAll('.link').each(function(d){
+            // calculation taken from https://codepen.io/mikehenrichs/pen/NWJZyw
             let deltaX = d.target.x - d.source.x,
             deltaY = d.target.y - d.source.y,
             dist = Math.sqrt(deltaX * deltaX + deltaY * deltaY),
