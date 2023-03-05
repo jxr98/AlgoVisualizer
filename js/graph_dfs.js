@@ -37,7 +37,6 @@ document.getElementById("start-button").onclick = function()
         window.alert("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
     } else {
         let result = depthFirstPaths.getPath();
-        console.log(result);
         path += " " + result[0];
         for (let i = 1; i < result.length ; i++){
             path += " -> " + result[i];
@@ -57,5 +56,10 @@ document.getElementById("start-button").onclick = function()
                 setTimeout(function(){ fGraph.changeColor(processVertices[i], "grey");}, 1000 * i);
             }
         }
+        result.forEach(function(vertex) {
+            setTimeout(function(){
+                fGraph.changeColor(vertex, "red");
+            }, 1000 * size);
+        });
     }
 };
