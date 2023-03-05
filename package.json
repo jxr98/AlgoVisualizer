@@ -15,8 +15,5 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/js/thirdParty/"
     ]
-  },
-  "dependencies": {
-    "drawsvg": "^1.1.0"
   }
 }
