@@ -26,7 +26,6 @@ class DFS {
     traverse (v) {
         if (this.visited[v]) return;
         this.path.push(v);
-        console.log(this.path.length, this.path);
         if (v == this.target) {
             this.allPaths.push([...this.path]);
         }
