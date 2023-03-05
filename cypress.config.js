@@ -1,4 +1,5 @@
 import { defineConfig } from "cypress";
+import "./js/lib/addRequire.js";
 
 export default defineConfig({
   e2e: {
