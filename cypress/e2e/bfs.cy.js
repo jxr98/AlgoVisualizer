@@ -44,15 +44,25 @@ describe('Home page website', () => {
     // let dx = targetNode.cx - currentNode.cx;
     // let dy = targetNode.cy - currentNode.cy;
 
-    //check the shortest path
+    // check the shortest path
     cy.get('textarea:first').type('0 1');
     cy.get('[id=start-button]').click();
+    var times=1;
     cy.on('window:alert',(t)=>{
-      expect(t).to.equal('From vertex 0 to vertex 1 are not connected');
+      if(times==1){
+        expect(t).to.equal('From vertex 0 to vertex 1 are not connected');
+        times++;
+      }else{
+        // when c0 and c1 are connected
+        expect(t).to.equal('From vertex 0 to vertex 1:  0 -> 1');
+        times++;
+      }
     })
 
-    cy.get('#c0').trigger('mouseover').trigger('mousedown');
-    cy.get('#c1').trigger('mousemove');
+    // connect the first two nodes
+    cy.get('#c0').trigger('mouseover').trigger('mousedown',{ buttons: 1 }).trigger('mouseout',{ buttons: 1 });
+    cy.get('#c1').trigger('mouseover',{ buttons: 1 });
+
   })
 })
 
