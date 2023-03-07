@@ -2,15 +2,12 @@
 
 // test suite
 describe('Home page website', () => {
-
-  // a test case
-  it('Visits the deployed site', () => {
+  beforeEach(()=>{
     cy.visit('https://jxr98.github.io/AlgoVisualizer/')
   })
 
   // another test case
   it('check links', () => {
-    cy.visit('https://jxr98.github.io/AlgoVisualizer/')
     cy.get('[href="html/bfs.html"]')
     cy.get('[href="html/dfs.html"]')
   })
@@ -18,7 +15,6 @@ describe('Home page website', () => {
   // test extension
   it('test d3 svg graph', ()=>
   {
-    cy.visit('https://jxr98.github.io/AlgoVisualizer/')
     /* ==== Generated with Cypress Studio ==== */
     cy.get('[href="html/bfs.html"]').click();
     cy.get('svg:first').click(100, 100);
