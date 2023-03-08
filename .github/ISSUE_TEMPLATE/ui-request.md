@@ -2,7 +2,7 @@
 name: UI request
 about: Propose changes to the UI here
 title: "[UI]"
-labels: enhancement
+labels: 
 assignees: ''
 
 ---
