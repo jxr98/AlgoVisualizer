@@ -1,5 +1,5 @@
 import { Graph } from "./graph.js";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from "../thirdParty/d3.js";
 
 const DefaultMouseDownNode=-1;
 
