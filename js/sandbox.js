@@ -24,6 +24,9 @@ let tick = 0;
 let interval = 200; 
 // IMPORTANT: need to sync transition speed with interval, otherwise you transition may occur way too slow/fast with respect to change
 const g = new ArrayVisualizer(svg, interval)
+g.setLeftLabel("left label")
+g.setRightLabel("right label")
+g.setTitle("title")
 
 for (let i =0 ; i < 5; ++i)
 {

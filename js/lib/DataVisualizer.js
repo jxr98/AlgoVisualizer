@@ -22,16 +22,71 @@ export class ArrayVisualizer
     // container of data
     #data = []
 
+    // label text handles
+    #leftLabel = null
+    #rightLabel = null
+    #titleLabel = null
+
     constructor(svg, delay = 2000)
     {
         this.#svgWidth = svg.attr("width");
         this.#svgHeight = svg.attr("height");
         this.#svg = svg;
         this.#delay = delay;
+
+        // setup labels
+        this.#leftLabel = this.#svg.append('text')
+            .attr("class", "text")
+            .text("")
+        this.#rightLabel = this.#svg.append('text')
+            .attr("class", "text")
+            .text("")
+        this.#titleLabel = this.#svg.append('text')
+            .attr("class", "text")
+            .text("")
+            
     }
 
     ////////////////////////////////////////////////////////////////////
     //////// public functions
+
+    setTitle(str)
+    {
+        let self = this
+        this.#titleLabel.text(str)
+        .attr("transform", function()
+        {
+            let y = 20,
+            rightX = self.#svgWidth/2,
+            textDOM = d3.select(this).node()
+            /* istanbul ignore next */
+            if (typeof textDOM.getComputedTextLength === "function") rightX -= textDOM.getComputedTextLength()/2
+            return "translate(" + rightX + "," + y + ")"
+        })
+    }
+
+    setRightLabel(str)
+    {
+        let self = this
+        this.#rightLabel.text(str)
+            .attr("transform", function()
+            {
+                let y = self.#svgHeight/2,
+                textDOM = d3.select(this).node(),
+                rightX = self.#svgWidth - 10
+                /* istanbul ignore next */
+                if (typeof textDOM.getComputedTextLength === "function") rightX =  rightX - textDOM.getComputedTextLength()
+                return "translate(" + rightX + "," + y + ")"
+            })
+    }
+
+    setLeftLabel(str)
+    {
+        let y = this.#svgHeight/2,
+        leftX = 10
+        this.#leftLabel.text(str)
+            .attr("transform", "translate(" + leftX + "," + y + ")")
+    }
 
     // insert data to back of array
     insertLeft(data)
