@@ -19,8 +19,8 @@ test('test instantiation', () => {
 
     // position API
     let {x, y} = g.getNodePosition(0)
-    console.log(x)
-    console.log(y)
+    // console.log(x)
+    // console.log(y)
     expect(x).toBe(0)
     expect(y).toBe(0)
 

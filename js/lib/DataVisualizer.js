@@ -2,6 +2,8 @@ import * as d3 from "../thirdParty/d3.js";
 
 // TODO: need to determine max capacity of visualizer
 // TODO: need to design what happens when capacity is exceeded
+// TODO: API for legends on bottom
+
 export class ArrayVisualizer
 {
     // svg handle
