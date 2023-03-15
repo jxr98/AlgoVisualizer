@@ -3,6 +3,14 @@ import {InsertionSort} from '../js/lib/SortingAlgorithms'
 import {ArrayVisualizer} from '../js/lib/DataVisualizer'
 import {expect, jest} from '@jest/globals';
 
+// mock ResizeObserverMock
+class ResizeObserverMock {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
+
 test('Insertion sort',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});

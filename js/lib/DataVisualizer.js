@@ -2,6 +2,8 @@ import * as d3 from "../thirdParty/d3.js";
 
 // TODO: need to determine max capacity of visualizer
 // TODO: need to design what happens when capacity is exceeded
+// TODO: API for legends on bottom
+
 export class ArrayVisualizer
 {
     // svg handle
@@ -30,11 +32,21 @@ export class ArrayVisualizer
     #rightLabel = null
     #titleLabel = null
 
+    // resize observer
+    #resiszeObs = null
+
     constructor(svg, delay = 2000)
     {
-        this.#svgWidth = svg.attr("width");
-        this.#svgHeight = svg.attr("height");
+        let self = this;
+        // this.#svgWidth = svg.attr("width");
+        // this.#svgHeight = svg.attr("height");
+        // let id = svg.attr("id");
+        // this.#svgWidth = document.getElementById(id).clientWidth;
+        // this.#svgHeight = document.getElementById(id).clientHeight;
+
         this.#svg = svg;
+        this.#svgWidth = this.#svg.node().clientWidth;
+        this.#svgHeight = this.#svg.node().clientHeight;
         this.#delay = delay;
 
         // setup labels
@@ -47,11 +59,19 @@ export class ArrayVisualizer
         this.#titleLabel = this.#svg.append('text')
             .attr("class", "text")
             .text("")
+
+        // resize observer for the svg container
+        this.#resiszeObs = new ResizeObserver(function()
+        {   
+            self.#onResize(self);
+        }).observe(this.#svg.node());
             
     }
 
     ////////////////////////////////////////////////////////////////////
     //////// public functions
+
+    
 
     get(idx)
     {
@@ -166,6 +186,28 @@ export class ArrayVisualizer
 
     ////////////////////////////////////////////////////////////////////
     //////// private functions
+
+    
+    #onResize(self)
+    // callback func
+    {
+        // update width and height
+        self.#svgWidth = self.#svg.node().clientWidth;
+        self.#svgHeight = self.#svg.node().clientHeight;
+
+        // console.log(`SVG resized;`)
+        // console.log(`width: ${self.#svgWidth}`)
+        // console.log(`height: ${self.#svgHeight}`)
+
+        // update labeling
+        self.setLeftLabel(self.#leftLabel.text())
+        self.setRightLabel(self.#rightLabel.text())
+        self.setTitle(self.#titleLabel.text())
+
+        //TODO: calculate new max node limit
+        self.#update();
+
+    }
 
     #findDataIdxByID(dataID)
     {

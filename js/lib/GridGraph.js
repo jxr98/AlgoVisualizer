@@ -31,8 +31,8 @@ class GridGraph
 
         
         this.#svg.attr("width", reducedWidth).attr("height", reducedHeight)
-        console.log("#yRange:" + this.#yRange)
-        console.log("#xRange:" + this.#xRange)
+        // console.log("#yRange:" + this.#yRange)
+        // console.log("#xRange:" + this.#xRange)
 
         let idx = 0;
         for (let y = 0; y < this.#yRange; y++)
