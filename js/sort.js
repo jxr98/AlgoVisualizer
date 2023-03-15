@@ -18,6 +18,8 @@ const g = new ArrayVisualizer(svg, interval)
 g.setLeftLabel("left label")
 g.setRightLabel("right label")
 g.setTitle("title")
+g.setLegend("sorted", "red")
+g.setLegend("un-sorted", "black")
 
 setTimeout(function(){g.insertLeft({id:0, text:1, value:1 })}, tick)
 tick+=interval;

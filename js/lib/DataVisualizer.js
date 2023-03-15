@@ -2,6 +2,7 @@ import * as d3 from "../thirdParty/d3.js";
 
 // TODO: need to determine max capacity of visualizer
 // TODO: need to design what happens when capacity is exceeded
+
 // TODO: API for legends on bottom
 
 export class ArrayVisualizer
@@ -34,6 +35,9 @@ export class ArrayVisualizer
 
     // resize observer
     #resiszeObs = null
+
+    // legends handles
+    #legends = []
 
     constructor(svg, delay = 2000)
     {
@@ -81,6 +85,23 @@ export class ArrayVisualizer
     size()
     {
         return this.#data.length;
+    }
+
+    setLegend(str, color)
+    {
+        // create new legend
+        let newLegendGroup = this.#svg.append('g').attr("class", "legend");
+        this.#legends.push(newLegendGroup);
+        newLegendGroup.append("rect")
+        .attr("fill", color)
+        .attr("width", 20)
+        .attr("height", 20)
+        .attr("x", -25)
+        .attr("y", -15)
+        newLegendGroup.append("text").text(str)
+
+        // reposition all the legends
+        this.#updateLegends();
     }
 
     setTitle(str)
@@ -187,6 +208,21 @@ export class ArrayVisualizer
     ////////////////////////////////////////////////////////////////////
     //////// private functions
 
+    #updateLegends()
+    {
+        let self = this;
+        let numLegends = this.#legends.length,
+        spacing = self.#svgWidth/(numLegends+1)
+        this.#legends.forEach(function(legendGroup, idx)
+        {
+            legendGroup.attr("transform", function()
+            {
+                let y = self.#svgHeight - 20,
+                rightX = (1 + idx) * spacing
+                return "translate(" + rightX + "," + y + ")"
+            })
+        });
+    }
     
     #onResize(self)
     // callback func
@@ -203,6 +239,7 @@ export class ArrayVisualizer
         self.setLeftLabel(self.#leftLabel.text())
         self.setRightLabel(self.#rightLabel.text())
         self.setTitle(self.#titleLabel.text())
+        self.#updateLegends()
 
         //TODO: calculate new max node limit
         self.#update();
