@@ -2,6 +2,14 @@ import * as d3 from '../js/thirdParty/d3.js';
 import {ArrayVisualizer} from '../js/lib/DataVisualizer'
 import {expect, jest} from '@jest/globals';
 
+// mock ResizeObserverMock
+class ResizeObserverMock {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+}
+global.ResizeObserver = ResizeObserverMock;
+  
 test('Array visualizer',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
