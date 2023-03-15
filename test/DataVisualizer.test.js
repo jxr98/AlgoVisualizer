@@ -26,6 +26,8 @@ test('Array visualizer',()=>{
     g.setLeftLabel("left label")
     g.setRightLabel("right label")
     g.setTitle("title")
+    g.setLegend("sorted", "red")
+    g.setLegend("un-sorted", "black")
     for (let i =0 ; i < 5; ++i)
     {
         let data = {id : i, text: i}
