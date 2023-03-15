@@ -13,12 +13,18 @@ export class InsertionSort
     #arraySize = 0;
 
     #numComparisonsMade = 0;
+
+    #originalArrayCopy = []
     
     constructor(arrayVis)
     {
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
 
+        for (let i = 0; i < this.#arraySize; ++i)
+        {
+            this.#originalArrayCopy[i] = this.#arrayVis.get(i).value;
+        }
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -27,9 +33,6 @@ export class InsertionSort
     {
         return this.#done;
     }
-
-
-
 
     step()
     {
@@ -47,6 +50,13 @@ export class InsertionSort
             this.#done = true;
             
             // print some stats
+            let sortedSequence = []
+            for (let i = 0; i < this.#arraySize; ++i)
+            {
+                sortedSequence[i] = this.#arrayVis.get(i).value;
+            }
+            console.log("Insertion sort original sequence: " + this.#originalArrayCopy);
+            console.log("Insertion sort final sequence: " + sortedSequence);
             console.log("Number of comparisons: " + this.#numComparisonsMade)
         }
     }

@@ -13,8 +13,7 @@ export class ArrayVisualizer
     // max transition delay
     #delay;
 
-    // left right padding
-    #padding = 100;
+    
 
     // circle
     #radius = 20;
@@ -36,6 +35,10 @@ export class ArrayVisualizer
 
     // legends handles
     #legends = []
+    
+    // constant parameters
+    #padding = 100; // left right padding
+    #opacity = 0.60;
 
     constructor(svg, delay = 2000)
     {
@@ -295,7 +298,7 @@ export class ArrayVisualizer
                 // draw circle
                 g.append('circle')
                 .attr('r', self.#radius)
-                .style('opacity', 0.5)
+                .style('opacity', self.#opacity)
                 .style("fill", function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
@@ -328,7 +331,7 @@ export class ArrayVisualizer
                 // slowly make the new data from invisible to visible
                 g.transition()
                 .duration(self.#delay)
-                .style('opacity', 0.75)
+                .style('opacity', self.#opacity)
             },
             update => {
                 // positions of existing node must change to sync with position in array
