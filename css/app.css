@@ -110,3 +110,17 @@ body{
     height: auto;
 }
 
+
+.source {
+    font-style: italic;
+    font-size: 14px;
+    color: #999;
+    margin-top: 10px;
+  }
+.source a {
+    color: #666;
+    text-decoration: none;
+    border-bottom: 1px dotted #666;
+  }
+
+
