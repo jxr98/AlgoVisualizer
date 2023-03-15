@@ -11,6 +11,8 @@ export class InsertionSort
     #done = false;
     #sortedIdx = 0;
     #arraySize = 0;
+
+    #numComparisonsMade = 0;
     
     constructor(arrayVis)
     {
@@ -26,6 +28,9 @@ export class InsertionSort
         return this.#done;
     }
 
+
+
+
     step()
     {
         // in each step move first element from unsorted section to sorted section
@@ -40,6 +45,9 @@ export class InsertionSort
         else
         {
             this.#done = true;
+            
+            // print some stats
+            console.log("Number of comparisons: " + this.#numComparisonsMade)
         }
     }
 
@@ -51,6 +59,7 @@ export class InsertionSort
     {
         for (let i = 0; i <= endIdx ; i++)
         {
+            this.#numComparisonsMade++;
             if (this.#arrayVis.get(i).value < data.value) return i;
         }
         return endIdx;

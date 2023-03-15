@@ -53,7 +53,6 @@ function onBlur()
 
 function runSim(inputArray)
 {
-    console.log(inputArray)
     // clear array model
     g.clear()
 
@@ -76,9 +75,10 @@ function runSim(inputArray)
     })
 
     // run sort
+    
     let sortTimeoutID = setTimeout(function(){
-        let sort = new InsertionSort(g),
-        numSteps = inputArray.length
+        let sort = new InsertionSort(g)    
+        let numSteps = inputArray.length
 
         for (let i = 0 ; i < numSteps + 1; ++i)
         {
@@ -88,6 +88,7 @@ function runSim(inputArray)
         }
     }, tick - interval)
     timeoutHandles.push(sortTimeoutID)
+
 }
 
 
