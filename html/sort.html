@@ -46,30 +46,37 @@
         </div>
 
         <!-- insertion sort -->
-        <h2>
-            Simulation
-        </h2>
+        <h2>Simulation</h2>
+        <!-- user inputs -->
         <div class="row">
-            <div class="col">
-                <svg id="insertionSortSvg" width="100%" height="100%" style="border: 1px solid black"></svg>
-            </div>
-            <div class="col-6">
+            <div class="col-sm">
                 <div class="form-group">
-                    <label for="LogPanel">Log Panel:</label>
-                    <textarea class="form-control" id="LogPanel" rows="3" readonly="true"></textarea>
-                  </div>
+                    <!-- Simulation instructions -->
+                    <label for="arrayInput">Set the content of array here (comma delimited integers)</label>
+                    <input type="text" class="form-control" id="arrayInput" placeholder="2, 0, 4, 5, 1">
+                    <p> Instructions: Type in the sequence of integers that you want to sort. 
+                        Click anywhere outside of the input box to start the simulation. To restart simulation,
+                        click into the input box then click outside</p>
+                    <p> Numbers will be sorted in descending order</p>
+                </div>
             </div>
         </div>
-
+        
+        <!-- simulation -->
+        <div class="row">
+            <div class="col-sm">
+                <svg id="insertionSortSvg" width="100%" height="100%" style="border: 1px solid black"></svg>
+            </div>
+        </div>
         <!-- Log panel -->
-        <!-- <div class="row">
+        <div class="row">
             <div class="col-sm">
                 <div class="form-group">
                     <label for="LogPanel">Log Panel:</label>
                     <textarea class="form-control" id="LogPanel" rows="3" readonly="true"></textarea>
                   </div>
             </div>
-        </div> -->
+        </div>
 
     </div>
     
