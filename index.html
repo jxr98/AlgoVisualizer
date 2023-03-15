@@ -20,121 +20,141 @@
 </head>
 
 <body>
-
-    <nav id="mainNavbar" class="navbar navbar-dark navbar-expand-md py-0 fixed-top">
-        <a href="#home" class="navbar-brand"><b>Algo Visualization</b></a>
-        <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button> -->
-        <div class="collapse navbar-collapse" id="navLinks">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="" class="nav-link"></a>
-                </li>
-
-                <li class="nav-item">
-                    <a href="#graph" class="nav-link">GRAPH</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#tree" class="nav-link">TREE</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#grid" class="nav-link">GRID</a>
-                </li>
-            </ul>
+<div class="container-fluid">
+    <div class="row row-eq-height">
+        <div class="col-sm-3" style="background-color: #e3f2fd;">
+            <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                <a class="navbar-brand" href="#">
+                    <img src="imgs/index_image.png" width="100%" alt="">
+                </a>
+                <ul class="navbar-nav flex-column text-center" style="width: 100%">
+                    <li class="nav-item nav-title">
+                        Algorithms
+                    </li>
+                    <li class="nav-item dropdown" id="graphNav">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Graph</a>
+                        <ul class="dropdown-menu dropdown-graph text-center">
+                            <li><a class="dropdown-item" href="#"> Breadth First Search</a></li>
+                            <li><a class="dropdown-item" href="#"> Depth First Search </a></li>
+                            <li><a class="dropdown-item" href="#"> Dijkstra's algorithm </a></li>
+                            <li><a class="dropdown-item" href="#"> A* </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" id="sortingNav">
+                        <a class="nav-link" href="#">Sorting</a>
+                        <ul class="dropdown-menu dropdown-sorting text-center">
+                            <li><a class="dropdown-item" href="#"> Insertion</a></li>
+                            <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" id="treeNav">
+                        <a class="nav-link" href="#">Tree</a>
+                        <ul class="dropdown-menu dropdown-tree text-center">
+                            <li><a class="dropdown-item" href="#"> Insertion</a></li>
+                            <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item nav-title">
+                        Resources
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">graph</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">sorting</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">graph</a>
+                    </li>
+                    <li class="nav-item">
+                        Last modified on Mar 14, 2023
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </nav>
 
-    <section class="container-fluid px-0" id="home">
-        <div>
-            <img src="imgs/algo.jpg" alt="" class="img-fluid center">
-        </div>
-    </section>
-
-
-    <section class="container-fluid px-0">
-        <div class="row align-items-center content" id="graph">
-            <div class="col-md-6 text-center">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for graphs</h2>
-                        <a href="html/bfs.html" class="btn btn-primary active btn-lg" role="button"
-                            data-bs-toggle="button" aria-pressed="true">BFS</a>
-                        <a href="html/dfs.html" class="btn btn-primary active btn-lg" role="button"
-                            data-bs-toggle="button" aria-pressed="true">DFS</a>
-                        <a href="html/Dijkstra's.html" class="btn btn-primary active btn-lg" role="button"
-                           data-bs-toggle="button" aria-pressed="true">Dijkstra's Algorithm</a>
-                    </div>
-                </div>
+        <div class="col-sm-9">
+            <div class="divider">
+                Algorithm Visualizer <span class="float-right">ECE651</span>
             </div>
+            <div>
+                <h2 class="algorithm-name">Breadth First Search</h2>
+                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+
+                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
+            </div>
+            <div>
+                <h2 class="algorithm-name">Depth First Search</h2>
+                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+
+                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
+            </div>
+            <div>
+                <h2 class="algorithm-name">A*</h2>
+                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+
+                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
+            </div>
+            <div>
+                <h2 class="algorithm-name">Insertion Sort</h2>
+                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+
+                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="bg-custom py-0">
+    <div class="container">
+        <div class="row">
             <div class="col-md-6">
-                <img src="imgs/graph.png" alt="" class="img-fluid">
+                <p class="text-dark">&copy; 2023 AlgoVisualizer.</p>
             </div>
         </div>
+    </div>
+</footer>
 
-        <div class="row align-items-center content" id="tree">
-            <div class="col-md-6 order-2 order-md-1">
-                <img src="imgs/bfs.png" alt="" class="img-fluid">
-            </div>
-            <div class="col-md-6 text-center order-1 order-md-2">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for trees</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-        <div class="row align-items-center content" id="grid">
-            <div class="col-md-6 text-center">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for grid</h2>
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="imgs/grid.png" alt="" class="img-fluid">
-            </div>
-        </div>
-    </section>
-
-    <footer class="bg-custom py-0">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6">
-                    <p class="text-dark">&copy; 2023 AlgoVisualizer.</p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
+</script>
+<script>
+    $("#graphNav").hover(
+        function () {
+            $('.dropdown-graph').addClass('show');
+            $('.dropdown-sorting').collapse('hide');
+            $('.dropdown-tree').collapse('hide');
+        },function () {
+            $('.dropdown-graph').collapse('hide');
+        }
+    );
 
-    <script>
-        $(function () {
-            $(document).scroll(function () {
-                var $nav = $("#mainNavbar");
-                $nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
-            });
-        });
-    </script>
-
-
-    <script src="https://d3js.org/d3.v3.min.js"></script>
+    $("#sortingNav").hover(
+        function () {
+            $('.dropdown-sorting').addClass('show');
+            $('.dropdown-graph').collapse('hide');
+            $('.dropdown-tree').collapse('hide');
+        },function (){
+            $('.dropdown-sorting').collapse('hide');
+        }
+    );
+    $("#treeNav").hover(
+        function () {
+            $('.dropdown-tree').addClass('show');
+            $('.dropdown-graph').collapse('hide');
+            $('.dropdown-sorting').collapse('hide');
+        },function (){
+            $('.dropdown-tree').collapse('hide');
+        }
+    );
+</script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 
 </body>
 

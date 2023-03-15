@@ -59,7 +59,33 @@ body {
     margin-bottom:100px;
 }
 
+.navbar .nav-title {
+    background: #055C9D;
+    color: #ffffff;
+    line-height: 40px;
+}
 
+.divider{
+    background: #055C9D;
+    color: #ffffff;
+    line-height: 40px;
+    text-align:center;
+    font-size:1.2rem;
+}
+.algorithm-name{
+    color:#0E86D4;
+    font-weight: bold;
+}
+body{
+    position:relative;
+    min-height: 100vh;
+}
+footer{
+    position:absolute;
+    left:0px;
+    bottom:0px;
+    width:100%;
+}
 
 @media (max-width: 1200px) {
     #headingGroup h1 {
