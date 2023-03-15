@@ -3,8 +3,6 @@ import * as d3 from "../thirdParty/d3.js";
 // TODO: need to determine max capacity of visualizer
 // TODO: need to design what happens when capacity is exceeded
 
-// TODO: API for legends on bottom
-
 export class ArrayVisualizer
 {
     // svg handle
@@ -75,7 +73,11 @@ export class ArrayVisualizer
     ////////////////////////////////////////////////////////////////////
     //////// public functions
 
-    
+    clear()
+    {
+        this.#data = []
+        this.#update()
+    }
 
     get(idx)
     {
@@ -159,6 +161,7 @@ export class ArrayVisualizer
     // insert data to front of array
     insertRight(data)
     {
+        // console.log(`${JSON.stringify(data)}`)
         this.#data.push(data);
         this.#update();
     }
