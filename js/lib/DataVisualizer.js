@@ -1,5 +1,7 @@
 import * as d3 from "../thirdParty/d3.js";
 
+// TODO: need to determine max capacity of visualizer
+// TODO: need to design what happens when capacity is exceeded
 export class ArrayVisualizer
 {
     // svg handle
@@ -8,13 +10,14 @@ export class ArrayVisualizer
     #svgHeight;
 
     // max transition delay
-    #delay = 2000;
+    #delay;
 
     // left right padding
     #padding = 100;
 
-    // circle size
+    // circle
     #radius = 20;
+    #defaultColor = "black";
 
     // max number of data objects to show
     #maxDataCount = 10;
@@ -49,6 +52,16 @@ export class ArrayVisualizer
 
     ////////////////////////////////////////////////////////////////////
     //////// public functions
+
+    get(idx)
+    {
+        if (idx > -1 && idx < this.size()) return this.#data[idx];
+    }
+
+    size()
+    {
+        return this.#data.length;
+    }
 
     setTitle(str)
     {
@@ -119,7 +132,7 @@ export class ArrayVisualizer
     // insert data object before element with given ID
     insertBefore(data, dataID)
     {
-        const idx = this.#data.findIndex((obj) => obj.id === dataID);
+        const idx = this.#findDataIdxByID(dataID);
         if (idx > -1) {
             this.#data.splice(idx, 0, data);
             this.#update();
@@ -129,15 +142,55 @@ export class ArrayVisualizer
     // remove data by ID
     remove(dataID)
     {
-        const idx = this.#data.findIndex((obj) => obj.id === dataID);
+        const idx = this.#findDataIdxByID(dataID);
         if (idx > -1) {
             this.#data.splice(idx, 1);
             this.#update();
         }
     }
 
+    move(dataID, position)
+    {
+        this.#moveHelper(dataID, position);
+        this.#update();
+    }
+
+    swapByID(dataID1, dataID2)
+    {
+        const idx1 = this.#findDataIdxByID(dataID1);
+        const idx2 = this.#findDataIdxByID(dataID2);
+        this.#moveHelper(dataID1, idx2);
+        this.#moveHelper(dataID2, idx1);
+        this.#update();
+    }
+
     ////////////////////////////////////////////////////////////////////
     //////// private functions
+
+    #findDataIdxByID(dataID)
+    {
+        return this.#data.findIndex((obj) => obj.id === dataID);
+    }
+
+    #moveHelper(dataID, position)
+    {
+        const idx = this.#data.findIndex((obj) => obj.id === dataID);
+        if (idx > -1 && position < this.#data.length && position != idx) {
+            let tmp = this.#data[idx];
+            if (position > idx)
+            {
+                // move data right
+                this.#data.splice(position+1, 0, tmp); // insert new copy of data
+                this.#data.splice(idx, 1);     // remove old copy
+            }
+            else
+            {
+                // move data left
+                this.#data.splice(position, 0, tmp); // insert new copy of data
+                this.#data.splice(idx+1, 1);     // remove old copy
+            }
+        }
+    }
     
     #findIdx(id)
     {
@@ -161,6 +214,9 @@ export class ArrayVisualizer
                 g.append('circle')
                 .attr('r', self.#radius)
                 .style('opacity', 0.5)
+                .style("fill", function(d){
+                    return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
+                });
 
                 // draw text
                 g.append('text')
@@ -202,6 +258,12 @@ export class ArrayVisualizer
                     x = self.#padding + self.#findIdx(d.id) * 2 * self.#radius
                     return "translate(" + x + "," + y + ")";
                 })
+
+                // update color
+                update.select("circle")
+                .style("fill", function(d){
+                    return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
+                });
             },
             exit => {
                 // nodes that are removed are faded away
