@@ -14,11 +14,12 @@ let idCounter = 0; // IDs must be unique, thus we have a counter here to generat
 
 let timeoutHandles = []
 const g = new ArrayVisualizer(svg, interval)
-g.setLeftLabel("left label")
-g.setRightLabel("right label")
+// g.setLeftLabel("left label")
+// g.setRightLabel("right label")
 g.setTitle("Insertion Sort")
 g.setLegend("sorted", "red")
 g.setLegend("un-sorted", "grey")
+g.setLegend("node being sorted", "blue")
 
 // functionalize the user input
 let inputField = d3.select("#arrayInput");
@@ -75,17 +76,24 @@ function runSim(inputArray)
     })
 
     // run sort
-    
     let sortTimeoutID = setTimeout(function(){
         let sort = new InsertionSort(g)    
         let numSteps = inputArray.length
 
-        for (let i = 0 ; i < numSteps + 1; ++i)
+        for (let i = 0 ; i < numSteps*numSteps + 1; ++i)
         {
-            let timeoutID = setTimeout(function(){sort.step()}, tick)
+            let timeoutID = setTimeout(function(){sort.detailedStep()}, tick)
             tick+=interval;
             timeoutHandles.push(timeoutID)
         }
+
+        // for (let i = 0 ; i < numSteps + 1; ++i)
+        // {
+        //     let timeoutID = setTimeout(function(){sort.step()}, tick)
+        //     tick+=interval;
+        //     timeoutHandles.push(timeoutID)
+        // }
+
     }, tick - interval)
     timeoutHandles.push(sortTimeoutID)
 
