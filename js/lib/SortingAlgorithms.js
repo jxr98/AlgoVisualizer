@@ -119,7 +119,7 @@ export class InsertionSort
         if (this.#linearSearchCurrentIdx < this.#sortedIdx)
         {
             this.#numComparisonsMade++;
-            if (this.#searchArray[this.#linearSearchCurrentIdx] < this.#dataBeingMoved.value)
+            if (this.#searchArray[this.#linearSearchCurrentIdx] <= this.#dataBeingMoved.value)
             {
                 return this.#linearSearchCurrentIdx;
             }
@@ -135,7 +135,7 @@ export class InsertionSort
         for (let i = 0; i <= endIdx ; i++)
         {
             this.#numComparisonsMade++;
-            if (this.#arrayVis.get(i).value < data.value) return i;
+            if (this.#arrayVis.get(i).value <= data.value) return i;
         }
         return endIdx;
     }
