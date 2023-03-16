@@ -77,6 +77,7 @@ function runSim(inputArray)
 
     // run sort
     let sortTimeoutID = setTimeout(function(){
+        tick = 0;
         let sort = new InsertionSort(g)    
         let numSteps = inputArray.length
 
@@ -94,7 +95,7 @@ function runSim(inputArray)
         //     timeoutHandles.push(timeoutID)
         // }
 
-    }, tick - interval)
+    }, tick)
     timeoutHandles.push(sortTimeoutID)
 
 }

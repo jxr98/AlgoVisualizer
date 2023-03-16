@@ -18,6 +18,7 @@ export class InsertionSort
 
     // linear search states
     #linearSearchCurrentIdx = 0;
+    #searchArray = []
     
     constructor(arrayVis)
     {
@@ -92,7 +93,13 @@ export class InsertionSort
                 this.#arrayVis.updateRendering(); // for the color change
 
                 // configure linear search state
+                this.#searchArray = []
+                for (let i = 0; i < this.#arraySize; ++i)
+                {
+                    this.#searchArray[i] = this.#arrayVis.get(i).value;
+                }
                 this.#linearSearchCurrentIdx = 0;
+                this.#arrayVis.move(this.#dataBeingMoved.id, this.#linearSearchCurrentIdx)
             }
         }
         else
@@ -112,7 +119,7 @@ export class InsertionSort
         if (this.#linearSearchCurrentIdx < this.#sortedIdx)
         {
             this.#numComparisonsMade++;
-            if (this.#arrayVis.get(this.#linearSearchCurrentIdx).value < this.#dataBeingMoved.value)
+            if (this.#searchArray[this.#linearSearchCurrentIdx] < this.#dataBeingMoved.value)
             {
                 return this.#linearSearchCurrentIdx;
             }
