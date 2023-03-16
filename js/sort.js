@@ -39,7 +39,7 @@ function onBlur()
     // input validation
     let error = false;
     inputArr.forEach(element => {
-        let isnum = /^\d+$/.test(element); // regex tester
+        let isnum = /^-?\d+$/.test(element); // regex tester
         if (!isnum)
         {
             error = true;
