@@ -1,8 +1,8 @@
 // NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
-import {ArrayVisualizer} from './lib/DataVisualizer.js'
-import {InsertionSort} from './lib/SortingAlgorithms.js'
+import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
+import {InsertionSort} from './lib/InsertionSort.js'
 
 // get handles to HTML elements
 var svg = d3.select("#insertionSortSvg")
@@ -14,8 +14,6 @@ let idCounter = 0; // IDs must be unique, thus we have a counter here to generat
 
 let timeoutHandles = []
 const g = new ArrayVisualizer(svg, interval)
-// g.setLeftLabel("left label")
-// g.setRightLabel("right label")
 g.setTitle("Insertion Sort")
 g.setLegend("sorted", "red")
 g.setLegend("un-sorted", "grey")

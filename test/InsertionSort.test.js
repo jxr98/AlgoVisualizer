@@ -1,6 +1,6 @@
 import * as d3 from '../js/thirdParty/d3.js';
-import {InsertionSort} from '../js/lib/SortingAlgorithms'
-import {ArrayVisualizer} from '../js/lib/DataVisualizer'
+import {InsertionSort} from '../js/lib/InsertionSort'
+import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
 import {expect, jest} from '@jest/globals';
 
 // mock ResizeObserverMock
