@@ -1,8 +1,5 @@
 import * as d3 from "../thirdParty/d3.js";
 
-// TODO: need to determine max capacity of visualizer
-// TODO: need to design what happens when capacity is exceeded
-
 export class ArrayVisualizer
 {
     // svg handle
@@ -108,7 +105,10 @@ export class ArrayVisualizer
     setLegend(str, color)
     {
         // create new legend
-        let newLegendGroup = this.#svg.append('g').attr("class", "legend");
+        let newLegendGroup = this.#svg.append('g')
+        .attr("class", "legend")
+        .style("opacity", this.#opacity);
+
         this.#legends.push(newLegendGroup);
         newLegendGroup.append("rect")
         .attr("fill", color)
@@ -222,6 +222,12 @@ export class ArrayVisualizer
         this.#moveHelper(dataID1, idx2);
         this.#moveHelper(dataID2, idx1);
         this.#update();
+    }
+
+    updateRendering()
+    // sometimes visual properties are changed externally, user would want to call this to show rendering update
+    {
+        this.#update()
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -431,6 +437,8 @@ export class ArrayVisualizer
 
                 // update color
                 update.select("circle")
+                .transition()
+                .duration(self.#delay)
                 .style("fill", function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
