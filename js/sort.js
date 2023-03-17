@@ -1,101 +1,43 @@
-// NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
-import {redirectConsoleOutput} from './lib/Logger.js'
 import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
 import {InsertionSort} from './lib/InsertionSort.js'
+import {BinaryInsertionSort} from './lib/InsertionSortBinary.js'
+import { Logger } from './lib/Logger.js';
+import { onBlur, interval } from './lib/page_sort.js';
 
-// get handles to HTML elements
-var svg = d3.select("#insertionSortSvg")
-let textArea = d3.select("#LogPanel")
-redirectConsoleOutput(textArea)
-
-const interval = 500; // controls simulation speed
-let idCounter = 0; // IDs must be unique, thus we have a counter here to generate new 
-
-let timeoutHandles = []
-const g = new ArrayVisualizer(svg, interval)
-g.setTitle("Insertion Sort")
-g.setLegend("sorted", "red")
-g.setLegend("un-sorted", "grey")
-g.setLegend("node being sorted", "blue")
-
-// functionalize the user input
-let inputField = d3.select("#arrayInput");
-inputField.on("blur", function()
+//insertion sort
+let insertionSortLogger = new Logger(d3.select("#InsertionSortLog"))
+let insertionSortSimTimeoutHandles = []
+const insertionSortArrayVis = new ArrayVisualizer(d3.select("#insertionSortSvg"), interval)
+insertionSortArrayVis.setTitle("Insertion Sort")
+insertionSortArrayVis.setLegend("sorted", "red")
+insertionSortArrayVis.setLegend("un-sorted", "grey")
+insertionSortArrayVis.setLegend("node being sorted", "blue")
+let insertionSortInput = d3.select("#insertionSortArrayInput");
+let insertionSortFactory = () =>{
+    return new InsertionSort(insertionSortArrayVis, insertionSortLogger); 
+};
+insertionSortInput.on("blur", function()
 {
-    onBlur();
+    onBlur(insertionSortInput, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory);
 })
+onBlur(insertionSortInput, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory); // start with default problem on page load
 
-// start with default problem on page load
-onBlur();
 
-function onBlur()
+// binary insertion sort
+let binarySortLogger = new Logger(d3.select("#binaryInsertionSortLog"))
+let binInsertionSortTimeouts = []
+const binInsertionSortArrayVis = new ArrayVisualizer(d3.select("#binaryInsertionSortSvg"), interval)
+binInsertionSortArrayVis.setTitle("Binary Insertion Sort")
+binInsertionSortArrayVis.setLegend("sorted", "red")
+binInsertionSortArrayVis.setLegend("un-sorted", "grey")
+binInsertionSortArrayVis.setLegend("node being sorted", "blue")
+let binInsertionSortInput = d3.select("#binaryInsertionArrayInput");
+let binInsertionSortFactory = () =>{
+    return new BinaryInsertionSort(binInsertionSortArrayVis, binarySortLogger); 
+};
+binInsertionSortInput.on("blur", function()
 {
-    let input = inputField.node().value == "" ? inputField.attr("placeholder") : inputField.node().value;
-    let inputArr = input.split(",").map(item => item.trim());
-
-    // input validation
-    let error = false;
-    inputArr.forEach(element => {
-        let isnum = /^-?\d+$/.test(element); // regex tester
-        if (!isnum)
-        {
-            error = true;
-            console.log(`${element} is not an integer`)
-        }
-    });
-    if (error) return;
-
-    // input is good, start simulation
-    runSim(inputArr);
-}
-
-function runSim(inputArray)
-{
-    // clear array model
-    g.clear()
-
-    // clear all timeouts from previous simulation
-    timeoutHandles.forEach(timeoutID => {
-        clearTimeout(timeoutID);
-    });
-    timeoutHandles = []
-
-    let tick = 0;
-
-    // insert array
-    inputArray.forEach((ele) => {
-        let num = parseInt(ele);
-        let timeoutID = setTimeout(function(){
-            g.insertRight({id: idCounter++, text: ele, value: num})
-        }, tick)
-        tick += interval;
-        timeoutHandles.push(timeoutID)
-    })
-
-    // run sort
-    let sortTimeoutID = setTimeout(function(){
-        tick = 0;
-        let sort = new InsertionSort(g)    
-        let numSteps = inputArray.length
-
-        for (let i = 0 ; i < numSteps*numSteps + 1; ++i)
-        {
-            let timeoutID = setTimeout(function(){sort.detailedStep()}, tick)
-            tick+=interval;
-            timeoutHandles.push(timeoutID)
-        }
-
-        // for (let i = 0 ; i < numSteps + 1; ++i)
-        // {
-        //     let timeoutID = setTimeout(function(){sort.step()}, tick)
-        //     tick+=interval;
-        //     timeoutHandles.push(timeoutID)
-        // }
-
-    }, tick)
-    timeoutHandles.push(sortTimeoutID)
-
-}
-
-
+    onBlur(binInsertionSortInput, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory);
+})
+onBlur(binInsertionSortInput, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory); // start with default problem on page load

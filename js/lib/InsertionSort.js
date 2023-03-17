@@ -1,3 +1,5 @@
+import {Logger} from "./Logger.js"
+
 export function arrayVis2Str(arrayVis)
 {
     if (arrayVis == null) return "";
@@ -23,27 +25,34 @@ export class InsertionSort
     #sortedIdx = 0;
     #arraySize = 0;
     #numComparisonsMade = 0;
-    #originalArrayCopy = []
+    #originalArrayStr = ""
     #steppingLinearSearch = false;
     #dataBeingMoved = null
 
     // linear search states
     #linearSearchCurrentIdx = 0;
     #searchArray = []
+
+    #logger = null;
     
-    constructor(arrayVis)
+    constructor(arrayVis, logger = null)
     {
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
+        this.#originalArrayStr = arrayVis2Str(this.#arrayVis)
 
-        for (let i = 0; i < this.#arraySize; ++i)
-        {
-            this.#originalArrayCopy[i] = this.#arrayVis.get(i).value;
-        }
+        this.#logger = logger == null ? new Logger() : logger;
     }
 
     ////////////////////////////////////////////////////////////////////
     //////// public functions
+
+    maxDetailedSteps()
+    {
+        let n = this.#arraySize + 1;
+        return n * n;
+    }
+
     isDone()
     {
         return this.#done;
@@ -153,8 +162,13 @@ export class InsertionSort
 
     #printStats()
     {
-        console.log("Insertion sort original sequence: " + this.#originalArrayCopy);
-        console.log("Insertion sort final sequence: " + arrayVis2Str(this.#arrayVis));
-        console.log("Number of comparisons: " + this.#numComparisonsMade)
+        this.#logger.log("Insertion sort original sequence: " + this.#originalArrayStr)
+        this.#logger.log("Insertion sort final sequence: " + arrayVis2Str(this.#arrayVis))
+        this.#logger.log("Number of comparisons: " + this.#numComparisonsMade)
+
+        
+        // console.log("Insertion sort original sequence: " + this.#originalArrayStr);
+        // console.log("Insertion sort final sequence: " + arrayVis2Str(this.#arrayVis));
+        // console.log("Number of comparisons: " + this.#numComparisonsMade)
     }
 }

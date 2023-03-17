@@ -52,9 +52,9 @@
             <div class="col-sm">
                 <div class="form-group">
                     <!-- Simulation instructions -->
-                    <label for="arrayInput">Set the content of array here (comma delimited integers)</label>
-                    <!-- <input type="text" class="form-control" id="arrayInput" placeholder="2, 0, 4, 5, 1"> -->
-                    <input type="text" class="form-control" id="arrayInput" placeholder="5, 3, 3, 1, 4, 4, 3, 2, 11, 0, 50, 47">
+                    <label for="insertionSortArrayInput">Set the content of array here (comma delimited integers)</label>
+                    <!-- <input type="text" class="form-control" id="insertionSortArrayInput" placeholder="2, 0, 4, 5, 1"> -->
+                    <input type="text" class="form-control" id="insertionSortArrayInput" placeholder="5, 3, 3, 4, 3, 2, 11, 0, 50, -1, -3, -5">
                     <p> Instructions: Type in the sequence of integers that you want to sort. 
                         Click anywhere outside of the input box to start the simulation. To restart simulation,
                         click into the input box then click outside</p>
@@ -73,8 +73,50 @@
         <div class="row">
             <div class="col-sm">
                 <div class="form-group">
-                    <label for="LogPanel">Log Panel:</label>
-                    <textarea class="form-control" id="LogPanel" rows="3" readonly="true"></textarea>
+                    <label for="InsertionSortLog">Log Panel:</label>
+                    <textarea class="form-control" id="InsertionSortLog" rows="3" readonly="true"></textarea>
+                  </div>
+            </div>
+        </div>
+
+        <!-- binary insertion sort -->
+        <!-- intro -->
+        <div>
+            <h1>
+                Binary Insertion Sort
+            </h1>
+            <p>
+                Binary insertion sort is insertion sort but instead of using linear search to organize the elements, we use binary search
+            </p>
+        </div>
+        <!-- user inputs -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <!-- Simulation instructions -->
+                    <label for="binaryInsertionArrayInput">Set the content of array here (comma delimited integers)</label>
+                    <!-- <input type="text" class="form-control" id="binaryInsertionArrayInput" placeholder="2, 0, 4, 5, 1"> -->
+                    <input type="text" class="form-control" id="binaryInsertionArrayInput" placeholder="5, 3, 3, 4, 3, 2, 11, 0, 50, -1, -3, -5">
+                    <p> Instructions: Type in the sequence of integers that you want to sort. 
+                        Click anywhere outside of the input box to start the simulation. To restart simulation,
+                        click into the input box then click outside</p>
+                    <p> Numbers will be sorted in descending order</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- simulation -->
+        <div class="row">
+            <div class="col-sm">
+                <svg id="binaryInsertionSortSvg" width="100%" height="100%" style="border: 1px solid black"></svg>
+            </div>
+        </div>
+        <!-- Log panel -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="binaryInsertionSortLog">Log Panel:</label>
+                    <textarea class="form-control" id="binaryInsertionSortLog" rows="3" readonly="true"></textarea>
                   </div>
             </div>
         </div>

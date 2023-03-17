@@ -1,8 +1,11 @@
 import {arrayVis2Str} from './InsertionSort.js'
+import {Logger} from "./Logger.js"
 
 // insertion sort with binary search
 export class BinaryInsertionSort
 {
+    #logger = null;
+
     // handle to array visualizer
     #arrayVis = null;
 
@@ -11,7 +14,7 @@ export class BinaryInsertionSort
     #sortedIdx = 0;
     #arraySize = 0;
     #numComparisonsMade = 0;
-    #originalArrayCopy = []
+    #originalArrayStr = ""
     #dataBeingMoved = null
 
     // search states
@@ -23,19 +26,24 @@ export class BinaryInsertionSort
     #endIdx;
     #proxyArray = [] // cannot instantaneously modify array in which binary search is running, so need a proxy or fixed array
     
-    constructor(arrayVis)
+    constructor(arrayVis, logger = null)
     {
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
+        this.#originalArrayStr = arrayVis2Str(this.#arrayVis)
 
-        for (let i = 0; i < this.#arraySize; ++i)
-        {
-            this.#originalArrayCopy[i] = this.#arrayVis.get(i).value;
-        }
+        this.#logger = logger == null ? new Logger() : logger;
     }
 
     ////////////////////////////////////////////////////////////////////
     //////// public functions
+
+    maxDetailedSteps()
+    {
+        let n = this.#arraySize + 1;
+        return n * n;
+    }
+
     isDone()
     {
         return this.#done;
@@ -62,7 +70,7 @@ export class BinaryInsertionSort
     }
 
     detailedStep()
-    // a more refined step, shows increments of linear search as well
+    // a more refined step, shows increments of search as well
     {
         if (this.#done) return;
 
@@ -73,18 +81,20 @@ export class BinaryInsertionSort
             {
                 let searchResult = this.#binarySearchStep();
                 if (searchResult != -1)
-                // found target position in linear search
+                // found target position in binary search
                 {
                     this.#steppingSearch = false; // move to next sorted node
                     this.#sortedIdx++; // size of sorted section increase by 1
 
                     this.#dataBeingMoved.color = "red";
                     this.#arrayVis.move(this.#dataBeingMoved.id, searchResult)
+                    // console.log("final pos:  " + searchResult)
                 }
                 else
                 // still have not found position
                 {
                     this.#arrayVis.move(this.#dataBeingMoved.id, this.#stepSearchCurrentIdx)
+                    // console.log("mid pos:  " + this.#stepSearchCurrentIdx)
                 }
             }
             else
@@ -95,9 +105,12 @@ export class BinaryInsertionSort
                 this.#dataBeingMoved.color = "blue";
                 this.#arrayVis.updateRendering(); // for the color change
 
+                // console.log("bin search on " + this.#dataBeingMoved.value)
+
                 // configure search state
                 this.#prepForNewSearch();
-                this.#arrayVis.move(this.#dataBeingMoved.id, this.#stepSearchCurrentIdx)
+                // console.log("array:  " + this.#proxyArray)
+                // this.#arrayVis.move(this.#dataBeingMoved.id, this.#stepSearchCurrentIdx)
             }
         }
         else
@@ -114,11 +127,11 @@ export class BinaryInsertionSort
     #prepForNewSearch()
     {
         this.#startIdx = 0;
-        this.#endIdx = this.#sortedIdx;
-        this.#stepSearchCurrentIdx = Math.floor((this.#startIdx + this.#endIdx) / 2);
+        this.#endIdx = this.#sortedIdx-1;
+         this.#stepSearchCurrentIdx = Math.max(Math.floor((this.#startIdx + this.#endIdx) / 2), 0);
 
         this.#proxyArray = []
-        for (let i = 0; i <= this.#sortedIdx; ++i)
+        for (let i = 0; i <= this.#endIdx; ++i)
         {
             this.#proxyArray[i] = this.#arrayVis.get(i).value;
         }
@@ -129,6 +142,7 @@ export class BinaryInsertionSort
         this.#numComparisonsMade++
         if (this.#startIdx <= this.#endIdx)
         {
+            this.#stepSearchCurrentIdx = Math.floor((this.#startIdx + this.#endIdx) / 2)
             let midValue =this.#proxyArray[this.#stepSearchCurrentIdx];
             if (midValue < this.#dataBeingMoved.value) {
                 this.#endIdx = this.#stepSearchCurrentIdx - 1;
@@ -142,7 +156,7 @@ export class BinaryInsertionSort
             {
                 this.#startIdx = this.#stepSearchCurrentIdx + 1;
             }
-            this.#stepSearchCurrentIdx = Math.floor((this.#startIdx + this.#endIdx) / 2);
+            
             
             return -1;
         }
@@ -176,8 +190,8 @@ export class BinaryInsertionSort
 
     #printStats()
     {
-        console.log("Binary insertion sort original sequence: " + this.#originalArrayCopy);
-        console.log("Binary insertion sort final sequence: " + arrayVis2Str(this.#arrayVis));
-        console.log("Number of comparisons: " + this.#numComparisonsMade)
+        this.#logger.log("Binary insertion sort original sequence: " + this.#originalArrayStr);
+        this.#logger.log("Binary insertion sort final sequence: " + arrayVis2Str(this.#arrayVis));
+        this.#logger.log("Number of comparisons: " + this.#numComparisonsMade)
     }
 }
