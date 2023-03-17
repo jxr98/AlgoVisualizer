@@ -14,9 +14,10 @@ export function onBlur(inputDOM, arrayVis, timeoutHandles, sortFactoryCallback)
         if (!isnum)
         {
             error = true;
-            console.log(`${element} is not an integer`)
         }
     });
+
+    inputDOM.classed("is-invalid", error);
     if (error) return;
 
     // input is good, start simulation
