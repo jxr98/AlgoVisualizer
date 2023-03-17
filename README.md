@@ -10,8 +10,7 @@ sandbox: https://jxr98.github.io/AlgoVisualizer/html/sandbox.html
 
 ## Context diagram
 
-![architecture-diagram (1)](https://user-images.githubusercontent.com/22283515/219033719-76fc1b69-99c5-4c95-91ab-7913a3cd5a0b.png)
-
+![architecture-diagram](https://user-images.githubusercontent.com/22283515/225922017-4ceaf2c9-44b5-4c83-9ffa-14465f626eae.png)
 
 ## Testing
 - Jest for unit testing

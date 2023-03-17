@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <!-- Custom CSS -->
+    <!-- <link rel="stylesheet" href="app.css"> -->
+
+    <title>Algorithm Visualization - Sort</title>
+</head>
+
+<body>
+    <button class="btn btn-outline-primary mt-3 ml-3" onclick="history.back()">Back</button>
+    <div class="container-fluid">
+        <h1 class="text-center text-primary">Sorting Algorithm</h1>
+        <div class="row">
+            <div class="col-9" id='parentDiv'>
+            </div>
+        </div>
+    </div>
+
+    <!-- main contents -->
+    <div class="container-fluid">
+
+        <!-- intro -->
+        <div>
+            <h1>
+                Insertion Sort
+            </h1>
+            <p>
+                In insertion sort, the array to be sorted is divided into two sub-arrays.
+            </p>
+            <p>
+                we start with first element of the array as the sorted array and the rest of the array as un-sorted array. 
+                We incrementally move elements from un-sorted section to sorted section via linear search.
+            </p>
+            <p>
+                The array is sorted when the un-sorted section is empty
+            </p>
+        </div>
+
+        <!-- insertion sort -->
+        <h2>Simulation</h2>
+        <!-- user inputs -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <!-- Simulation instructions -->
+                    <label for="insertionSortArrayInput">Set the content of array here (comma delimited integers)</label>
+                    <input type="text" class="form-control" id="insertionSortArrayInput" 
+                        aria-describedby="insertionSortArrayInputFeedback" placeholder="5, 3, 3, 4, 3, 2, 11, 0, 50, -1, -3, -5">
+                    <div id="insertionSortArrayInputFeedback" class="invalid-feedback">
+                        comma delimited integers only
+                    </div>
+                    <p> Instructions: Type in the sequence of integers that you want to sort. 
+                        Click anywhere outside of the input box to start the simulation. To restart simulation,
+                        click into the input box then click outside</p>
+                    <p> Numbers will be sorted in descending order</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- simulation -->
+        <div class="row">
+            <div class="col-sm">
+                <svg id="insertionSortSvg" width="100%" height="100%" style="border: 1px solid black"></svg>
+            </div>
+        </div>
+        <!-- Log panel -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="InsertionSortLog">Log Panel:</label>
+                    <textarea class="form-control" id="InsertionSortLog" rows="3" readonly="true"></textarea>
+                  </div>
+            </div>
+        </div>
+
+        <!-- binary insertion sort -->
+        <!-- intro -->
+        <div>
+            <h1>
+                Binary Insertion Sort
+            </h1>
+            <p>
+                Binary insertion sort is insertion sort but instead of using linear search to organize the elements, we use binary search
+            </p>
+        </div>
+        <!-- user inputs -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <!-- Simulation instructions -->
+                    <label for="binaryInsertionArrayInput">Set the content of array here (comma delimited integers)</label>
+                    <input type="text" class="form-control" id="binaryInsertionArrayInput" aria-describedby="binInsertionSortArrayInputFeedback"
+                        placeholder="5, 3, 3, 4, 3, 2, 11, 0, 50, -1, -3, -5">
+                    <div id="binInsertionSortArrayInputFeedback" class="invalid-feedback">
+                        comma delimited integers only
+                    </div>
+                    <p> Instructions: Type in the sequence of integers that you want to sort. 
+                        Click anywhere outside of the input box to start the simulation. To restart simulation,
+                        click into the input box then click outside</p>
+                    <p> Numbers will be sorted in descending order</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- simulation -->
+        <div class="row">
+            <div class="col-sm">
+                <svg id="binaryInsertionSortSvg" width="100%" height="100%" style="border: 1px solid black"></svg>
+            </div>
+        </div>
+        <!-- Log panel -->
+        <div class="row">
+            <div class="col-sm">
+                <div class="form-group">
+                    <label for="binaryInsertionSortLog">Log Panel:</label>
+                    <textarea class="form-control" id="binaryInsertionSortLog" rows="3" readonly="true"></textarea>
+                  </div>
+            </div>
+        </div>
+
+    </div>
+    
+    <!-- JQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous">
+    </script> -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+    </script> -->
+
+    <!-- AlgoVisualizer lib -->
+    <script type="module" src="../js/sort.js"></script>
+</body>
+
+</html>

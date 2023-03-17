@@ -1,5 +1,5 @@
 import * as d3 from '../js/thirdParty/d3.js';
-import {ArrayVisualizer} from '../js/lib/DataVisualizer'
+import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
 import {expect, jest} from '@jest/globals';
 
 // mock ResizeObserverMock

@@ -1,7 +1,7 @@
 // NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
-import {ArrayVisualizer} from './lib/DataVisualizer.js'
+import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
 import {InsertionSort} from './lib/SortingAlgorithms.js'
 
 // setup svg

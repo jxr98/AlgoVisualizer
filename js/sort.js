@@ -1,42 +1,43 @@
-// NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
-import {redirectConsoleOutput} from './lib/Logger.js'
-import {ArrayVisualizer} from './lib/DataVisualizer.js'
-import {InsertionSort} from './lib/SortingAlgorithms.js'
+import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
+import {InsertionSort} from './lib/InsertionSort.js'
+import {BinaryInsertionSort} from './lib/InsertionSortBinary.js'
+import { Logger } from './lib/Logger.js';
+import { onBlur, interval } from './lib/page_sort.js';
 
-// setup svg
-var svg = d3.select("#insertionSortSvg")
+//insertion sort
+let insertionSortLogger = new Logger(d3.select("#InsertionSortLog"))
+let insertionSortSimTimeoutHandles = []
+const insertionSortArrayVis = new ArrayVisualizer(d3.select("#insertionSortSvg"), interval)
+insertionSortArrayVis.setTitle("Insertion Sort")
+insertionSortArrayVis.setLegend("sorted", "red")
+insertionSortArrayVis.setLegend("un-sorted", "grey")
+insertionSortArrayVis.setLegend("node being sorted", "blue")
+let insertionSortInput = d3.select("#insertionSortArrayInput");
+let insertionSortFactory = () =>{
+    return new InsertionSort(insertionSortArrayVis, insertionSortLogger); 
+};
+insertionSortInput.on("blur", function()
+{
+    onBlur(insertionSortInput, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory);
+})
+onBlur(insertionSortInput, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory); // start with default problem on page load
 
-let textArea = d3.select("#LogPanel")
-textArea.attr("readonly", true)
-redirectConsoleOutput(textArea)
 
-let tick = 0;
-let interval = 500; 
-// IMPORTANT: need to sync transition speed with interval, otherwise you transition may occur way too slow/fast with respect to change
-const g = new ArrayVisualizer(svg, interval)
-g.setLeftLabel("left label")
-g.setRightLabel("right label")
-g.setTitle("title")
-g.setLegend("sorted", "red")
-g.setLegend("un-sorted", "black")
-
-setTimeout(function(){g.insertLeft({id:0, text:1, value:1 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:1, text:5, value:5 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:2, text:4, value:4 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:3, text:0, value:0 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:4, text:2, value:2 })}, tick)
-tick+=interval;
-
-setTimeout(function(){
-    let sort = new InsertionSort(g)
-    for (let i = 0 ; i < 6; ++i)
-    {
-        setTimeout(function(){sort.step()}, tick)
-        tick+=interval;
-    }
-}, tick)
+// binary insertion sort
+let binarySortLogger = new Logger(d3.select("#binaryInsertionSortLog"))
+let binInsertionSortTimeouts = []
+const binInsertionSortArrayVis = new ArrayVisualizer(d3.select("#binaryInsertionSortSvg"), interval)
+binInsertionSortArrayVis.setTitle("Binary Insertion Sort")
+binInsertionSortArrayVis.setLegend("sorted", "red")
+binInsertionSortArrayVis.setLegend("un-sorted", "grey")
+binInsertionSortArrayVis.setLegend("node being sorted", "blue")
+let binInsertionSortInput = d3.select("#binaryInsertionArrayInput");
+let binInsertionSortFactory = () =>{
+    return new BinaryInsertionSort(binInsertionSortArrayVis, binarySortLogger); 
+};
+binInsertionSortInput.on("blur", function()
+{
+    onBlur(binInsertionSortInput, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory);
+})
+onBlur(binInsertionSortInput, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory); // start with default problem on page load

@@ -1,10 +1,5 @@
 import * as d3 from "../thirdParty/d3.js";
 
-// TODO: need to determine max capacity of visualizer
-// TODO: need to design what happens when capacity is exceeded
-
-// TODO: API for legends on bottom
-
 export class ArrayVisualizer
 {
     // svg handle
@@ -12,46 +7,47 @@ export class ArrayVisualizer
     #svgWidth;
     #svgHeight;
 
+    // overflow handling
+    #overflowPolicy = "hideLeft"; // overflow policy: "hideLeft" or "hideRight"
+    #maxDataCount = 0; // estimated max number of data objects to display
+
     // max transition delay
     #delay;
 
-    // left right padding
-    #padding = 100;
-
-    // circle
-    #radius = 20;
-    #defaultColor = "black";
-
-    // max number of data objects to show
-    #maxDataCount = 10;
-
     // container of data
-    #data = []
+    #data = [] // contains complete array data
+    #displayData = [] // only contains array data that is to be displayed. Excludes overflow nodes
 
     // label text handles
     #leftLabel = null
     #rightLabel = null
     #titleLabel = null
+    #leftOverflowNote = null
+    #rightOverflowNote = null
 
     // resize observer
     #resiszeObs = null
 
     // legends handles
     #legends = []
+    
+    // constant parameters
+    #padding = 100; // left right padding
+    #opacity = 0.60; // circle size opacity
+    #radius = 20; // circle size
+    #defaultColor = "black"; // circle color default
+    
 
     constructor(svg, delay = 2000)
     {
         let self = this;
-        // this.#svgWidth = svg.attr("width");
-        // this.#svgHeight = svg.attr("height");
-        // let id = svg.attr("id");
-        // this.#svgWidth = document.getElementById(id).clientWidth;
-        // this.#svgHeight = document.getElementById(id).clientHeight;
-
         this.#svg = svg;
         this.#svgWidth = this.#svg.node().clientWidth;
         this.#svgHeight = this.#svg.node().clientHeight;
         this.#delay = delay;
+
+        this.#maxDataCount = this.#estimateMaxNodeCapacity();
+        
 
         // setup labels
         this.#leftLabel = this.#svg.append('text')
@@ -63,6 +59,13 @@ export class ArrayVisualizer
         this.#titleLabel = this.#svg.append('text')
             .attr("class", "text")
             .text("")
+        this.#leftOverflowNote = this.#svg.append('text')
+            .attr("class", "text")
+            .text("")
+        this.#rightOverflowNote = this.#svg.append('text')
+            .attr("class", "text")
+            .text("")
+        this.#updateOverflowLabels(true);
 
         // resize observer for the svg container
         this.#resiszeObs = new ResizeObserver(function()
@@ -75,7 +78,19 @@ export class ArrayVisualizer
     ////////////////////////////////////////////////////////////////////
     //////// public functions
 
-    
+    changeOverflowPolicy(str)
+    {
+        if (str === "hideLeft" || str === "hideRight"){
+            this.#overflowPolicy = str;
+            this.#update();    
+        }
+    }
+
+    clear()
+    {
+        this.#data = []
+        this.#update()
+    }
 
     get(idx)
     {
@@ -90,7 +105,10 @@ export class ArrayVisualizer
     setLegend(str, color)
     {
         // create new legend
-        let newLegendGroup = this.#svg.append('g').attr("class", "legend");
+        let newLegendGroup = this.#svg.append('g')
+        .attr("class", "legend")
+        .style("opacity", this.#opacity);
+
         this.#legends.push(newLegendGroup);
         newLegendGroup.append("rect")
         .attr("fill", color)
@@ -159,6 +177,7 @@ export class ArrayVisualizer
     // insert data to front of array
     insertRight(data)
     {
+        // console.log(`${JSON.stringify(data)}`)
         this.#data.push(data);
         this.#update();
     }
@@ -205,8 +224,41 @@ export class ArrayVisualizer
         this.#update();
     }
 
+    updateRendering()
+    // sometimes visual properties are changed externally, user would want to call this to show rendering update
+    {
+        this.#update()
+    }
+
     ////////////////////////////////////////////////////////////////////
     //////// private functions
+
+    #updateOverflowLabels(hide = false)
+    {
+        if (hide)
+        {
+            this.#leftOverflowNote.style("opacity", 0);
+            this.#rightOverflowNote.style("opacity", 0);
+        }
+        else
+        {
+            this.#leftOverflowNote.style("opacity", 1);
+            this.#rightOverflowNote.style("opacity", 1);
+        }
+
+        let self = this;
+        let y = this.#svgHeight/2 - 25,
+        leftX = 10
+        this.#leftOverflowNote.attr("transform", "translate(" + leftX + "," + y + ")");
+        this.#rightOverflowNote.attr("transform", function()
+        {
+            let textDOM = self.#rightOverflowNote.node(),
+            rightX = self.#svgWidth - 10
+            /* istanbul ignore next */
+            if (typeof textDOM.getComputedTextLength === "function") rightX =  rightX - textDOM.getComputedTextLength()
+            return "translate(" + rightX + "," + y + ")"
+        })
+    }
 
     #updateLegends()
     {
@@ -236,12 +288,12 @@ export class ArrayVisualizer
         // console.log(`height: ${self.#svgHeight}`)
 
         // update labeling
-        self.setLeftLabel(self.#leftLabel.text())
-        self.setRightLabel(self.#rightLabel.text())
-        self.setTitle(self.#titleLabel.text())
-        self.#updateLegends()
-
-        //TODO: calculate new max node limit
+        self.setLeftLabel(self.#leftLabel.text());
+        self.setRightLabel(self.#rightLabel.text());
+        self.setTitle(self.#titleLabel.text());
+        self.#updateLegends();
+        self.#updateOverflowLabels();
+        this.#maxDataCount = this.#estimateMaxNodeCapacity()
         self.#update();
 
     }
@@ -261,6 +313,7 @@ export class ArrayVisualizer
                 // move data right
                 this.#data.splice(position+1, 0, tmp); // insert new copy of data
                 this.#data.splice(idx, 1);     // remove old copy
+                
             }
             else
             {
@@ -270,16 +323,57 @@ export class ArrayVisualizer
             }
         }
     }
-    
-    #findIdx(id)
+
+    #estimateMaxNodeCapacity()
     {
-        return this.#data.findIndex((obj) => obj.id === id);
+        return Math.floor((this.#svgWidth - 2 * this.#padding) / (2 * this.#radius));
+    }
+    
+    #findIdx(id, container)
+    {
+        return container.findIndex((obj) => obj.id === id);
     }
 
     #update() 
     {
+        // check for overflow
+        this.#displayData = []
+        let numDataHiden = 0;
+        if (this.size() > this.#maxDataCount)
+        {
+            numDataHiden = this.size() - this.#maxDataCount;
+
+            // based on overflow policy, hide certain data
+            if (this.#overflowPolicy === "hideLeft")
+            {
+                for (let i = numDataHiden ; i < this.#data.length; ++i)
+                {
+                    this.#displayData[i - numDataHiden] = this.#data[i];
+                }
+                
+                this.#leftOverflowNote.text("# hidden nodes: " + numDataHiden)
+            }
+            else
+            {
+                // hide right most nodes
+                for (let i = 0 ; i < this.#maxDataCount; ++i)
+                {
+                    this.#displayData[i] = this.#data[i];
+                }
+                this.#rightOverflowNote.text("# hidden nodes: " + numDataHiden)
+            }
+
+            this.#updateOverflowLabels();
+        }
+        else
+        {
+            // display all data
+            this.#displayData = this.#data;
+            this.#updateOverflowLabels(true);
+        }
+
         const self = this;
-        let node = this.#svg.selectAll('.node').data(self.#data, function(d) { return d.id; });
+        let node = this.#svg.selectAll('.node').data(this.#displayData, function(d) { return d.id; });
 
         node.join(
             enter => 
@@ -292,7 +386,7 @@ export class ArrayVisualizer
                 // draw circle
                 g.append('circle')
                 .attr('r', self.#radius)
-                .style('opacity', 0.5)
+                .style('opacity', self.#opacity)
                 .style("fill", function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
@@ -318,14 +412,14 @@ export class ArrayVisualizer
                 g.attr("transform", function(d)
                 {
                     let y = self.#svgHeight/2,
-                    x = self.#padding + self.#findIdx(d.id) * 2 * self.#radius
+                    x = self.#padding + self.#findIdx(d.id, self.#displayData) * (2 * self.#radius)
                     return "translate(" + x + "," + y + ")";
                 })
 
                 // slowly make the new data from invisible to visible
                 g.transition()
                 .duration(self.#delay)
-                .style('opacity', 0.75)
+                .style('opacity', self.#opacity)
             },
             update => {
                 // positions of existing node must change to sync with position in array
@@ -334,12 +428,17 @@ export class ArrayVisualizer
                 .attr("transform", function(d)
                 {
                     let y = self.#svgHeight/2,
-                    x = self.#padding + self.#findIdx(d.id) * 2 * self.#radius
+                    x = self.#padding + self.#findIdx(d.id, self.#displayData) * 2 * self.#radius
                     return "translate(" + x + "," + y + ")";
                 })
+                // incase the enter transition is interrupted, we need to finish the opacity transition here
+                // Otherwise, some nodes can be invisible
+                .style('opacity', self.#opacity) 
 
                 // update color
                 update.select("circle")
+                .transition()
+                .duration(self.#delay)
                 .style("fill", function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
