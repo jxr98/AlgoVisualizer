@@ -36,8 +36,8 @@ export class Graph{
 
     removeEdge(a,b)
     {
-        this.#adjacent[a].delete(b);
-        this.#adjacent[b].delete(a);
+        let removeB = this.#adjacent[a].delete(b.toString());
+        let removeA = this.#adjacent[b].delete(a.toString());
         this.#numEdges--;
     }
    
