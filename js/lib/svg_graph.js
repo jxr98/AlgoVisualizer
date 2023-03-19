@@ -54,6 +54,16 @@ class ForceSimulationGraph
     ////////////////////////////////////////////////////////////////////
     //////// public interface
 
+    deleteNode(nodeID)
+    {
+
+    }
+
+    disconnect(source, target)
+    {
+        
+    }
+
     addNode(x=0, y=0) {
         console.log(`Add node @(x,y): ${x.toFixed(0)}, ${y.toFixed(0)}`);
         const ret = this.#graph.addNode(x, y);

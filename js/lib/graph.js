@@ -1,4 +1,4 @@
-class Graph{
+export class Graph{
     #numVertices;
     #numEdges;
     #adjacent; // adjacency list
@@ -13,6 +13,17 @@ class Graph{
 
     getNumVertices(){ return this.#numVertices; }
     getNumEdges(){ return this.#numEdges; }
+
+    deleteNode(node)
+    {
+        // lazy delete
+        updateNodeProp(node)
+    }
+
+    removeEdge(a,b)
+    {
+
+    }
    
     // create a new node, return index of new node
     addNode(x = 0, y = 0) {
@@ -92,5 +103,3 @@ class Graph{
         return ret;
     }
 }
-
-export {Graph}
