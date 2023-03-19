@@ -21,7 +21,9 @@ class ForceSimulationGraph
 
     constructor(svg)
     {
-        let width = svg.attr("width"), height = svg.attr("height");
+        let temp=document.querySelector ('svg')
+            .getBoundingClientRect();
+        let width = temp.right-temp.left, height = svg.attr("height");
         this.circleRadius=25;//default
         this.circleColour="rgb(217, 217, 217)"; //default
         this.markerWH=3;//default
@@ -34,7 +36,7 @@ class ForceSimulationGraph
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
-            .force("link", d3.forceLink([]).distance(100).id(function(d){
+            .force("link", d3.forceLink([]).distance(40).id(function(d){
                 return d.id
             }))
             .on("tick", function(){self.#tick(self)})
