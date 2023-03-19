@@ -2,6 +2,7 @@ import { Graph } from "./graph.js";
 import * as d3 from "../thirdParty/d3.js";
 
 const DefaultMouseDownNode=-1;
+const DefaultMouseHoverLink=-1;
 
 class Link{
     source;
@@ -33,6 +34,7 @@ class ForceSimulationGraph
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;
         this.mouseHoverNode = DefaultMouseDownNode;
+        this.mouseHoverLink = DefaultMouseHoverLink;
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
@@ -43,7 +45,7 @@ class ForceSimulationGraph
             .alphaDecay(0.002) // just added alpha decay to delay end of execution
         
         svg.on('mousedown', function (e) {
-            if (self.mouseHoverNode == DefaultMouseDownNode)
+            if (self.mouseHoverNode == DefaultMouseDownNode && self.mouseHoverLink == DefaultMouseHoverLink)
             {
                 var coordinates = d3.pointer(e);
                 self.addNode(coordinates[0], coordinates[1]);
@@ -131,26 +133,41 @@ class ForceSimulationGraph
 
     #updateLink(graphLinks)
     {
-        var link = this.svg.selectAll('.link').data(graphLinks);
-        if($('#flexSwitchCheckDefault').is(":checked")){
-            link.enter()
-                .insert('line', '.node')
-                .attr('class', 'link')
-                .style('stroke', '#000')
-                .style('stroke-width', 1.9)
-                .style('marker-end', 'url(#end-arrow)')
-        }else{
-            link.enter()
-                .insert('line', '.node')
-                .attr('class', 'link')
-                .style('stroke', '#000')
-                .style('stroke-width', 1.9)
-                .style('marker-end', 'url(#end-arrow)')
-                .style('marker-start', 'url(#start-arrow)')
+
+        let links = this.svg.selectAll('.link').data(graphLinks)
+        let self = this
+
+        let link = links.enter()
+        .insert('line', '.node')
+        .attr('class', 'link')
+        .style('stroke', '#000')
+        .style('stroke-width', 1.9)
+        .on("dblclick", function(e, d){
+            console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
+             self.disconnect(d.source.id, d.target.id);
+             self.mouseHoverLink = DefaultMouseHoverLink;
+        })
+        .on("mouseover", function(e){
+            d3.select(this).style('stroke-width', 4)
+            self.mouseHoverLink = 0;
+        })
+        .on("mouseout", function(e){
+            d3.select(this).style('stroke-width', 1.9)
+            self.mouseHoverLink = DefaultMouseHoverLink;
+        })
+
+
+        if ($('#flexSwitchCheckDefault').is(":checked"))
+        {
+            link.style('marker-end', 'url(#end-arrow)')
+        } 
+        else
+        {
+            link.style('marker-end', 'url(#end-arrow)')
+            .style('marker-start', 'url(#start-arrow)')
         }
-        link
-            .exit()
-            .remove()
+
+        links.exit().remove()
     }
 
     // main update function for when there are changes to nodes/links
