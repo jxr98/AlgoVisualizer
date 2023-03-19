@@ -1,8 +1,8 @@
 export class Graph{
     #numVertices;
     #numEdges;
-    #adjacent; // adjacency list
-    #nodeProp;
+    #adjacent; // adjacency list, array of sets
+    #nodeProp; // array of objects
 
     constructor(){
         this.#numVertices=0;
@@ -17,19 +17,35 @@ export class Graph{
     deleteNode(node)
     {
         // lazy delete
-        updateNodeProp(node)
+        this.updateNodeProp(node, {delete : true})
+
+        // remove edge to this node from all other nodes
+        for (let i = 0; i < this.#numVertices; i++)
+        {
+            let deleted = this.#adjacent[i].delete(node.toString())
+            if (deleted)
+            {
+                this.#numEdges--;
+            }
+        }
+
+
+        // cannot decrement this.#numVertices that is used to traverse all nodes
+        // decrementing it in a lazy delete means there will be missed nodes
     }
 
     removeEdge(a,b)
     {
-
+        this.#adjacent[a].delete(b);
+        this.#adjacent[b].delete(a);
+        this.#numEdges--;
     }
    
     // create a new node, return index of new node
     addNode(x = 0, y = 0) {
         const newNodeIndex = this.#numVertices++;
         this.#adjacent[newNodeIndex]=new Set();
-        this.#nodeProp[newNodeIndex]={x:x, y:y};
+        this.#nodeProp[newNodeIndex]={x:x, y:y, delete : false};
         return newNodeIndex;
     }
     addEdge(v,w) {
@@ -53,14 +69,18 @@ export class Graph{
         let ret = [];
         for (let i = 0; i < this.#numVertices; i++) 
         {
-            ret[i] = {
+            if (this.#nodeProp[i].delete === true) continue;
+
+            let idx = ret.length;
+            ret.push({
                 id: i,
                 name: i,
                 x: this.#nodeProp[i].x,
                 y: this.#nodeProp[i].y
-            };
+            })
+
             // other props are merged
-            ret[i] = Object.assign(ret[i], this.#nodeProp[i]);
+            ret[idx] = Object.assign(ret[idx], this.#nodeProp[i]);
         }
         return ret;
     }
@@ -75,6 +95,9 @@ export class Graph{
             {
                 lookup.set(i, new Set());
             }
+
+            // if node i is deleted, skip
+            if (this.#nodeProp[i].delete === true) continue;
 
             // check links for node i
             var adjacent=this.#adjacent[i];

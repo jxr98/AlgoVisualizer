@@ -58,12 +58,14 @@ class ForceSimulationGraph
 
     deleteNode(nodeID)
     {
-
+        this.#graph.deleteNode(nodeID)
+        this.#update();
     }
 
     disconnect(source, target)
     {
-        
+        this.#graph.removeEdge(source, target)
+        this.#update();
     }
 
     addNode(x=0, y=0) {
@@ -120,9 +122,9 @@ class ForceSimulationGraph
         })
 
         // update node locations and sync to our graph model
-        self.svg.selectAll('.node').each(function(d, i)
+        self.svg.selectAll('.node').each(function(d)
         {
-            self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
+            self.#graph.updateNodeProp(d.id, {x: d.x, y: d.y}); // sync d3 node model to our own model
             d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", "translate(" + d.x + "," + d.y + ")")
         })
     }
@@ -155,7 +157,16 @@ class ForceSimulationGraph
     #updateNodes(graphNodes)
     {
         const self = this;
-        let node = this.svg.selectAll('.node').data(graphNodes);
+        let node = this.svg.selectAll('.node')
+        .data(graphNodes, function(d) {
+            
+            if (d === undefined)
+            {
+                console.log(graphNodes)
+            }
+            return d.id; 
+        })
+
         let g = node.enter()
             .append('g')
             .attr('class', 'node')
@@ -167,7 +178,10 @@ class ForceSimulationGraph
                 return d.hasOwnProperty("color") ? d.color : self.circleColour;
             })
             .on("mouseover", function(d){
-                d3.select(this).style("fill", "red");
+
+                // mouse hover effect - ON
+                d3.select(this).style("opacity", 0.6);
+                d3.select(this).style("stroke", "black");
 
                 let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
@@ -183,11 +197,21 @@ class ForceSimulationGraph
                 
             })
             .on("mouseout", function(d){
-                d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : self.circleColour);
+                
+                // mouse hover effect - OFF
+                d3.select(this).style("opacity", 1);
+                d3.select(this).style("stroke", "");
+
+
                 if(d.buttons==1){
                     self.mouseDownNode=d.target.id.slice(1);
                 }
                 self.mouseHoverNode = DefaultMouseDownNode;
+            })
+            .on("dblclick", function(e, d){
+                //console.log(d.id)
+                 self.deleteNode(d.id);
+                 self.mouseHoverNode = DefaultMouseDownNode
             })
             
 
@@ -200,7 +224,9 @@ class ForceSimulationGraph
                         -khtml-user-select: none;\
                         -moz-user-select: none;\
                         -ms-user-select: none;\
-                        user-select: none;');
+                        user-select: none;')
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
         node
             .exit()
             .remove();
@@ -218,7 +244,7 @@ class ForceSimulationGraph
         // update simulation
         this.simulation
             .nodes(graphNodes)
-            .force("link", d3.forceLink(graphLinks).distance(100))
+            .force("link", d3.forceLink(graphLinks).distance(100).id(function(d){return d.id;}))
             .force("charge", d3.forceManyBody().strength(-2))
             .alpha(1) // need to reset alpha as well here
             .restart()
