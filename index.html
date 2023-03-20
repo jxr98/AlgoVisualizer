@@ -20,141 +20,205 @@
 </head>
 
 <body>
-<div class="container-fluid">
-    <div class="row row-eq-height">
-        <div class="col-sm-3" style="background-color: #e3f2fd;">
-            <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-                <a class="navbar-brand" href="#">
-                    <img src="imgs/index_image.png" width="100%" alt="">
-                </a>
-                <ul class="navbar-nav flex-column text-center" style="width: 100%">
-                    <li class="nav-item nav-title">
-                        Algorithms
-                    </li>
-                    <li class="nav-item dropdown" id="graphNav">
-                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Graph</a>
-                        <ul class="dropdown-menu dropdown-graph text-center">
-                            <li><a class="dropdown-item" href="html/bfs.html"> Breadth First Search</a></li>
-                            <li><a class="dropdown-item" href="html/dfs.html"> Depth First Search </a></li>
-                            <li><a class="dropdown-item" href="html/Dijkstra's.html"> Dijkstra's algorithm </a></li>
-                            <li><a class="dropdown-item" href="html/astar.html"> A* </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown" id="sortingNav">
-                        <a class="nav-link" href="#">Sorting</a>
-                        <ul class="dropdown-menu dropdown-sorting text-center">
-                            <li><a class="dropdown-item" href="html/insertionSort.html"> Insertion</a></li>
-                            <li><a class="dropdown-item" href="#"> Quicksort </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown" id="treeNav">
-                        <a class="nav-link" href="#">Tree</a>
-                        <ul class="dropdown-menu dropdown-tree text-center">
-                            <li><a class="dropdown-item" href="#"> Insertion</a></li>
-                            <li><a class="dropdown-item" href="#"> Quicksort </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item nav-title">
-                        Resources
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">graph</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">sorting</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">graph</a>
-                    </li>
-                    <li class="nav-item">
-                        Last modified on Mar 14, 2023
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
-        <div class="col-sm-9">
-            <div class="divider">
-                Algorithm Visualizer <span class="float-right">ECE651</span>
+    <div class="container-fluid">
+        <div class="row row-eq-height">
+            <div class="col-sm-3" style="background-color: #e3f2fd;">
+                <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                    <a class="navbar-brand" href="#">
+                        <img src="imgs/index_image.png" width="100%" alt="">
+                    </a>
+                    <ul class="navbar-nav flex-column text-center" style="width: 100%">
+                        <li class="nav-item nav-title">
+                            Algorithms
+                        </li>
+                        <li class="nav-item dropdown" id="graphNav">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Graph</a>
+                            <ul class="dropdown-menu dropdown-graph text-center">
+                                <li><a class="dropdown-item" href="html/bfs.html"> Breadth First Search</a></li>
+                                <li><a class="dropdown-item" href="html/dfs.html"> Depth First Search </a></li>
+                                <li><a class="dropdown-item" href="html/Dijkstra's.html"> Dijkstra's algorithm </a></li>
+                                <li><a class="dropdown-item" href="html/astar.html"> A* </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" id="sortingNav">
+                            <a class="nav-link" href="#">Sorting</a>
+                            <ul class="dropdown-menu dropdown-sorting text-center">
+                                <li><a class="dropdown-item" href="html/insertionSort.html"> Insertion</a></li>
+                                <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" id="treeNav">
+                            <a class="nav-link" href="#">Tree</a>
+                            <ul class="dropdown-menu dropdown-tree text-center">
+                                <li><a class="dropdown-item" href="#"> Insertion</a></li>
+                                <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-title">
+                            Resources
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">graph</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">sorting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">graph</a>
+                        </li>
+                        <li class="nav-item">
+                            Last modified on Mar 14, 2023
+                        </li>
+                    </ul>
+                </nav>
             </div>
-            <div>
-                <h2 class="algorithm-name">Breadth First Search</h2>
-                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
 
-                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
-            </div>
-            <div>
-                <h2 class="algorithm-name">Depth First Search</h2>
-                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+            <div class="col-sm-9">
+                <div class="divider">
+                    Algorithm Visualizer <span class="float-right">ECE651</span>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Breadth First Search</h2>
+                    <p>Breadth-first search (BFS) is a method for exploring a tree or graph. In a BFS, you first explore
+                        all the nodes one step away, then all the nodes two steps away, etc.
 
-                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
-            </div>
-            <div>
-                <h2 class="algorithm-name">A*</h2>
-                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
+                        Breadth-first search is like throwing a stone in the center of a pond. The nodes you explore
+                        "ripple out" from the starting point.</p>
 
-                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
-            </div>
-            <div>
-                <h2 class="algorithm-name">Insertion Sort</h2>
-                <p>Breadth-first search (BFS) is an algorithm for searching a tree data structure for a node that satisfies a given property. It starts at the tree root and explores all nodes at the present depth prior to moving on to the nodes at the next depth level. Extra memory, usually a queue, is needed to keep track of the child nodes that were encountered but not yet explored.
 
-                    For example, in a chess endgame a chess engine may build the game tree from the current position by applying all possible moves, and use breadth-first search to find a win position for white. Implicit trees (such as game trees or other problem-solving trees) may be of infinite size; breadth-first search is guaranteed to find a solution node[1] if one exists.</p>
+                    <!-- <img src="imgs/Breadth-first-search2.png" alt="">
+                    <img src="imgs/Sorted_binary_tree_breadth-first_traversal.svg.png" alt=""> -->
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/java/bfs">Breadth
+                            First
+                            Search</a> </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Depth First Search</h2>
+                    <p>Depth-first search (DFS) is a method for exploring a tree or graph. In a DFS, you go as deep as
+                        possible down one path before backing up and trying a different one.
+
+                        Depth-first search is like walking through a corn maze. You explore one path, hit a dead end,
+                        and go back and try a different one.</p>
+
+                    <img src="imgs/Figure2-1024x343.png" alt="">
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/java/dfs">Depth First
+                            Search</a> </p>
+
+                </div>
+
+                <div>
+                    <h2 class="algorithm-name">Dijkstra’s Algorithm</h2>
+                    <p>Dijkstra's algorithm finds the shortest path from one node to all other nodes in a weighted
+                        graph.
+
+                        Say we had the following graph, which represents the travel cost between different cities in the
+                        southeast US (see the left pic).Dijkstra's algorithm lets us find the cheapest route from one
+                        city to all other
+                        cities (see the right pic).</p>
+
+                    <div class="image-container">
+                        <img src="imgs/dijkstras_algorithm__travel_graph.png" alt="">
+                        <img src="imgs/dijkstras_algorithm__travel_graph_with_the_cheapest_route.png" alt="">
+                    </div>
+
+                    <p class="source">Source：<a
+                            href="https://www.interviewcake.com/concept/java/dijkstras-algorithm">Dijkstra's Algorithm
+                        </a> </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">A*</h2>
+                    <p>A* (pronounced "A-star") is a graph traversal and path search algorithm, which is used in many
+                        fields of computer science due to its completeness, optimality, and optimal efficiency. One
+                        major practical drawback is its O(b^d) space complexity, as it stores all generated nodes in
+                        memory. Thus, in practical travel-routing systems, it is generally outperformed by algorithms
+                        that can pre-process the graph to attain better performance, as well as memory-bounded
+                        approaches; however, A* is still the best solution in many cases.</p>
+                    <p class="source">Source：<a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* Search</a>
+                    </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Insertion Sort</h2>
+                    <p>Insertion sort works by inserting elements from an unsorted list into a sorted subsection of the
+                        list, one item at a time.</p>
+                    <div class="image-container">
+                        <img src="imgs/insertionsort.png" alt="">
+                    </div>
+
+                    <p class="source">Source：<a
+                            href="https://www.interviewcake.com/concept/python/insertion-sort">Insertion Sort</a>
+                    </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Quick Sort</h2>
+                    <p>Quicksort works by dividing the input into two smaller lists: one with small items and the other
+                        with large items. Then, it recursively sorts both the smaller lists.</p>
+
+                    <div class="image-container" id="quicksort-container">
+                        <img src="imgs/quicksort.png" alt="">
+                    </div>
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/python/quicksort?">Quick
+                            Sort</a>
+                    </p>
+                    <h2 class="algorithm-name">Sort
+                    </h2>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<footer class="bg-custom py-0">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="text-dark">&copy; 2023 AlgoVisualizer.</p>
+    <footer class="bg-custom py-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-dark">&copy; 2023 AlgoVisualizer.</p>
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
         integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous">
-</script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-</script>
-<script>
-    $("#graphNav").hover(
-        function () {
-            $('.dropdown-graph').addClass('show');
-            $('.dropdown-sorting').collapse('hide');
-            $('.dropdown-tree').collapse('hide');
-        },function () {
-            $('.dropdown-graph').collapse('hide');
-        }
-    );
+    </script>
+    <script>
+        $("#graphNav").hover(
+            function () {
+                $('.dropdown-graph').addClass('show');
+                $('.dropdown-sorting').collapse('hide');
+                $('.dropdown-tree').collapse('hide');
+            },
+            function () {
+                $('.dropdown-graph').collapse('hide');
+            }
+        );
 
-    $("#sortingNav").hover(
-        function () {
-            $('.dropdown-sorting').addClass('show');
-            $('.dropdown-graph').collapse('hide');
-            $('.dropdown-tree').collapse('hide');
-        },function (){
-            $('.dropdown-sorting').collapse('hide');
-        }
-    );
-    $("#treeNav").hover(
-        function () {
-            $('.dropdown-tree').addClass('show');
-            $('.dropdown-graph').collapse('hide');
-            $('.dropdown-sorting').collapse('hide');
-        },function (){
-            $('.dropdown-tree').collapse('hide');
-        }
-    );
-</script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
+        $("#sortingNav").hover(
+            function () {
+                $('.dropdown-sorting').addClass('show');
+                $('.dropdown-graph').collapse('hide');
+                $('.dropdown-tree').collapse('hide');
+            },
+            function () {
+                $('.dropdown-sorting').collapse('hide');
+            }
+        );
+        $("#treeNav").hover(
+            function () {
+                $('.dropdown-tree').addClass('show');
+                $('.dropdown-graph').collapse('hide');
+                $('.dropdown-sorting').collapse('hide');
+            },
+            function () {
+                $('.dropdown-tree').collapse('hide');
+            }
+        );
+    </script>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
 
 </body>
 
