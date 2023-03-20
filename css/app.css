@@ -110,3 +110,22 @@ body{
     height: auto;
 }
 
+.image-container {
+    margin-left: 80px;
+  }
+  
+  .image-container img {
+    margin-right: 100px;
+  }
+  
+  .algorithm-name {
+    margin-top: 20px;
+  }
+  
+  .source{
+    margin-bottom: 30px;
+  }
+
+  #quicksort-container img{
+    margin-left: 80px;
+  }
