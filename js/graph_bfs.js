@@ -1,41 +1,25 @@
 //import 
 import { BFS_search } from "./lib/BFS_search.js";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
 
-// TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
-// as opposed to creating svg, textarea, etc. DOM on the fly.
-
 //set up a svg
-const width = 1200;
-const height = 600;
-var svg = d3.select('body')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height);
+var svg = d3.select("#graphSvg")
 
 // setup log panel
-var visualizationDiv=d3.select("body").append("div");
-visualizationDiv.attr("class","col-12");
-let textArea = visualizationDiv.append("textarea")
-textArea.attr("readonly", true)
-.attr("cols", 30)
- .style("height", "100px")
+var visualizationDiv=d3.select("#thirdPanel").append("div");
+var textArea=d3.select("#logPanel");
 
 // console.log now mirrors to text area
 redirectConsoleOutput(textArea);
 
 //queue visualization
 visualizationDiv.append("svg")
-    .attr('width',1000)
-    .attr('height',200)
+    .attr('height',400)
+    .attr('width','100%')
     .style('border','1px solid #000')
-    .attr('id','queueSvg')
-    .append('text')
-    .text('Queue')
-    .attr('x',450)
-    .attr('y',15);
+    .attr('id','queueSvg');
     d3.select("#queueSvg")
         .append('text')
         .text('Head')
@@ -50,14 +34,15 @@ document.getElementById("start-button").onclick = function()
     let breadthFirstPaths=new BFS_search(fGraph.getGraphModel(), vertices[0])
     let path= "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": "
     if(!breadthFirstPaths.hasPathTo(vertices[1])){
-        window.alert("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
+        $("#shortestPath").text("vertex " + vertices[0] + " and vertex " + vertices[1] + " are not connected");
     }else{
         let result = breadthFirstPaths.pathTo(vertices[1]);
         path += " " + result[result.length - 1];
         for(let i = result.length - 2; i >= 0; i--){
             path += " -> " + result[i];
         };
-        window.alert(path);
+        // window.alert(path);
+        $("#shortestPath").text(path);
         let processVertices = breadthFirstPaths.getProcess().TwoDArray;
         let OneDArray=breadthFirstPaths.getProcess().OneDArray;
         let size = processVertices.length;
@@ -71,12 +56,12 @@ document.getElementById("start-button").onclick = function()
             .attr('id', function (d) {
                 return "rect" +d;
             })
-            .attr('width',15)
-            .attr('height',100)
-            .attr('x',function (d,index) {
-                return 1000-30-index*20;
+            .attr('width','80%')
+            .attr('height',15)
+            .attr('x','10%')
+            .attr('y',function (d,index) {
+                return 10+index*20;
             })
-            .attr('y',50)
             .style('fill','#00ff0080')
             .attr('visibility','hidden');;
 
@@ -85,10 +70,10 @@ document.getElementById("start-button").onclick = function()
             .attr('id',function (d) {
                 return "rectText" + d;
             })
-            .attr('x',function (d,index) {
-                return 1000-30-index*19;
+            .attr('x','48%')
+            .attr('y',function (d,index) {
+                return 20+index*20;
             })
-            .attr('y',110)
             .attr('visibility','hidden')
             .text(function (d) {
                 return d;

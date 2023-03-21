@@ -11,7 +11,7 @@ test('DFS on graph with 2 node, 1 edge', () => {
     expect(search.havePath()).toBe(true);
 
     let path = search.getPath(); // array or path from dst to src
-    console.log(path)
+    // console.log(path)
     expect(path.length).toBe(2);
     expect(path[0]).toBe(nodeA);
     expect(path[1]).toBe(nodeB);

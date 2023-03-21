@@ -15,93 +15,163 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/index.css">
     <title>Algorithm Visualizer</title>
 </head>
 
 <body>
+    <div class="container-fluid">
+        <div class="row row-eq-height">
+            <div class="col-sm-3" style="background-color: #e3f2fd;">
+                <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
+                    <a class="navbar-brand" href="#">
+                        <img src="imgs/index_image.png" width="100%" alt="">
+                    </a>
+                    <ul class="navbar-nav flex-column text-center" style="width: 100%">
+                        <li class="nav-item nav-title">
+                            Algorithms
+                        </li>
+                        <li class="nav-item dropdown" id="graphNav">
+                            <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Graph</a>
+                            <ul class="dropdown-menu dropdown-graph text-center">
+                                <li><a class="dropdown-item" href="html/bfs.html"> Breadth First Search</a></li>
+                                <li><a class="dropdown-item" href="html/dfs.html"> Depth First Search </a></li>
+                                <li><a class="dropdown-item" href="html/Dijkstra's.html"> Dijkstra's algorithm </a></li>
+                                <li><a class="dropdown-item" href="html/astar.html"> A* </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" id="sortingNav">
+                            <a class="nav-link" href="#">Sorting</a>
+                            <ul class="dropdown-menu dropdown-sorting text-center">
+                                <li><a class="dropdown-item" href="html/insertionSort.html"> Insertion</a></li>
+                                <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown" id="treeNav">
+                            <a class="nav-link" href="#">Tree</a>
+                            <ul class="dropdown-menu dropdown-tree text-center">
+                                <li><a class="dropdown-item" href="#"> Insertion</a></li>
+                                <li><a class="dropdown-item" href="#"> Quicksort </a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item nav-title">
+                            Resources
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">graph</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">sorting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">graph</a>
+                        </li>
+                        <li class="nav-item">
+                            Last modified on Mar 14, 2023
+                        </li>
+                    </ul>
+                </nav>
+            </div>
 
-    <nav id="mainNavbar" class="navbar navbar-dark navbar-expand-md py-0 fixed-top">
-        <a href="#home" class="navbar-brand"><b>Algo Visualization</b></a>
-        <!-- <button class="navbar-toggler" data-toggle="collapse" data-target="#navLinks" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button> -->
-        <div class="collapse navbar-collapse" id="navLinks">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a href="" class="nav-link"></a>
-                </li>
+            <div class="col-sm-9">
+                <div class="divider">
+                    Algorithm Visualizer <span class="float-right">ECE651</span>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Breadth First Search</h2>
+                    <p>Breadth-first search (BFS) is a method for exploring a tree or graph. In a BFS, you first explore
+                        all the nodes one step away, then all the nodes two steps away, etc.
 
-                <li class="nav-item">
-                    <a href="#graph" class="nav-link">GRAPH</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#tree" class="nav-link">TREE</a>
-                </li>
-                <li class="nav-item">
-                    <a href="#grid" class="nav-link">GRID</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="container-fluid px-0" id="home">
-        <div>
-            <img src="imgs/algo.jpg" alt="" class="img-fluid center">
-        </div>
-    </section>
+                        Breadth-first search is like throwing a stone in the center of a pond. The nodes you explore
+                        "ripple out" from the starting point.</p>
 
 
-    <section class="container-fluid px-0">
-        <div class="row align-items-center content" id="graph">
-            <div class="col-md-6 text-center">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for graphs</h2>
-                        <a href="html/bfs.html" class="btn btn-primary active btn-lg" role="button"
-                            data-bs-toggle="button" aria-pressed="true">BFS</a>
-                        <a href="html/dfs.html" class="btn btn-primary active btn-lg" role="button"
-                            data-bs-toggle="button" aria-pressed="true">DFS</a>
-                        <a href="html/Dijkstra's.html" class="btn btn-primary active btn-lg" role="button"
-                           data-bs-toggle="button" aria-pressed="true">Dijkstra's Algorithm</a>
+                    <!-- <img src="imgs/Breadth-first-search2.png" alt="">
+                    <img src="imgs/Sorted_binary_tree_breadth-first_traversal.svg.png" alt=""> -->
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/java/bfs">Breadth
+                            First
+                            Search</a> </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Depth First Search</h2>
+                    <p>Depth-first search (DFS) is a method for exploring a tree or graph. In a DFS, you go as deep as
+                        possible down one path before backing up and trying a different one.
+
+                        Depth-first search is like walking through a corn maze. You explore one path, hit a dead end,
+                        and go back and try a different one.</p>
+
+                    <img src="imgs/Figure2-1024x343.png" alt="">
+                    <figcaption style="padding-left: 460px;">pic. 1</figcaption>
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/java/dfs">Depth First
+                            Search,</a><a href="https://pharmacelera.com/blog/science/artificial-intelligence-tree-search-algorithms/?utm_source=rss&utm_medium=rss&utm_campaign=artificial-intelligence-tree-search-algorithms"> Artificial Intelligence: tree search algorithms</a>
+                        </p>
+
+                </div>
+
+                <div>
+                    <h2 class="algorithm-name">Dijkstra’s Algorithm</h2>
+                    <p>Dijkstra's algorithm finds the shortest path from one node to all other nodes in a weighted
+                        graph.
+
+                        Say we had the following graph, which represents the travel cost between different cities in the
+                        southeast US (see the left pic).Dijkstra's algorithm lets us find the cheapest route from one
+                        city to all other
+                        cities (see the right pic).</p>
+
+                    <div class="image-container">
+                        <img src="imgs/dijkstras_algorithm__travel_graph.png" alt="">
+                        <img src="imgs/dijkstras_algorithm__travel_graph_with_the_cheapest_route.png" alt="">
+                        <figcaption style="padding-left: 360px;">pic. 2</figcaption>
                     </div>
+
+                    <p class="source">Source：<a
+                            href="https://www.interviewcake.com/concept/java/dijkstras-algorithm">Dijkstra's Algorithm
+                        </a> </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">A*</h2>
+                    <p>A* (pronounced "A-star") is a graph traversal and path search algorithm, which is used in many
+                        fields of computer science due to its completeness, optimality, and optimal efficiency. One
+                        major practical drawback is its O(b^d) space complexity, as it stores all generated nodes in
+                        memory. Thus, in practical travel-routing systems, it is generally outperformed by algorithms
+                        that can pre-process the graph to attain better performance, as well as memory-bounded
+                        approaches; however, A* is still the best solution in many cases.</p>
+                    <p class="source">Source：<a href="https://en.wikipedia.org/wiki/A*_search_algorithm">A* Search</a>
+                    </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Insertion Sort</h2>
+                    <p>Insertion sort works by inserting elements from an unsorted list into a sorted subsection of the
+                        list, one item at a time.</p>
+                    <div class="image-container">
+                        <img src="imgs/insertionsort.png" alt="">
+                        <figcaption style="padding-left: 330px;">pic. 3</figcaption>
+                    </div>
+
+                    <p class="source">Source：<a
+                            href="https://www.interviewcake.com/concept/python/insertion-sort">Insertion Sort,</a>
+                            <a href="https://iq.opengenus.org/insertion-sort-analysis/"> Time complexity of Insertion Sort</a>
+                    </p>
+                </div>
+                <div>
+                    <h2 class="algorithm-name">Quick Sort</h2>
+                    <p>Quicksort works by dividing the input into two smaller lists: one with small items and the other
+                        with large items. Then, it recursively sorts both the smaller lists.</p>
+
+                    <div class="image-container" id="quicksort-container">
+                        <img src="imgs/quicksort.png" alt="">
+                        <figcaption style="padding-left: 315px;">pic. 4</figcaption>
+                    </div>
+                    <p class="source">Source：<a href="https://www.interviewcake.com/concept/python/quicksort?">Quick
+                            Sort,</a>
+                            <a href="https://favtutor.com/blogs/quick-sort-cpp"> Quick Sort in C++</a>
+                    </p>
+                    <h2 class="algorithm-name">Sort
+                    </h2>
                 </div>
             </div>
-            <div class="col-md-6">
-                <img src="imgs/graph.png" alt="" class="img-fluid">
-            </div>
         </div>
-
-        <div class="row align-items-center content" id="tree">
-            <div class="col-md-6 order-2 order-md-1">
-                <img src="imgs/bfs.png" alt="" class="img-fluid">
-            </div>
-            <div class="col-md-6 text-center order-1 order-md-2">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for trees</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div>
-
-        <div class="row align-items-center content" id="grid">
-            <div class="col-md-6 text-center">
-                <div class="row justify-content-center">
-                    <div class="col-10 col-lg-8 blurb mb-5 mb-md-0">
-                        <h2>Algorithms for grid</h2>
-
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <img src="imgs/grid.png" alt="" class="img-fluid">
-            </div>
-        </div>
-    </section>
-
+    </div>
     <footer class="bg-custom py-0">
         <div class="container">
             <div class="row">
@@ -112,7 +182,6 @@
         </div>
     </footer>
 
-    <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
@@ -123,17 +192,39 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
     </script>
-
     <script>
-        $(function () {
-            $(document).scroll(function () {
-                var $nav = $("#mainNavbar");
-                $nav.toggleClass("scrolled", $(this).scrollTop() > $nav.height());
-            });
-        });
+        $("#graphNav").hover(
+            function () {
+                $('.dropdown-graph').addClass('show');
+                $('.dropdown-sorting').collapse('hide');
+                $('.dropdown-tree').collapse('hide');
+            },
+            function () {
+                $('.dropdown-graph').collapse('hide');
+            }
+        );
+
+        $("#sortingNav").hover(
+            function () {
+                $('.dropdown-sorting').addClass('show');
+                $('.dropdown-graph').collapse('hide');
+                $('.dropdown-tree').collapse('hide');
+            },
+            function () {
+                $('.dropdown-sorting').collapse('hide');
+            }
+        );
+        $("#treeNav").hover(
+            function () {
+                $('.dropdown-tree').addClass('show');
+                $('.dropdown-graph').collapse('hide');
+                $('.dropdown-sorting').collapse('hide');
+            },
+            function () {
+                $('.dropdown-tree').collapse('hide');
+            }
+        );
     </script>
-
-
     <script src="https://d3js.org/d3.v3.min.js"></script>
 
 </body>

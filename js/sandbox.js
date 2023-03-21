@@ -1,11 +1,12 @@
 // NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
-import { GridGraph } from './lib/GridGraph.js';
+import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
+import {InsertionSort} from './lib/SortingAlgorithms.js'
 
 // setup svg
-var width = 960,
-    height = 500;
+var width = 800,
+    height = 100;
 var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
@@ -19,67 +20,31 @@ textArea.attr("readonly", true)
 .style("height", "100px")
 redirectConsoleOutput(textArea)
 
-const g = new GridGraph(svg);
-let startNode = g.getNodeID(0, 0)
-let endNode = g.getNodeID(8, 4)
-g.changeColor(startNode, "red")
-g.changeColor(endNode, "green")
 
-let visited = new Set()
-visited.add(startNode)
-let stack = []
-let parentMap = new Map()
-stack.push(startNode)
-let tick = 0
-let interval = 50
+let tick = 0;
+let interval = 500; 
+// IMPORTANT: need to sync transition speed with interval, otherwise you transition may occur way too slow/fast with respect to change
+const g = new ArrayVisualizer(svg, interval)
+g.setLeftLabel("left label")
+g.setRightLabel("right label")
+g.setTitle("title")
 
-while (stack.length != 0)
-{
-    // DFS
-    let currNode = stack.pop()
+setTimeout(function(){g.insertLeft({id:0, text:1, value:1 })}, tick)
+tick+=interval;
+setTimeout(function(){g.insertLeft({id:1, text:5, value:5 })}, tick)
+tick+=interval;
+setTimeout(function(){g.insertLeft({id:2, text:4, value:4 })}, tick)
+tick+=interval;
+setTimeout(function(){g.insertLeft({id:3, text:0, value:0 })}, tick)
+tick+=interval;
+setTimeout(function(){g.insertLeft({id:4, text:2, value:2 })}, tick)
+tick+=interval;
 
-    // BFS
-    //let currNode = stack.shift()
-
-    if (currNode == endNode)
+setTimeout(function(){
+    let sort = new InsertionSort(g)
+    for (let i = 0 ; i < 6; ++i)
     {
-        break;
+        setTimeout(function(){sort.step()}, tick)
+        tick+=interval;
     }
-
-    g.getAdjacent(currNode).forEach(function(neighbor)
-    {
-        if (!visited.has(neighbor))
-        {
-            visited.add(neighbor)
-            parentMap.set(neighbor, currNode)
-            stack.push(neighbor)
-            if (neighbor != endNode)
-            {
-                setTimeout(function(){
-                    g.changeColor(neighbor, "yellow")
-                }, tick) 
-            } 
-        } 
-    })
-    
-    tick += interval
-}
-
-// back-track the path and highlight
-if (parentMap.has(endNode))
-{
-    console.log("DONE")
-    let curr = endNode
-    while(curr != startNode)
-    {
-        let parent = parentMap.get(curr)
-        if (parent != startNode)
-        {
-            setTimeout(function(){
-                g.changeColor(parent, "blue")
-            }, tick)
-        }
-        curr = parent
-        tick += interval
-    }
-}
+}, tick)
