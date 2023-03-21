@@ -269,8 +269,8 @@ class ForceSimulationGraph
                         user-select: none;')
             .attr("x", -4)         // set x position of left side of text
             .attr("y", 5)
-            .attr("text-anchor", "middle")
-            .attr("alignment-baseline", "central")
+            // .attr("text-anchor", "middle")
+            // .attr("alignment-baseline", "central")
             
         node
             .exit()
