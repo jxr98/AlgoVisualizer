@@ -1,6 +1,6 @@
 //import
 import { Dijkstra } from "./lib/Dijkstra's.js";
-import * as d3 from "./thirdParty/d3.js";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
 import {line} from "./thirdParty/d3.js";
@@ -9,69 +9,36 @@ import {line} from "./thirdParty/d3.js";
 // as opposed to creating svg, textarea, etc. DOM on the fly.
 
 //set up a svg
-const width = 1200;
-const height = 600;
-var svg = d3.select('body')
+const width = 600;
+const height = 1000;
+let svg = d3.select('#middle-frame')
     .append('svg')
     .attr('width', width)
-    .attr('height', height);
+    .attr('height', height)
+    .style('stroke', 'black');
 
 // setup log panel
-let textArea = d3.select("body").append("textarea")
+let textArea = d3.select("#right-frame").append("textarea")
 textArea.attr("readonly", true)
     .attr("row", 2)
     .attr("cols", 100)
-    .style("width", "800px")
-    .style("height", "100px")
+    .style("width", "380px")
+    .style("height", "1000px")
 
 // console.log now mirrors to text area
 redirectConsoleOutput(textArea)
 
-const fGraph = new ForceSimulationGraph(svg);
-
-let weightForm = false;
-document.getElementById("fill-button").onclick = function()
-{
-    if (weightForm) {
-        return;
-    }
-    weightForm = true;
-    let lines = Array.from(fGraph.getGraphModel().getLinks());
-    let parentDiv = document.createElement("div");
-    for (let i = 0; i < lines.length; i++) {
-        let childDiv = document.createElement("div");
-        let newlabel = document.createElement("label");
-        newlabel.setAttribute("for", "line_info");
-        newlabel.innerHTML = "The weight of " + lines[i].source + " - " + lines[i].target + " :";
-        childDiv.appendChild(newlabel);
-        // Create an input element for each line
-        let form = document.createElement("form");
-        form.setAttribute("method", "post");
-        form.setAttribute("name", i)
-        let weight = document.createElement("input");
-        weight.setAttribute("type", "text");
-        weight.setAttribute("name", "weight");
-        form.append(weight);
-        childDiv.appendChild(form);
-        parentDiv.appendChild(childDiv);
-    }
-    document.getElementById("parentDiv").appendChild(parentDiv);
-}
+const fGraph = new ForceSimulationGraph(svg, true);
 
 document.getElementById("start-button").onclick = function()
 {
     let lines = Array.from(fGraph.getGraphModel().getLinks());
     let weightedLines = [];
-    for (let i = 0; i < lines.length; i++) {
-        if (typeof parseInt(document.forms[i]["weight"].value) != 'number') {
-            alert("The weight of " + lines[i].source + " - " + lines[i].target + " is not a integer" );
-            return;
-        }
-    }
-    for (let i = 0; i < lines.length; i++) {
-        let weight = parseInt(document.forms[i]["weight"].value);
-        weightedLines.push([lines[i].source, lines[i].target, weight]);
-        weightedLines.push([lines[i].target, lines[i].source, weight]);
+    for (let i = 1; i <= lines.length; i++) {
+        let weight_info = document.getElementById(i.toString()).value.split(" ");
+        console.log(weight_info)
+        weightedLines.push([weight_info[0], weight_info[1], weight_info[2]]);
+        weightedLines.push([weight_info[1], weight_info[0], weight_info[2]]);
     }
 
 
@@ -96,6 +63,7 @@ document.getElementById("start-button").onclick = function()
             setTimeout(function(){ fGraph.changeColor(result[i][0], "yellow");}, 2000 * i);
             setTimeout(function()
             {
+                console.log("Step " + i + ":")
                 console.log("current vertex: " + result[i][0]);
                 console.log("changed vertex and weight after relaxation:");
                 let relaxationSize = process[i].length;
