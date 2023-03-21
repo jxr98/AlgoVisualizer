@@ -1,6 +1,6 @@
 //import
 import { Dijkstra } from "./lib/Dijkstra's.js";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
 import {line} from "./thirdParty/d3.js";
@@ -36,9 +36,8 @@ document.getElementById("start-button").onclick = function()
     let weightedLines = [];
     for (let i = 1; i <= lines.length; i++) {
         let weight_info = document.getElementById(i.toString()).value.split(" ");
-        console.log(weight_info)
-        weightedLines.push([weight_info[0], weight_info[1], weight_info[2]]);
-        weightedLines.push([weight_info[1], weight_info[0], weight_info[2]]);
+        weightedLines.push([weight_info[0], weight_info[1], parseInt(weight_info[2])]);
+        weightedLines.push([weight_info[1], weight_info[0], parseInt(weight_info[2])]);
     }
 
 

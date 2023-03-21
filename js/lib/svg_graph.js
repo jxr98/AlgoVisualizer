@@ -1,7 +1,8 @@
 import { Graph } from "./graph.js";
-import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+import * as d3 from "../thirdParty/d3.js";
 
 const DefaultMouseDownNode=-1;
+const DefaultMouseHoverLink=-1;
 
 class Link{
     source;
@@ -24,7 +25,9 @@ class ForceSimulationGraph
     {
         this.weighted = weighted;
         this.count = 1;
-        let width = svg.attr("width"), height = svg.attr("height");
+        let temp=document.querySelector ('svg')
+            .getBoundingClientRect();
+        let width = temp.right-temp.left, height = svg.attr("height");
         this.circleRadius=25;//default
         this.circleColour = "white"; //default
         this.markerWH=3;//default
@@ -34,17 +37,18 @@ class ForceSimulationGraph
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;
         this.mouseHoverNode = DefaultMouseDownNode;
+        this.mouseHoverLink = DefaultMouseHoverLink;
         this.simulation = d3.forceSimulation()
             .force("center", d3.forceCenter(width / 2, height / 2).strength(0.01))
             .nodes([])
-            .force("link", d3.forceLink([]).distance(100).id(function(d){
+            .force("link", d3.forceLink([]).distance(40).id(function(d){
                 return d.id
             }))
             .on("tick", function(){self.#tick(self)})
             .alphaDecay(0.002) // just added alpha decay to delay end of execution
 
         svg.on('mousedown', function (e) {
-            if (self.mouseHoverNode == DefaultMouseDownNode)
+            if (self.mouseHoverNode == DefaultMouseDownNode && self.mouseHoverLink == DefaultMouseHoverLink)
             {
                 var coordinates = d3.pointer(e);
                 self.addNode(coordinates[0], coordinates[1]);
@@ -56,6 +60,18 @@ class ForceSimulationGraph
 
     ////////////////////////////////////////////////////////////////////
     //////// public interface
+
+    deleteNode(nodeID)
+    {
+        this.#graph.deleteNode(nodeID)
+        this.#update();
+    }
+
+    disconnect(source, target)
+    {
+        this.#graph.removeEdge(source, target)
+        this.#update();
+    }
 
     addNode(x=0, y=0) {
         console.log(`Add node @(x,y): ${x.toFixed(0)}, ${y.toFixed(0)}`);
@@ -78,14 +94,16 @@ class ForceSimulationGraph
         line_info.style.background = "grey";
         line_info.style.width = "30px";
         line_info.style.textAlign = "center";
-        line_info.innerHTML = this.count++;
+        line_info.innerHTML = this.count;
         line_info.style.marginRight = "10px";
         let weight_info = document.createElement("input");
         weight_info.value = source + " " + target;
         weight_info.style.border = 0;
+        weight_info.id = this.count;
         div.appendChild(line_info);
         div.appendChild(weight_info)
         document.getElementById("weight-input").appendChild(div);
+        this.count++;
     }
 
     getGraphModel()
@@ -129,42 +147,66 @@ class ForceSimulationGraph
         })
 
         // update node locations and sync to our graph model
-        self.svg.selectAll('.node').each(function(d, i)
+        self.svg.selectAll('.node').each(function(d)
         {
-            self.#graph.updateNodeProp(i, {x: d.x, y: d.y}); // sync d3 node model to our own model
+            self.#graph.updateNodeProp(d.id, {x: d.x, y: d.y}); // sync d3 node model to our own model
             d3.select(this).attr("cx", d.x).attr("cy", d.y).attr("transform", "translate(" + d.x + "," + d.y + ")")
         })
     }
 
     #updateLink(graphLinks)
     {
-        var link = this.svg.selectAll('.link').data(graphLinks);
-        if($('#flexSwitchCheckDefault').is(":checked")){
-            link.enter()
-                .insert('line', '.node')
-                .attr('class', 'link')
-                .style('stroke', '#000')
-                .style('stroke-width', 1.9)
-                .style('marker-end', 'url(#end-arrow)')
-        }else{
-            link.enter()
-                .insert('line', '.node')
-                .attr('class', 'link')
-                .style('stroke', '#000')
-                .style('stroke-width', 1.9)
-                .style('marker-end', 'url(#end-arrow)')
-                .style('marker-start', 'url(#start-arrow)')
+
+        let links = this.svg.selectAll('.link').data(graphLinks)
+        let self = this
+
+        let link = links.enter()
+        .insert('line', '.node')
+        .attr('class', 'link')
+        .style('stroke', '#000')
+        .style('stroke-width', 1.9)
+        .on("dblclick", function(e, d){
+            console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
+             self.disconnect(d.source.id, d.target.id);
+             self.mouseHoverLink = DefaultMouseHoverLink;
+        })
+        .on("mouseover", function(e){
+            d3.select(this).style('stroke-width', 4)
+            self.mouseHoverLink = 0;
+        })
+        .on("mouseout", function(e){
+            d3.select(this).style('stroke-width', 1.9)
+            self.mouseHoverLink = DefaultMouseHoverLink;
+        })
+
+
+        if ($('#flexSwitchCheckDefault').is(":checked"))
+        {
+            link.style('marker-end', 'url(#end-arrow)')
+        } 
+        else
+        {
+            link.style('marker-end', 'url(#end-arrow)')
+            .style('marker-start', 'url(#start-arrow)')
         }
-        link
-            .exit()
-            .remove()
+
+        links.exit().remove()
     }
 
     // main update function for when there are changes to nodes/links
     #updateNodes(graphNodes)
     {
         const self = this;
-        let node = this.svg.selectAll('.node').data(graphNodes);
+        let node = this.svg.selectAll('.node')
+        .data(graphNodes, function(d) {
+            
+            if (d === undefined)
+            {
+                console.log(graphNodes)
+            }
+            return d.id; 
+        })
+
         let g = node.enter()
             .append('g')
             .attr('class', 'node')
@@ -179,6 +221,9 @@ class ForceSimulationGraph
             .style("stroke-width", 3)
             .on("mouseover", function(d){
                 d3.select(this).style("fill", "pink");
+                // mouse hover effect - ON
+                //d3.select(this).style("opacity", 0.6);
+                //d3.select(this).style("stroke", "black");
 
                 let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
@@ -194,11 +239,21 @@ class ForceSimulationGraph
                 
             })
             .on("mouseout", function(d){
-                d3.select(this).style("fill", d.hasOwnProperty("color") ? d.color : self.circleColour);
+                
+                // mouse hover effect - OFF
+                d3.select(this).style("opacity", 1);
+                d3.select(this).style("stroke", "");
+
+
                 if(d.buttons==1){
                     self.mouseDownNode=d.target.id.slice(1);
                 }
                 self.mouseHoverNode = DefaultMouseDownNode;
+            })
+            .on("dblclick", function(e, d){
+                //console.log(d.id)
+                 self.deleteNode(d.id);
+                 self.mouseHoverNode = DefaultMouseDownNode
             })
             
 
@@ -214,6 +269,9 @@ class ForceSimulationGraph
                         user-select: none;')
             .attr("x", -4)         // set x position of left side of text
             .attr("y", 5)
+            .attr("text-anchor", "middle")
+            .attr("alignment-baseline", "central")
+            
         node
             .exit()
             .remove();
@@ -231,7 +289,7 @@ class ForceSimulationGraph
         // update simulation
         this.simulation
             .nodes(graphNodes)
-            .force("link", d3.forceLink(graphLinks).distance(100))
+            .force("link", d3.forceLink(graphLinks).distance(100).id(function(d){return d.id;}))
             .force("charge", d3.forceManyBody().strength(-2))
             .alpha(1) // need to reset alpha as well here
             .restart()
