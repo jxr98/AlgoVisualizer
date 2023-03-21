@@ -17,28 +17,48 @@
 </head>
 
 <body>
-    <button class="btn btn-outline-primary mt-3 ml-3" onclick="history.back()">Back</button>
+    <button class="btn btn-dark mt-3 ml-3" onclick="history.back()">Back</button>
     <div class="container-fluid">
         <h1 class="text-center text-primary">Dijkstra's Algorithm</h1>
         <div class="row">
-            <div class="col-9">
+            <div class="col"></div>
+            <div class="col">
+                <div class="text-center">
+                    <div class="btn-group">
+                        <button id="undirected" class="active btn btn-dark">Undirected</button>
+                        <button id="directed" class="btn btn-dark">Directed</button>
+                    </div>
+                    <div style="margin-top: 100px">
+                        <label>Graph Data</label>
+                    </div>
+                </div>
+                <div id="weight-input" style="height:600px;overflow:scroll"></div>
+            </div>
+            <div class="col-5" id="parentDiv">
                 <div class="form-group">
-                    <label for="formControlTextarea2">please input start vertex and end vertex(format 0 1 \n)</label>
+                    <div class="text-center">
+                        <div class="btn-group">
+<!--                            <button id="fill-button" type="button" class="btn btn-dark">Fill in Weight</button>-->
+                            <button id="start-button" type="button" class="btn btn-dark">Start</button>
+                            <button id="reset-button" type="button" class="btn btn-dark"
+                                    onclick="javascript:location.reload();">Reset</button>
+                        </div>
+                    </div>
+                    <label for="formControlTextarea2" style="margin-top: 30px">please input start vertex and end vertex(format 0 1 \n)</label>
                     <textarea class="form-control" id="formControlTextarea2" rows="1"></textarea>
+                    <p style="border-style: solid; margin-top: 30px" id="middle-frame"></p>
                 </div>
             </div>
-
-            <div class="col-3">
-                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Directed Graph</label>
-                <button id="fill-button" type="button" class="btn btn-dark">Fill in Weight</button>
-                <button id="start-button" type="button" class="btn btn-dark">Start</button>
-                <button id="reset-button" type="button" class="btn btn-dark"
-                    onclick="javascript:location.reload();">Reset</button>
+            <div class="col">
+                <div class="text-center">
+                    <div class="btn-group">
+                        <button class="active btn btn-dark">Log</button>
+                        <button id="tutorial" class="btn btn-dark">Tutorial</button>
+                    </div>
+                </div>
+                <p id="right-frame" style="margin-top: 130px; border-style: solid"></p>
             </div>
-
-            <div class="col-9" id='parentDiv'>
-            </div>
+            <div class="col"></div>
         </div>
     </div>
 

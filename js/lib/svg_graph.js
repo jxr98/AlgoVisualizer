@@ -18,12 +18,15 @@ class ForceSimulationGraph
     circleRadius;
     circleColour;
     markerWH;//marker width and height
+    weighted; //record the graph if is weighted
 
-    constructor(svg)
+    constructor(svg, weighted=false)
     {
+        this.weighted = weighted;
+        this.count = 1;
         let width = svg.attr("width"), height = svg.attr("height");
         this.circleRadius=25;//default
-        this.circleColour="rgb(217, 217, 217)"; //default
+        this.circleColour = "white"; //default
         this.markerWH=3;//default
         const self = this;
         this.#graph = new Graph()
@@ -39,7 +42,7 @@ class ForceSimulationGraph
             }))
             .on("tick", function(){self.#tick(self)})
             .alphaDecay(0.002) // just added alpha decay to delay end of execution
-        
+
         svg.on('mousedown', function (e) {
             if (self.mouseHoverNode == DefaultMouseDownNode)
             {
@@ -65,6 +68,26 @@ class ForceSimulationGraph
         console.log(`Connecting nodes ${source} <-> ${target}`);
         this.#graph.addEdge(source, target);
         this.#update();
+        if (this.weighted)
+            this.addWeightInputLine(source, target);
+    }
+
+    addWeightInputLine(source, target) {
+        let div = document.createElement("div");
+        let line_info = document.createElement("label");
+        line_info.style.background = "grey";
+        line_info.style.width = "30px";
+        line_info.style.textAlign = "center";
+        line_info.innerHTML = this.count;
+        line_info.style.marginRight = "10px";
+        let weight_info = document.createElement("input");
+        weight_info.value = source + " " + target;
+        weight_info.style.border = 0;
+        weight_info.id = this.count;
+        div.appendChild(line_info);
+        div.appendChild(weight_info)
+        document.getElementById("weight-input").appendChild(div);
+        this.count++;
     }
 
     getGraphModel()
@@ -154,8 +177,10 @@ class ForceSimulationGraph
             .style("fill", function(d){
                 return d.hasOwnProperty("color") ? d.color : self.circleColour;
             })
+            .style("stroke", "black")
+            .style("stroke-width", 3)
             .on("mouseover", function(d){
-                d3.select(this).style("fill", "red");
+                d3.select(this).style("fill", "pink");
 
                 let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
@@ -188,7 +213,9 @@ class ForceSimulationGraph
                         -khtml-user-select: none;\
                         -moz-user-select: none;\
                         -ms-user-select: none;\
-                        user-select: none;');
+                        user-select: none;')
+            .attr("x", -4)         // set x position of left side of text
+            .attr("y", 5)
         node
             .exit()
             .remove();
