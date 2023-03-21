@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "cypress": "^12.5.1",
-    "jest": "^29.4.1",
+    "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.4.1"
   },
   "type": "module",
@@ -15,5 +15,23 @@
     "coveragePathIgnorePatterns": [
       "<rootDir>/js/thirdParty/"
     ]
-  }
+  },
+  "name": "algovisualizer-5",
+  "description": "[![CI](https://github.com/jxr98/AlgoVisualizer/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/jxr98/AlgoVisualizer/actions/workflows/test.yml)",
+  "version": "1.0.0",
+  "main": "cypress.config.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jxr98/AlgoVisualizer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jxr98/AlgoVisualizer/issues"
+  },
+  "homepage": "https://github.com/jxr98/AlgoVisualizer#readme"
 }
