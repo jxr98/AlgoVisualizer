@@ -39,7 +39,11 @@ test('Array visualizer',()=>{
     g.remove(-1)
     g.removeRight()
     g.insertBefore({id:6, text: "new"}, 0)
-
+    g.move(0, 1)
+    g.swapByID(0, 2)
+    g.changeOverflowPolicy("hideRight")
+    g.clear()
+    g.updateRendering()
     expect(consoleSpy).toHaveBeenCalledTimes(0);
     consoleSpy.mockRestore();
 })
