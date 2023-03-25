@@ -97,6 +97,11 @@ export class ArrayVisualizer
         if (idx > -1 && idx < this.size()) return this.#data[idx];
     }
 
+    findDataIdxByID(dataID)
+    {
+        return this.#data.findIndex((obj) => obj.id === dataID);
+    }
+
     size()
     {
         return this.#data.length;
@@ -192,7 +197,7 @@ export class ArrayVisualizer
     // insert data object before element with given ID
     insertBefore(data, dataID)
     {
-        const idx = this.#findDataIdxByID(dataID);
+        const idx = this.findDataIdxByID(dataID);
         if (idx > -1) {
             this.#data.splice(idx, 0, data);
             this.#update();
@@ -202,7 +207,7 @@ export class ArrayVisualizer
     // remove data by ID
     remove(dataID)
     {
-        const idx = this.#findDataIdxByID(dataID);
+        const idx = this.findDataIdxByID(dataID);
         if (idx > -1) {
             this.#data.splice(idx, 1);
             this.#update();
@@ -217,8 +222,8 @@ export class ArrayVisualizer
 
     swapByID(dataID1, dataID2)
     {
-        const idx1 = this.#findDataIdxByID(dataID1);
-        const idx2 = this.#findDataIdxByID(dataID2);
+        const idx1 = this.findDataIdxByID(dataID1);
+        const idx2 = this.findDataIdxByID(dataID2);
         this.#moveHelper(dataID1, idx2);
         this.#moveHelper(dataID2, idx1);
         this.#update();
@@ -296,11 +301,6 @@ export class ArrayVisualizer
         this.#maxDataCount = this.#estimateMaxNodeCapacity()
         self.#update();
 
-    }
-
-    #findDataIdxByID(dataID)
-    {
-        return this.#data.findIndex((obj) => obj.id === dataID);
     }
 
     #moveHelper(dataID, position)

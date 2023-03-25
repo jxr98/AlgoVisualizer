@@ -1,5 +1,6 @@
 
-export const interval = 300; // controls simulation speed
+export const interval = 500; // controls simulation speed
+
 let idCounter = 0; // IDs must be unique, thus we have a counter here to generate new 
 
 export function onBlur(inputDOM, arrayVis, timeoutHandles, sortFactoryCallback)
