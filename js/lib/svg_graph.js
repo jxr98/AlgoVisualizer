@@ -81,11 +81,13 @@ class ForceSimulationGraph
     }
 
     connectNodes(source, target) {
-        console.log(`Connecting nodes ${source} <-> ${target}`);
-        this.#graph.addEdge(source, target);
-        this.#update();
-        if (this.weighted)
-            this.addWeightInputLine(source, target);
+        if(this.#graph.checkConnection(source,target)==0){
+            console.log(`Connecting nodes ${source} <-> ${target}`);
+            this.#graph.addEdge(source, target);
+            this.#update();
+            if (this.weighted)
+                this.addWeightInputLine(source, target);
+        }
     }
 
     addWeightInputLine(source, target) {

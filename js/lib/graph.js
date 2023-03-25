@@ -53,6 +53,26 @@ export class Graph{
         this.#adjacent[w].add(v);
         this.#numEdges++;
     }
+    // check connection between two nodes
+    checkConnection(v,w){
+        let connection1=this.getAdjacent(v);
+        if(connection1!== undefined){
+            for(var it of connection1){
+                if(it==w){
+                    return 1;
+                }
+            }
+        }
+        let connection2=this.getAdjacent(w);
+        if(connection2!== undefined){
+            for(var it of connection2){
+                if(it==v){
+                    return 1;
+                }
+            }
+        }
+        return 0;
+    }
     updateNodeProp(node, prop)
     {
         this.#nodeProp[node]= Object.assign(this.#nodeProp[node], prop);
