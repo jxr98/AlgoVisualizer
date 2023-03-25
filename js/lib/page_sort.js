@@ -1,10 +1,11 @@
 
-export const interval = 500; // controls simulation speed
+export const interval = 300; // controls simulation speed
 
 let idCounter = 0; // IDs must be unique, thus we have a counter here to generate new 
 
-export function onBlur(inputDOM, arrayVis, timeoutHandles, sortFactoryCallback)
+export function onBlur(inputDOM)
 {
+    
     let input = inputDOM.node().value == "" ? inputDOM.attr("placeholder") : inputDOM.node().value;
     let inputArr = input.split(",").map(item => item.trim());
 
@@ -19,10 +20,8 @@ export function onBlur(inputDOM, arrayVis, timeoutHandles, sortFactoryCallback)
     });
 
     inputDOM.classed("is-invalid", error);
-    if (error) return;
-
-    // input is good, start simulation
-    runSim(inputArr, arrayVis, timeoutHandles, sortFactoryCallback);
+    if (error) return [];
+    return inputArr;
 }
 
 export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback)
@@ -34,7 +33,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
     timeoutHandles.forEach(timeoutID => {
         clearTimeout(timeoutID);
     });
-    timeoutHandles = []
+    timeoutHandles.splice(0,timeoutHandles.length)
 
     let tick = 0;
 
@@ -46,6 +45,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
         }, tick)
         tick += interval;
         timeoutHandles.push(timeoutID)
+        
     })
 
     // run sort
@@ -59,14 +59,6 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
             tick+=interval;
             timeoutHandles.push(timeoutID)
         }
-
-        // for (let i = 0 ; i < numSteps + 1; ++i)
-        // {
-        //     let timeoutID = setTimeout(function(){sort.step()}, tick)
-        //     tick+=interval;
-        //     timeoutHandles.push(timeoutID)
-        // }
-
     }, tick)
     timeoutHandles.push(sortTimeoutID)
 }

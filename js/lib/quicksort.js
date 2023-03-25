@@ -62,6 +62,12 @@ export class Quicksort
         if (this.#partionStack.length == 0)
         // just finished sorting
         {
+            if (this.#pivot != null)
+            // change color for last pivot partioning
+            {
+                this.#pivot.color = "red";
+                this.#arrayVis.updateRendering(); // for the color change)
+            }
             this.#done = true;
             this.#printStats();
             return;
@@ -86,11 +92,17 @@ export class Quicksort
         }
         else
         {
+            if (this.#pivot != null)
+            {
+                this.#pivot.color = "red";
+                this.#arrayVis.updateRendering(); // for the color change)
+            }
+
             // grab new partion problem from stack & select pivot
             let newPartitionRange = this.#partionStack.pop()
             let pivotIdx = this.#selectPivot(newPartitionRange.low, newPartitionRange.high);
             this.#pivot = this.#arrayVis.get(pivotIdx);
-            this.#pivot.color = "red";
+            this.#pivot.color = "blue";
             this.#arrayVis.updateRendering(); // for the color change
 
             // solve the partioning problem locally, cache all the moves needed and place the moves in a stack
