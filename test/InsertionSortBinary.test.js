@@ -1,8 +1,8 @@
+import { BinaryInsertionSort } from '../js/lib/InsertionSortBinary';
+import { Logger } from '../js/lib/Logger';
 import * as d3 from '../js/thirdParty/d3.js';
-import {InsertionSort} from '../js/lib/InsertionSort'
 import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
 import {expect, jest} from '@jest/globals';
-import { arrayVis2Str } from '../js/lib/InsertionSort';
 
 // mock ResizeObserverMock
 class ResizeObserverMock {
@@ -30,7 +30,7 @@ test('Insertion sort',()=>{
     }
 
     // sort
-    let sort = new InsertionSort(g)
+    let sort = new BinaryInsertionSort(g)
     for (let i = 0 ; i < numNode + 1 ; i++)
     {
         // verify that sort is indeed not complete
@@ -58,7 +58,6 @@ test('Insertion sort',()=>{
     consoleSpy.mockRestore();
 })
 
-
 test('detailed step',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -77,7 +76,7 @@ test('detailed step',()=>{
     }
 
     // sort
-    let sort = new InsertionSort(g)
+    let sort = new BinaryInsertionSort(g)
     while (!sort.isDone())
     {
         sort.detailedStep();
@@ -101,39 +100,3 @@ test('detailed step',()=>{
     expect(consoleSpy).toHaveBeenCalledTimes(0);
     consoleSpy.mockRestore();
 })
-
-
-//test arrayVis2Str
-test("should return an empty string if arrayVis is null", () => {
-    const result = arrayVis2Str(null);
-    expect(result).toEqual("");
-  });
-  
-  test("should convert an arrayVis object to a comma-separated string", () => {
-    const arrayVis = {
-      size: () => 3,
-      get: (index) => ({ value: `item${index}` }),
-    };
-    const result = arrayVis2Str(arrayVis);
-    expect(result).toEqual("item0,item1,item2");
-  });
-  
-  test("should convert an empty arrayVis object to an empty string", () => {
-    const arrayVis = {
-      size: () => 0,
-      get: (index) => null,
-    };
-    const result = arrayVis2Str(arrayVis);
-    expect(result).toEqual("");
-  });
-  
-  test("should convert an arrayVis object with one element to a string", () => {
-    const arrayVis = {
-      size: () => 1,
-      get: (index) => ({ value: "single" }),
-    };
-    const result = arrayVis2Str(arrayVis);
-    expect(result).toEqual("single");
-  });
-  
-  
