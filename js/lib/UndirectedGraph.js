@@ -17,11 +17,17 @@ export class UndirectedGraph extends Graph{
     getNumVertices(){ return this.#numVertices; }
     getNumEdges(){ return this.#numEdges; }
 
-    deleteNode(node)
+    deleteNode(_node)
     {
-        if (!Number.isInteger(node))
+        if (!Number.isInteger(_node))
         {
             console.error("[UndirectedGraph::deleteNode] Parameter is not a number")
+            return;
+        }
+        let node = parseInt(_node);
+        if (isNaN(node))
+        {
+            console.error("[UndirectedGraph::deleteNode] node ID is invalid")
             return;
         }
 
@@ -151,7 +157,13 @@ export class UndirectedGraph extends Graph{
         {
             console.warn("[UndirectedGraph::getAdjacent] Parameter is not a number")
         }
-        return this.#adjacent[parseInt(v)];
+        let id = parseInt(v);
+        if (isNaN(id))
+        {
+            console.error("[UndirectedGraph::getAdjacent] node ID is invalid")
+            return;
+        }
+        return this.#adjacent[parseInt(id)];
     }
 
     // this interface is designed for D3.force simulation
