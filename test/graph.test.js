@@ -1,13 +1,13 @@
-import { Graph } from '../js/lib/graph'
+import { UndirectedGraph } from '../js/lib/UndirectedGraph.js'
 
 test('default graph', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     expect(g.getNumVertices()).toBe(0);
     expect(g.getNumEdges()).toBe(0);
 });
 
 test('graph with 2 node, 1 edge', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
@@ -18,7 +18,7 @@ test('graph with 2 node, 1 edge', () => {
 });
 
 test('graph link with 2 node, 1 edge', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
@@ -28,7 +28,7 @@ test('graph link with 2 node, 1 edge', () => {
 });
 
 test('graph node property', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeX = 1;
     let nodeY = 2;
     let nodeA = g.addNode(nodeX, nodeY);

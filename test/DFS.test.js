@@ -1,8 +1,8 @@
 import { DFS } from '../js/lib/DFS'
-import { Graph } from '../js/lib/graph'
+import { UndirectedGraph } from '../js/lib/UndirectedGraph.js'
 
 test('DFS on graph with 2 node, 1 edge', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
@@ -19,7 +19,7 @@ test('DFS on graph with 2 node, 1 edge', () => {
 });
 
 test('DFS, no path found', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     let nodeC = g.addNode();

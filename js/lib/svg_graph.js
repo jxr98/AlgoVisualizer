@@ -1,4 +1,4 @@
-import { Graph } from "./graph.js";
+import { UndirectedGraph } from "./UndirectedGraph.js";
 import * as d3 from "../thirdParty/d3.js";
 
 const DefaultMouseDownNode=-1;
@@ -32,7 +32,7 @@ class ForceSimulationGraph
         this.circleColour = "white"; //default
         this.markerWH=3;//default
         const self = this;
-        this.#graph = new Graph()
+        this.#graph = new UndirectedGraph()
         this.svg = svg
         this.link=new Link();
         this.mouseDownNode = DefaultMouseDownNode;

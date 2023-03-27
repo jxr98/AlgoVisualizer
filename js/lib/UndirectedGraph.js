@@ -1,10 +1,13 @@
-export class Graph{
+import {Graph} from "./Graph.js";
+
+export class UndirectedGraph extends Graph{
     #numVertices;
     #numEdges;
     #adjacent; // adjacency list, array of sets
     #nodeProp; // array of objects
 
     constructor(){
+        super();
         this.#numVertices=0;
         this.#numEdges=0;
         this.#adjacent=[];
