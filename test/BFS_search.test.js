@@ -1,8 +1,8 @@
 import { BFS_search } from '../js/lib/BFS_search'
-import { Graph } from '../js/lib/graph'
+import { UndirectedGraph } from '../js/lib/UndirectedGraph.js'
 
 test('BFS on graph with 2 nodes, 1 edge', () => {
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     g.addEdge(nodeA, nodeB);
@@ -28,7 +28,7 @@ test('BFS on graph with 2 nodes, 1 edge', () => {
 });
 
 test('BFS search grach with 2 nodes, 0 edge',()=>{
-    let g = new Graph();
+    let g = new UndirectedGraph();
     let nodeA = g.addNode();
     let nodeB = g.addNode();
     let search = new BFS_search(g, nodeA);
