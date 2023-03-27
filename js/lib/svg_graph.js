@@ -98,11 +98,20 @@ class ForceSimulationGraph
         line_info.style.textAlign = "center";
         line_info.innerHTML = this.count;
         line_info.style.marginRight = "10px";
+        let nodes_info = document.createElement("label");
+        nodes_info.id = "nodes" + this.count;
+        nodes_info.style.background = "pink"
+        nodes_info.style.width = "40px";
+        nodes_info.style.textAlign = "center";
+        nodes_info.innerHTML = source + " " + target;
+        nodes_info.style.marginRight = "10px";
         let weight_info = document.createElement("input");
-        weight_info.value = source + " " + target;
+        weight_info.id = "weight" + this.count;
+        weight_info.style.background = "#F0F8FF";
+        weight_info.value = 1;
         weight_info.style.border = 0;
-        weight_info.id = this.count;
-        div.appendChild(line_info);
+        div.appendChild(line_info)
+        div.appendChild(nodes_info)
         div.appendChild(weight_info)
         document.getElementById("weight-input").appendChild(div);
         this.count++;
