@@ -17,15 +17,27 @@ export class UndirectedGraph extends Graph{
     getNumVertices(){ return this.#numVertices; }
     getNumEdges(){ return this.#numEdges; }
 
-    deleteNode(node)
+    deleteNode(_node)
     {
+        if (!Number.isInteger(_node))
+        {
+            console.error("[UndirectedGraph::deleteNode] Parameter is not a number")
+            return;
+        }
+        let node = parseInt(_node);
+        if (isNaN(node))
+        {
+            console.error("[UndirectedGraph::deleteNode] node ID is invalid")
+            return;
+        }
+
         // lazy delete
         this.updateNodeProp(node, {delete : true})
 
         // remove edge to this node from all other nodes
         for (let i = 0; i < this.#numVertices; i++)
         {
-            let deleted = this.#adjacent[i].delete(node.toString())
+            let deleted = this.#adjacent[i].delete(node)
             if (deleted)
             {
                 this.#numEdges--;
@@ -37,11 +49,25 @@ export class UndirectedGraph extends Graph{
         // decrementing it in a lazy delete means there will be missed nodes
     }
 
-    removeEdge(a,b)
+    removeEdge(_a,_b)
     {
-        let removeB = this.#adjacent[a].delete(b.toString());
-        let removeA = this.#adjacent[b].delete(a.toString());
-        this.#numEdges--;
+        if (!Number.isInteger(_a) || !Number.isInteger(_b))
+        {
+            console.warn("[UndirectedGraph::removeEdge] Parameter is not a number")
+        }
+
+        let a = parseInt(_a),
+        b = parseInt(_b)
+        if (isNaN(a) || isNaN(b))
+        {
+            console.error("[UndirectedGraph::removeEdge] Parameter is invalid")
+            return
+        }
+
+        let removeB = this.#adjacent[a].delete(b);
+        let removeA = this.#adjacent[b].delete(a);
+        if (removeB && removeA) this.#numEdges--;
+        
     }
    
     // create a new node, return index of new node
@@ -51,13 +77,39 @@ export class UndirectedGraph extends Graph{
         this.#nodeProp[newNodeIndex]={x:x, y:y, delete : false};
         return newNodeIndex;
     }
-    addEdge(v,w) {
+    addEdge(_v, _w) {
+        if (!Number.isInteger(_w) || !Number.isInteger(_v))
+        {
+            console.warn("[UndirectedGraph::addEdge] Parameter is not a number")
+        }
+        let v = parseInt(_v),
+        w = parseInt(_w)
+        if (isNaN(v) || isNaN(w))
+        {
+            console.error("[UndirectedGraph::addEdge] Parameter is invalid")
+            return
+        }
+
         this.#adjacent[v].add(w);
         this.#adjacent[w].add(v);
         this.#numEdges++;
     }
     // check connection between two nodes
-    checkConnection(v,w){
+    checkConnection(_v,_w){
+
+        if (!Number.isInteger(_w) || !Number.isInteger(_v))
+        {
+            console.warn("[UndirectedGraph::checkConnection] Parameter is not a number")
+        }
+
+        let v = parseInt(_v),
+        w = parseInt(_w)
+        if (isNaN(v) || isNaN(w))
+        {
+            console.error("[UndirectedGraph::checkConnection] Parameter is invalid")
+            return
+        }
+
         let connection1=this.getAdjacent(v);
         if(connection1!== undefined){
             for(var it of connection1){
@@ -78,12 +130,40 @@ export class UndirectedGraph extends Graph{
     }
     updateNodeProp(node, prop)
     {
-        this.#nodeProp[node]= Object.assign(this.#nodeProp[node], prop);
+        if (!Number.isInteger(node))
+        {
+            console.warn("[UndirectedGraph::updateNodeProp] Parameter is not a number")
+        }
+
+        if (! (typeof prop === 'object' && prop !== null))
+        {
+            console.error("[UndirectedGraph::updateNodeProp] property is not a valid object")
+            return;
+        }
+        
+        let id = parseInt(node);
+        if (isNaN(id))
+        {
+            console.error("[UndirectedGraph::updateNodeProp] node ID is invalid")
+            return;
+        }
+
+        this.#nodeProp[id]= Object.assign(this.#nodeProp[id], prop);
     }
 
     //get neibours of v (returns a set)
     getAdjacent(v){
-        return this.#adjacent[v];
+        if (!Number.isInteger(v))
+        {
+            console.warn("[UndirectedGraph::getAdjacent] Parameter is not a number")
+        }
+        let id = parseInt(v);
+        if (isNaN(id))
+        {
+            console.error("[UndirectedGraph::getAdjacent] node ID is invalid")
+            return;
+        }
+        return this.#adjacent[parseInt(id)];
     }
 
     // this interface is designed for D3.force simulation
