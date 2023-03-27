@@ -9,51 +9,48 @@ import {line} from "./thirdParty/d3.js";
 // as opposed to creating svg, textarea, etc. DOM on the fly.
 
 //set up a svg
-const width = 600;
-const height = 1000;
-let svg = d3.select('#middle-frame')
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .style('stroke', 'black');
+var svg = d3.select("#graphSvg")
 
 // setup log panel
-let textArea = d3.select("#right-frame").append("textarea")
-textArea.attr("readonly", true)
-    .attr("row", 2)
-    .attr("cols", 100)
-    .style("width", "380px")
-    .style("height", "1000px")
+var textArea=d3.select("#logPanel");
 
 // console.log now mirrors to text area
 redirectConsoleOutput(textArea)
 
 const fGraph = new ForceSimulationGraph(svg, true);
 
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
+}
+
 document.getElementById("start-button").onclick = function()
 {
     let lines = Array.from(fGraph.getGraphModel().getLinks());
     let weightedLines = [];
     for (let i = 1; i <= lines.length; i++) {
-        let weight_info = document.getElementById(i.toString()).value.split(" ");
-        weightedLines.push([weight_info[0], weight_info[1], parseInt(weight_info[2])]);
-        weightedLines.push([weight_info[1], weight_info[0], parseInt(weight_info[2])]);
+        let nodes_info = document.getElementById("nodes" + i).innerHTML.split(" ")
+        let weight = document.getElementById("weight" + i).value
+        if (!isNumeric(weight)) {
+            window.alert("Please check the input in line " + i)
+            return
+        }
+        weightedLines.push([nodes_info[0], nodes_info[1], parseInt(weight)]);
+        weightedLines.push([nodes_info[1], nodes_info[0], parseInt(weight)]);
     }
-
 
     let vertices = $("#formControlTextarea2").val().split(" ");
     let DijkstraPaths = new Dijkstra(weightedLines, fGraph.getGraphModel(), vertices[0], vertices[1]);
     let path = "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": ";
 
     if (!DijkstraPaths.havePath()){
-        window.alert("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
+        $("#shortestPath").text("From vertex " + vertices[0] + " to vertex " + vertices[1] + " are not connected");
     } else {
         let result = DijkstraPaths.getPath();
         path += " " + result[0][0] + "(" + result[0][1] + ")";
         for (let i = 1; i < result.length ; i++){
             path += " -> " + result[i][0] + "(" + result[i][1] + ")";
         };
-        window.alert(path);
+        $("#shortestPath").text(path);
         let process = DijkstraPaths.getProcess();
         let size = result.length;
         for (let i = 0; i < size; i++) {
