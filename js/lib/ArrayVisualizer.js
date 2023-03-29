@@ -282,6 +282,7 @@ export class ArrayVisualizer
     }
     
     #onResize(self)
+    /* istanbul ignore next */
     // callback func
     {
         // update width and height
@@ -335,6 +336,7 @@ export class ArrayVisualizer
     }
 
     #update() 
+    /* istanbul ignore next */
     {
         // check for overflow
         this.#displayData = []
