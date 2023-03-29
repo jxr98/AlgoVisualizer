@@ -5,6 +5,7 @@ import {BinaryInsertionSort} from './lib/InsertionSortBinary.js'
 import { Logger } from './lib/Logger.js';
 import { onBlur, runSim, interval } from './lib/page_sort.js';
 import { Quicksort } from './lib/quicksort.js';
+import { MergeSort } from './lib/mergeSort.js';
 
 const transitionDelay = interval;
 
@@ -75,3 +76,25 @@ quickSortInput.on("blur", function()
 })
 // start with default problem on page load
 runSim(onBlur(quickSortInput), quickSortArrayVis, quickSortTimeouts, quickSortFactory);
+
+// merge sort
+let mergeSortLogger = new Logger(d3.select("#mergeSortLog"))
+let mergeSortTimeouts = []
+const mergeSortArrayVis = new ArrayVisualizer(d3.select("#mergeSortSvg"), transitionDelay)
+mergeSortArrayVis.setTitle("Quick Sort")
+mergeSortArrayVis.setLegend("sorted", "red")
+mergeSortArrayVis.setLegend("un-sorted", "grey")
+mergeSortArrayVis.setLegend("range being merged", "blue")
+let mergeSortInput = d3.select("#mergeSortArrayInput");
+let mergeSortFactory = () =>{
+    return new MergeSort(mergeSortArrayVis, mergeSortLogger); 
+};
+mergeSortInput.on("blur", function()
+{
+    let inputArr = onBlur(mergeSortInput);
+    if (inputArr.length > 0){
+        runSim(inputArr, mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory);
+    }
+})
+// start with default problem on page load
+runSim(onBlur(mergeSortInput), mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory);
