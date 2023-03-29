@@ -2,7 +2,6 @@
     top: 91%;  /* if left at 100%, there will be a gap between the menu and the toggle, which can cause jitters */
 }
 
-
 .accordion-option
 {
     font-size: 16px;
