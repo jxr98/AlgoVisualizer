@@ -6,12 +6,12 @@ WORKDIR /app
 
 COPY package-lock.json .
 COPY package.json ./
-RUN yarn install
+RUN npm install
 
-COPY * .
+COPY ./* /app/
 
 EXPOSE 3000
 ENV port 3000
 
-CMD [ "yarn", "start" ]
+CMD [ "npm", "start" ]
 # CMD sleep infinity
