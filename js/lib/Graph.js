@@ -1,7 +1,8 @@
 export class Graph{
+
     #numVertices;
     #numEdges;
-
+ 
     constructor() {
         this.#numVertices=0;
         this.#numEdges=0;
