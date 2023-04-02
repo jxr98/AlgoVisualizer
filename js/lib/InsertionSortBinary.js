@@ -1,8 +1,9 @@
-import {arrayVis2Str} from './InsertionSort.js'
+import {arrayVis2Str} from "./sortTemplate.js"
+import { TSort } from "./sortTemplate.js";
 import {Logger} from "./Logger.js"
 
-// insertion sort with binary search
-export class BinaryInsertionSort
+// insertion sort with binary search 
+export class BinaryInsertionSort extends TSort
 {
     #logger = null;
 
@@ -28,6 +29,7 @@ export class BinaryInsertionSort
     
     constructor(arrayVis, logger = null)
     {
+        super();
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
         this.#originalArrayStr = arrayVis2Str(this.#arrayVis)

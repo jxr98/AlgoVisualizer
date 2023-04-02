@@ -1,7 +1,8 @@
 import {Logger} from "./Logger.js"
-import {arrayVis2Str} from './InsertionSort.js'
+import {arrayVis2Str} from "./sortTemplate.js"
+import { TSort } from "./sortTemplate.js";
 
-export class Quicksort
+export class Quicksort extends TSort
 {
     #logger = null;
 
@@ -26,6 +27,7 @@ export class Quicksort
 
     constructor(arrayVis, logger = null)
     {
+        super();
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
         this.#originalArrayStr = arrayVis2Str(this.#arrayVis)

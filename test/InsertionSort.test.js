@@ -2,7 +2,7 @@ import * as d3 from '../js/thirdParty/d3.js';
 import {InsertionSort} from '../js/lib/InsertionSort'
 import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
 import {expect, jest} from '@jest/globals';
-import { arrayVis2Str } from '../js/lib/InsertionSort';
+import { arrayVis2Str } from '../js/lib/sortTemplate.js';
 
 // mock ResizeObserverMock
 class ResizeObserverMock {
