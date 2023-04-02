@@ -66,6 +66,12 @@
                 <a href="javascript:void(0)" class="accordion-option closeAll" >Close All</a>
             </div>
         </div>
+        <div class="row">
+            <label for="speedCtrl" class="form-label">Animation Speed Control</label>
+            <input type="range" class="form-range" min="300" max="1500" step="100" value="300"
+                id="speedCtrl" oninput="this.nextElementSibling.value = this.value + 'ms'">
+            <output id="speedDisplay">300ms</output>
+        </div>
         
         <div class="accordion" id="accordion">
 

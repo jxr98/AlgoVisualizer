@@ -1,13 +1,13 @@
 import * as d3 from './thirdParty/d3.js';
-import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
+import {ArrayVisualizer, TransitionDelay} from './lib/ArrayVisualizer.js'
 import {InsertionSort} from './lib/InsertionSort.js'
 import {BinaryInsertionSort} from './lib/InsertionSortBinary.js'
 import { Logger } from './lib/Logger.js';
-import { onBlur, runSim, interval } from './lib/page_sort.js';
+import { onBlur, runSim } from './lib/page_sort.js';
 import { Quicksort } from './lib/quicksort.js';
 import { MergeSort } from './lib/mergeSort.js';
 
-const transitionDelay = interval;
+let transitionDelay = new TransitionDelay();
 
 //insertion sort
 let insertionSortLogger = new Logger(d3.select("#InsertionSortLog"))
@@ -25,11 +25,11 @@ insertionSortInput.on("blur", function()
 {
     let inputArr = onBlur(insertionSortInput);
     if (inputArr.length > 0){
-        runSim(inputArr, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory);
+        runSim(inputArr, insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory, transitionDelay);
     }
 })
  // start with default problem on page load
- runSim(onBlur(insertionSortInput), insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory);
+ runSim(onBlur(insertionSortInput), insertionSortArrayVis, insertionSortSimTimeoutHandles, insertionSortFactory, transitionDelay);
 
 
 // binary insertion sort
@@ -48,11 +48,11 @@ binInsertionSortInput.on("blur", function()
 {
     let inputArr = onBlur(binInsertionSortInput);
     if (inputArr.length > 0){
-        runSim(inputArr, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory);
+        runSim(inputArr, binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory, transitionDelay);
     }
 })
 // start with default problem on page load
-runSim(onBlur(binInsertionSortInput), binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory);
+runSim(onBlur(binInsertionSortInput), binInsertionSortArrayVis, binInsertionSortTimeouts, binInsertionSortFactory, transitionDelay);
 
 // quicksort
 let quickSortLogger = new Logger(d3.select("#quickSortLog"))
@@ -70,12 +70,12 @@ quickSortInput.on("blur", function()
 {
     let inputArr = onBlur(quickSortInput);
     if (inputArr.length > 0){
-        runSim(inputArr, quickSortArrayVis, quickSortTimeouts, quickSortFactory);
+        runSim(inputArr, quickSortArrayVis, quickSortTimeouts, quickSortFactory, transitionDelay);
     }
     
 })
 // start with default problem on page load
-runSim(onBlur(quickSortInput), quickSortArrayVis, quickSortTimeouts, quickSortFactory);
+runSim(onBlur(quickSortInput), quickSortArrayVis, quickSortTimeouts, quickSortFactory, transitionDelay);
 
 // merge sort
 let mergeSortLogger = new Logger(d3.select("#mergeSortLog"))
@@ -93,8 +93,25 @@ mergeSortInput.on("blur", function()
 {
     let inputArr = onBlur(mergeSortInput);
     if (inputArr.length > 0){
-        runSim(inputArr, mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory);
+        runSim(inputArr, mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory, transitionDelay);
     }
 })
 // start with default problem on page load
-runSim(onBlur(mergeSortInput), mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory);
+runSim(onBlur(mergeSortInput), mergeSortArrayVis, mergeSortTimeouts, mergeSortFactory, transitionDelay);
+
+// transition speed ctrl
+d3.select("#speedCtrl").on("change", function()
+{
+    // if setting didnt change, do nothing
+    let newSpeed = parseInt(d3.select(this).node().value);
+    if (newSpeed == transitionDelay.getDelay()) return;
+
+    // update transition speed
+    transitionDelay.setDelay(newSpeed)
+
+    // restart all sims
+    insertionSortInput.dispatch("blur")
+    binInsertionSortInput.dispatch("blur")
+    quickSortInput.dispatch("blur")
+    mergeSortInput.dispatch("blur")
+})

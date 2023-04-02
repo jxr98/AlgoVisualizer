@@ -1,6 +1,3 @@
-
-export const interval = 300; // controls simulation speed
-
 let idCounter = 0; // IDs must be unique, thus we have a counter here to generate new 
 
 export function onBlur(inputDOM)
@@ -24,7 +21,7 @@ export function onBlur(inputDOM)
     return inputArr;
 }
 
-export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback)
+export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback, interval)
 {
     // clear array model
     arrayVis.clear()
@@ -43,7 +40,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
         let timeoutID = setTimeout(function(){
             arrayVis.insertRight({id: idCounter++, text: ele, value: num})
         }, tick)
-        tick += interval;
+        tick += interval.getDelay();
         timeoutHandles.push(timeoutID)
         
     })
@@ -56,7 +53,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
         for (let i = 0 ; i < numSteps; ++i)
         {
             let timeoutID = setTimeout(function(){sort.detailedStep()}, tick)
-            tick+=interval;
+            tick+=interval.getDelay();
             timeoutHandles.push(timeoutID)
         }
     }, tick)
