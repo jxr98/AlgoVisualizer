@@ -1,5 +1,5 @@
 import * as d3 from '../js/thirdParty/d3.js';
-import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
+import {ArrayVisualizer, TransitionDelay, defaultTransitionDelay} from '../js/lib/ArrayVisualizer'
 import {expect, jest} from '@jest/globals';
 
 // mock ResizeObserverMock
@@ -10,6 +10,14 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock;
   
+test('Transition delay', ()=>
+{
+    let g = new TransitionDelay();
+    expect(g.getDelay()).toBe(defaultTransitionDelay);
+    g.setDelay(1)
+    expect(g.getDelay()).toBe(1);
+})
+
 test('Array visualizer',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -21,7 +29,7 @@ test('Array visualizer',()=>{
         .attr("height", height)
         .style("border", "1px solid black")
 
-    let interval = 200; 
+    let interval = new TransitionDelay(); 
     const g = new ArrayVisualizer(svg, interval)
     g.setLeftLabel("left label")
     g.setRightLabel("right label")

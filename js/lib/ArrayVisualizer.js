@@ -1,5 +1,30 @@
 import * as d3 from "../thirdParty/d3.js";
 
+export const defaultTransitionDelay = 300;
+
+export class TransitionDelay
+{
+    #delay;
+    constructor(d = defaultTransitionDelay)
+    {
+        if (!Number.isInteger(d)) {console.error("non int")}
+        this.#delay = d;
+    }
+    setDelay(d)
+    {
+        if (!Number.isInteger(d)) {console.error("non int")}
+        this.#delay = d;
+    }
+    getDelay()
+    {
+        return this.#delay;
+    }
+    minTransitionDelay()
+    {
+        return defaultTransitionDelay;
+    }
+}
+
 export class ArrayVisualizer
 {
     // svg handle
@@ -38,13 +63,13 @@ export class ArrayVisualizer
     #defaultColor = "black"; // circle color default
     
 
-    constructor(svg, delay = 2000)
+    constructor(svg, delay = null)
     {
         let self = this;
         this.#svg = svg;
         this.#svgWidth = this.#svg.node().clientWidth;
         this.#svgHeight = this.#svg.node().clientHeight;
-        this.#delay = delay;
+        this.#delay = delay == null ? new TransitionDelay() : delay;
 
         this.#maxDataCount = this.#estimateMaxNodeCapacity();
         
@@ -420,13 +445,13 @@ export class ArrayVisualizer
 
                 // slowly make the new data from invisible to visible
                 g.transition()
-                .duration(self.#delay)
+                .duration(self.#delay.minTransitionDelay())
                 .style('opacity', self.#opacity)
             },
             update => {
                 // positions of existing node must change to sync with position in array
                 update.transition()
-                .duration(self.#delay)
+                .duration(self.#delay.minTransitionDelay())
                 .attr("transform", function(d)
                 {
                     let y = self.#svgHeight/2,
@@ -440,7 +465,7 @@ export class ArrayVisualizer
                 // update color
                 update.select("circle")
                 .transition()
-                .duration(self.#delay)
+                .duration(self.#delay.minTransitionDelay())
                 .style("fill", function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
@@ -448,7 +473,7 @@ export class ArrayVisualizer
             exit => {
                 // nodes that are removed are faded away
                 exit.transition()
-                .duration(self.#delay)
+                .duration(self.#delay.minTransitionDelay())
                 .style('opacity', 0)
                 .remove()
             }
