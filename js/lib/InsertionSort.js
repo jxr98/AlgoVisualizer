@@ -1,21 +1,12 @@
 import {Logger} from "./Logger.js"
-
-export function arrayVis2Str(arrayVis)
-{
-    if (arrayVis == null) return "";
-    let array = []
-    for (let i = 0; i < arrayVis.size(); ++i)
-    {
-        array[i] = arrayVis.get(i).value;
-    }
-    return array.toString();
-}
+import {arrayVis2Str} from "./sortTemplate.js"
+import { TSort } from "./sortTemplate.js";
 
 // In insertion sort, the array to be sorted is divided into two sub-arrays
 // we start with first element of the array as the sorted array and the rest of the array
 // as un-sorted array. We incrementally move elements from un-sorted section to sorted section via linear search.
 // The array is sorted when the un-sorted section is empty
-export class InsertionSort
+export class InsertionSort extends TSort
 {
     // handle to array visualizer
     #arrayVis = null;
@@ -37,6 +28,7 @@ export class InsertionSort
     
     constructor(arrayVis, logger = null)
     {
+        super();
         this.#arrayVis = arrayVis;
         this.#arraySize = arrayVis.size();
         this.#originalArrayStr = arrayVis2Str(this.#arrayVis)
