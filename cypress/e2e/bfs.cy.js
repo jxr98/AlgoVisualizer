@@ -25,12 +25,12 @@ describe('Home page website', () => {
     /* ==== Generated with Cypress Studio ==== */
     cy.get('#graphNav > .nav-link').click();
     cy.get('#graphNav > .dropdown-menu > :nth-child(1) > .dropdown-item').click();
-    cy.get('svg:first').click(100, 100);
-    cy.get('svg:first').click(100, 100);
+    cy.get('svg:first').click(0, 0);
+    cy.get('svg:first').click(0, 0);
     /* ==== End Cypress Studio ==== */
 
     // wait for force simulation to move nodes apart
-    cy.wait(3000)
+    // cy.wait(3000)
 
     // check the shortest path
     cy.get('#formControlTextarea2').type('0 1');
