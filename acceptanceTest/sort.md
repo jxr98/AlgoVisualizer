@@ -21,9 +21,12 @@ Test page defaults:
 7. Expect all sorting algorithm simulations to have consistent default inputs and expect the final sorted sequence for all sorting algorithms to be the same
 8. Upon click "close all", expect all panels to be collapsed
 
-Test user input:
+Test user input interaction:
 1. Visit https://jxr98.github.io/AlgoVisualizer/html/sort.html
 2. For each simulation input field, type in an integer sequence of your choice, and launch the simulation by clicking outside the input box
    1. expect the final sequence to be sorted in descending order
    2. expect extra information about simulation for your sequence to be printed in the log panel
    3. when attempting to launch simulation on invalid inputs, expect warnings to appear and the current simulation is undisturbed
+3. Change the simulation speed from 300ms to 1000ms
+   1. expect current simulations to be re-launched
+   2. expect noticeable changes to animation speed
