@@ -16,14 +16,24 @@ function isNumeric(value) {
     return /^-?\d+$/.test(value);
 }
 
-document.getElementById("start-button").onclick = function()
+document.getElementById("max-heap").onclick = function()
 {
     let data = $("#message-box").val().split("\n")
     for (let i = 0; i < data.length; i++) {
         if (isNumeric(data[i])) continue
         else window.alert("please check input data")
-        data[i] = parseInt(data[i])
     }
     const fGraph = new ForceSimulationGraph(svg, data)
     fGraph.buildMaxHeap()
+}
+
+document.getElementById("min-heap").onclick = function()
+{
+    let data = $("#message-box").val().split("\n")
+    for (let i = 0; i < data.length; i++) {
+        if (isNumeric(data[i])) continue
+        else window.alert("please check input data")
+    }
+    const fGraph = new ForceSimulationGraph(svg, data)
+    fGraph.buildMinHeap()
 }

@@ -1,14 +1,11 @@
 import * as d3 from "../thirdParty/d3.js";
-import {maxHeap} from "./Heap.js";
+import {maxHeap, minHeap} from "./Heap.js";
 
 class ForceSimulationGraph
 {
     constructor(svg, data) {
         this.svg = svg
         this.data = data
-    }
-
-    buildMaxHeap() {
         let len = this.data.length
         let count = 0
         let width = parseInt(this.svg.style("width"));
@@ -28,6 +25,10 @@ class ForceSimulationGraph
             dataset.push([width / 2, total_h, this.data[0]])
             total_h += line_h
             count += 1
+        }
+
+        for (let i = 0; i < len; i++) {
+            data[i] = parseInt(data[i])
         }
 
         for (let i = 1; i < Math.ceil(Math.log2(len + 1)); i++) {
@@ -68,7 +69,7 @@ class ForceSimulationGraph
             .attr('fill', 'pink')
             .attr('id', function(d, i) {
                 return "node" + i
-        })
+            })
 
         let texts = this.svg.selectAll("text")
             .data(dataset)
@@ -107,7 +108,10 @@ class ForceSimulationGraph
                 return i
             })
             .attr("text-anchor", "middle")
+    }
 
+    buildMaxHeap() {
+        let len = this.data.length
         let heap = new maxHeap()
         heap.buildHeap(this.data)
         let process = heap.getProcess()
@@ -140,7 +144,52 @@ class ForceSimulationGraph
             }
             else
                 setTimeout(function () {
-                    console.log("Node " + p[0] + " is the biggest in the subtree.")
+                    console.log("Node " + p[0] + " is the largest in the subtree.")
+                }, 1000 * i)
+            this.unfocusNode(p[0], i);
+            if (p[1] < this.data.length)
+                this.unfocusNode(p[1], i)
+            if (p[2] < this.data.length)
+                this.unfocusNode(p[2], i)
+            i++
+        }
+    }
+
+    buildMinHeap() {
+        let len = this.data.length
+        let heap = new minHeap()
+        heap.buildHeap(this.data)
+        let process = heap.getProcess()
+        let i = 1
+        for (let j = 0; j < process.length; j++) {
+            let p = process[j]
+            setTimeout(function () {
+                if (p[1] < len && p[2] < len)
+                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ", " + p[2] + ".")
+                else if (p[1] >= len && p[2] < len)
+                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[2] + ".")
+                else if (p[2] >= len && p[1] < len)
+                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ".")
+                else if (p[2] >= len && p[1] >= len)
+                    console.log("The " + j + " step is checking node " + p[0] + ".")
+            }, 1000 * i)
+            // focus three nodes which will be compared
+            this.focusNode(p[0], i);
+            if (p[1] < len)
+                this.focusNode(p[1], i)
+            if (p[2] < len)
+                this.focusNode(p[2], i)
+            i++
+
+            // focus two nodes which will be switch / continue to next 3 nodes
+            if (p[0] != p[3]) {
+                this.focusLine(p[3], p[0], i++)
+                this.swapText(p[3], p[0], i++)
+                this.unfocusLine(p[3], p[0], i)
+            }
+            else
+                setTimeout(function () {
+                    console.log("Node " + p[0] + " is the smallest in the subtree.")
                 }, 1000 * i)
             this.unfocusNode(p[0], i);
             if (p[1] < this.data.length)
