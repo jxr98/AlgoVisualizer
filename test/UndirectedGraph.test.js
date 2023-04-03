@@ -156,4 +156,39 @@ describe('UndirectedGraph', () => {
     expect(graph.checkConnection('0', '0')).toBe(0);
   });
   
+  test('delete node and remove edge', () => {
+    let g = new UndirectedGraph();
+    let node0 = g.addNode();
+    let node1 = g.addNode();
+    let node2 = g.addNode();
+    let node3 = g.addNode();
+    g.addEdge(node0, node1);
+    g.addEdge(node1, node2);
+    g.addEdge(node2, node3);
+    g.addEdge(node3, node0);
+    expect(g.getNumVertices()).toBe(4);
+    expect(g.getNumEdges()).toBe(4);
+
+    // delete a node and remove its edges
+    g.deleteNode(node2);
+    expect(g.getNumVertices()).toBe(4);
+    expect(g.getNumEdges()).toBe(2);
+
+    // remove an edge
+    g.removeEdge(node0, node1);
+    expect(g.getNumEdges()).toBe(1);
+    expect(g.checkConnection(node1, node0)).toBe(0);
+    expect(g.checkConnection(node3, node0)).toBe(1);
+});
+
+  test('check connections', () => {
+    let g = new UndirectedGraph();
+    let node0 = g.addNode();
+    let node1 = g.addNode();
+    let node2 = g.addNode();
+    g.addEdge(node0, node1);
+    expect(g.checkConnection(node0, node1)).toBe(1);
+    expect(g.checkConnection(node2, node1)).toBe(0);
+    expect(g.checkConnection(node0, node2)).toBe(0);
+});
 });
