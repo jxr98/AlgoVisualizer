@@ -1,4 +1,6 @@
 import {GraphDecorator} from "./GraphDecorator.js";
+import {Graph} from "./Graph.js";
+import {Edge} from "./Edge.js";
 
 export class EdgeWeightedGraph extends GraphDecorator {
     #numVertices;
@@ -10,12 +12,17 @@ export class EdgeWeightedGraph extends GraphDecorator {
         super(graph);
         this.#numVertices = 0;
         this.#numEdges = 0;
-        this.#adjacent=[];
-        this.#nodeProp=[];
+        this.#adjacent = [];
+        this.#nodeProp = [];
     }
 
-    getNumVertices(){ return this.#numVertices; }
-    getNumEdges(){ return this.#numEdges; }
+    getNumVertices() {
+        return this.#numVertices;
+    }
+
+    getNumEdges() {
+        return this.#numEdges;
+    }
 
     addNode(x = 0, y = 0) {
         const newNodeIndex = this.#numVertices++;

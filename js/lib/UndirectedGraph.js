@@ -148,4 +148,8 @@ export class UndirectedGraph extends Graph{
         }
         return ret;
     }
+
+    getNodeProperty(index){
+        return this.#nodeProp[index];
+    }
 }

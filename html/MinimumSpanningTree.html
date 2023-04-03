@@ -45,9 +45,8 @@
     </nav>
     <h1 class="text-center" style="margin-top: 20px">Minimum Spanning Tree</h1>
     <div class="row" style="margin-top: 20px">
-        <div class="col-sm-3 border">
-            <h2 class="text-center">Log Panel</h2>
-            <textarea readonly style="width: 100%; height:800px; border: none;outline: none;background:#F0F8FF;" id="logPanel"></textarea>
+        <div class="col-sm-3 border" id="weight-input">
+            <h2 class="text-center">Edge Weights</h2>
         </div>
         <div class="col-sm-6 border">
             <div class="row" style="padding-left: 15px;padding-right: 15px;margin-bottom: 5px;">
@@ -62,15 +61,16 @@
             </svg>
         </div>
         <div class="col-sm-3 border" id="thirdPanel">
-            <h2>Instruction</h2>How to use this graph simulator?
+            <h2 class="text-center">Instruction</h2>How to use this graph simulator?
             <ol>
                 <li>Draw nodes and links in the Graph Panel</li>
-                <li>Input the source node index and target node index in the second panel</li>
+                <li>Input the weight(which must be an integer) for the source node index and target node index in the second panel</li>
                 <li>Click the Start button</li>
             </ol>
-            <h2>Shortest Path</h2>
+            <h2 class="text-center">Shortest Path</h2>
             <p id="shortestPath"></p>
-            <h2>Queue</h2>
+            <h2 class="text-center">Log Panel</h2>
+            <textarea readonly style="width: 100%; height:800px; border: none;outline: none;background:#F0F8FF;" id="logPanel"></textarea>
         </div>
     </div>
 </div>
@@ -111,7 +111,7 @@
         }
     );
 </script>
-<!--<script type="module" src="../js/MinimumSpanningTree.js"></script>-->
+<script type="module" src="../js/MinimumSpanningTree.js"></script>
 </body>
 
 </html>
