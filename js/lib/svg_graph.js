@@ -165,7 +165,8 @@ class ForceSimulationGraph
         .on("dblclick", function(e, d){
             console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
              self.disconnect(d.source.id, d.target.id);
-             self.#deleteWeightInputLineByLine(d.source.id, d.target.id)
+             if (this.weighted)
+                self.#deleteWeightInputLineByLine(d.source.id, d.target.id)
              self.mouseHoverLink = DefaultMouseHoverLink;
         })
         .on("mouseover", function(e){
@@ -251,7 +252,8 @@ class ForceSimulationGraph
             .on("dblclick", function(e, d){
                 //console.log(d.id)
                  self.deleteNode(d.id);
-                 self.#deleteWeightInputLineByNode(d.id)
+                 if (this.weighted)
+                     self.#deleteWeightInputLineByNode(d.id)
                  self.mouseHoverNode = DefaultMouseDownNode
             })
             

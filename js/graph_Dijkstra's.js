@@ -3,6 +3,7 @@ import { Dijkstra } from "./lib/Dijkstra's.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
+import {isNumeric} from './lib/Utils.js'
 import {line} from "./thirdParty/d3.js";
 
 // TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
@@ -18,10 +19,6 @@ var textArea=d3.select("#logPanel");
 redirectConsoleOutput(textArea)
 
 const fGraph = new ForceSimulationGraph(svg, true);
-
-function isNumeric(value) {
-    return /^-?\d+$/.test(value);
-}
 
 document.getElementById("start-button").onclick = function()
 {
