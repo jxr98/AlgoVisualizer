@@ -99,35 +99,8 @@ class ForceSimulationGraph
             this.#graph.addEdge(source, target);
             this.#update();
             if (this.weighted)
-                this.addWeightInputLine(source, target);
+                this.#addWeightInputLine(source, target);
         }
-    }
-
-    addWeightInputLine(source, target) {
-        let div = document.createElement("div");
-        let line_info = document.createElement("label");
-        line_info.style.background = "grey";
-        line_info.style.width = "30px";
-        line_info.style.textAlign = "center";
-        line_info.innerHTML = this.count;
-        line_info.style.marginRight = "10px";
-        let nodes_info = document.createElement("label");
-        nodes_info.id = "nodes" + this.count;
-        nodes_info.style.background = "pink"
-        nodes_info.style.width = "40px";
-        nodes_info.style.textAlign = "center";
-        nodes_info.innerHTML = source + " " + target;
-        nodes_info.style.marginRight = "10px";
-        let weight_info = document.createElement("input");
-        weight_info.id = "weight" + this.count;
-        weight_info.style.background = "#F0F8FF";
-        weight_info.value = 1;
-        weight_info.style.border = 0;
-        div.appendChild(line_info)
-        div.appendChild(nodes_info)
-        div.appendChild(weight_info)
-        document.getElementById("weight-input").appendChild(div);
-        this.count++;
     }
 
     getGraphModel()
@@ -192,6 +165,7 @@ class ForceSimulationGraph
         .on("dblclick", function(e, d){
             console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
              self.disconnect(d.source.id, d.target.id);
+             self.#deleteWeightInputLineByLine(d.source.id, d.target.id)
              self.mouseHoverLink = DefaultMouseHoverLink;
         })
         .on("mouseover", function(e){
@@ -277,6 +251,7 @@ class ForceSimulationGraph
             .on("dblclick", function(e, d){
                 //console.log(d.id)
                  self.deleteNode(d.id);
+                 self.#deleteWeightInputLineByNode(d.id)
                  self.mouseHoverNode = DefaultMouseDownNode
             })
             
@@ -342,6 +317,65 @@ class ForceSimulationGraph
             .attr('d', 'M10,-5L0,0L10,5')
             .attr('fill', '#000');
 
+    }
+
+    #addWeightInputLine(source, target) {
+        let div = document.createElement("div")
+        div.id = "weight" + this.count;
+        // let line_info = document.createElement("label");
+        // line_info.style.background = "grey";
+        // line_info.style.width = "30px";
+        // line_info.style.textAlign = "center";
+        // line_info.innerHTML = this.count;
+        // line_info.style.marginRight = "10px";
+        let nodes_info = document.createElement("label")
+        nodes_info.id = "nodes" + source + "+" + target
+        nodes_info.style.background = "pink"
+        nodes_info.style.width = "60px"
+        nodes_info.style.textAlign = "center"
+        nodes_info.innerHTML = source + " " + target
+        nodes_info.style.marginRight = "10px"
+        let weight_info = document.createElement("input")
+        weight_info.id = "weight" + source + "+" + target
+        weight_info.style.background = "#F0F8FF"
+        weight_info.value = 1
+        weight_info.style.border = 0
+        // div.appendChild(line_info)
+        div.appendChild(nodes_info)
+        div.appendChild(weight_info)
+        document.getElementById("weight-input").appendChild(div)
+        this.count++
+    }
+
+    #deleteWeightInputLineByLine(node1, node2) {
+        let line1 = document.getElementById("nodes" + node1 + "+" + node2)
+        let line2 = document.getElementById("nodes" + node2 + "+" + node1)
+        if (line1 != null) {
+            line1.remove()
+            document.getElementById("weight" + node1 + "+" + node2).remove()
+        }
+        if (line2 != null) {
+            line2.remove()
+            document.getElementById("weight" + node2 + "+" + node1).remove()
+        }
+    }
+
+    #deleteWeightInputLineByNode(node) {
+        let nodes = this.#graph.getNodes()
+        let nodesNum = nodes.length
+        let nodesMaxIndex = Object.values(nodes[nodesNum - 1])[0]
+        for (let i = 0; i <= nodesMaxIndex; i++) {
+            let line1 = document.getElementById("nodes" + node + "+" + i)
+            let line2 = document.getElementById("nodes" + i + "+" + node)
+            if (line1 != null) {
+                line1.remove()
+                document.getElementById("weight" + node + "+" + i).remove()
+            }
+            if (line2 != null) {
+                line2.remove()
+                document.getElementById("weight" + i + "+" + node).remove()
+            }
+        }
     }
 }
 export {ForceSimulationGraph}

@@ -1,7 +1,7 @@
-import { Dijkstra } from "./lib/Dijkstra's.js";
 import * as d3 from "./thirdParty/d3.js";
-import {ForceSimulationGraph} from "./lib/svg_tree.js";
+import {Heap} from "./lib/Heap.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
+import {isNumeric} from './lib/Utils.js'
 import {line} from "./thirdParty/d3.js";
 
 //set up a svg
@@ -12,19 +12,18 @@ var textArea=d3.select("#logPanel");
 
 redirectConsoleOutput(textArea)
 
-function isNumeric(value) {
-    return /^-?\d+$/.test(value);
-}
-
 document.getElementById("max-heap").onclick = function()
 {
     let data = $("#message-box").val().split("\n")
     for (let i = 0; i < data.length; i++) {
         if (isNumeric(data[i])) continue
-        else window.alert("please check input data")
+        else {
+            console.log("please check input data")
+            return
+        }
     }
-    const fGraph = new ForceSimulationGraph(svg, data)
-    fGraph.buildMaxHeap()
+    const heap = new Heap(svg, data, 0)
+    heap.buildHeap()
 }
 
 document.getElementById("min-heap").onclick = function()
@@ -32,8 +31,11 @@ document.getElementById("min-heap").onclick = function()
     let data = $("#message-box").val().split("\n")
     for (let i = 0; i < data.length; i++) {
         if (isNumeric(data[i])) continue
-        else window.alert("please check input data")
+        else {
+            console.log("please check input data")
+            return
+        }
     }
-    const fGraph = new ForceSimulationGraph(svg, data)
-    fGraph.buildMinHeap()
+    const heap = new Heap(svg, data, 1)
+    heap.buildHeap()
 }
