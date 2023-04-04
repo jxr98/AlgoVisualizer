@@ -1,8 +1,10 @@
 import { UndirectedGraph } from "./UndirectedGraph.js";
 import * as d3 from "../thirdParty/d3.js";
+import {createDefaultGraph} from './Graph.js'
 
 const DefaultMouseDownNode=-1;
 const DefaultMouseHoverLink=-1;
+const DefaultChargeSeparation = -2;
 
 class Link{
     source;
@@ -20,6 +22,8 @@ class ForceSimulationGraph
     circleColour;
     markerWH;//marker width and height
     weighted; //record the graph if is weighted
+    
+    #chargeSeparation = DefaultChargeSeparation; // how much repulsion between nodes
 
     constructor(svg, weighted=false)
     {
@@ -56,6 +60,15 @@ class ForceSimulationGraph
             }
         });
         this.#defineArrowMarkers();
+
+        // default graph
+        if (false)
+        {
+            createDefaultGraph(this.#graph);
+            this.#chargeSeparation = -20
+            this.#update()
+            this.#chargeSeparation = DefaultChargeSeparation
+        }
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -301,7 +314,7 @@ class ForceSimulationGraph
         this.simulation
             .nodes(graphNodes)
             .force("link", d3.forceLink(graphLinks).distance(100).id(function(d){return d.id;}))
-            .force("charge", d3.forceManyBody().strength(-2))
+            .force("charge", d3.forceManyBody().strength(this.#chargeSeparation))
             .alpha(1) // need to reset alpha as well here
             .restart()
     }

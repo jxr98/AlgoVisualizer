@@ -12,3 +12,19 @@ export class Graph{
     addEdge(v,w){}
     checkConnection(v,w){}
 }
+
+export function createDefaultGraph(graph)
+{
+    let a = graph.addNode(0,0),
+    b = graph.addNode(0,0),
+    c = graph.addNode(0,0),
+    d = graph.addNode(0,0),
+    e = graph.addNode(0,0),
+    f = graph.addNode(0,0)
+    graph.addEdge(a,b)
+    graph.addEdge(a,c)
+    graph.addEdge(b,d)
+    graph.addEdge(c,e)
+    graph.addEdge(d,f)
+    graph.addEdge(e,f)
+}
