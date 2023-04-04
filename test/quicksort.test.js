@@ -1,4 +1,4 @@
-import { Quicksort } from '../js/lib/Quicksort.js';
+import { Quicksort } from '../js/lib/quicksort';
 import {expect, jest} from '@jest/globals';
 import * as d3 from '../js/thirdParty/d3.js';
 import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
