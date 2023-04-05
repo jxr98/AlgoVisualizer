@@ -14,4 +14,8 @@ function ID2Position(id, xRangeSize)
     return {x, y}
 }
 
-export {position2ID, ID2Position}
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
+}
+
+export {position2ID, ID2Position, isNumeric}

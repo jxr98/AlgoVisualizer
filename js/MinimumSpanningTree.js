@@ -6,6 +6,7 @@ import {redirectConsoleOutput} from './lib/Logger.js'
 import {Graph} from "./lib/Graph.js";
 import {EdgeWeightedGraph} from "./lib/EdgeWeightedGraph.js";
 import {Edge} from "./lib/Edge.js";
+import {isNumeric} from "./lib/Utils.js";
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -24,9 +25,14 @@ document.getElementById("start-button").onclick = function()
     let lines = Array.from(fGraph.getGraphModel().getLinks());
     let weightedLines = [];
     for (let i = 1; i <= lines.length; i++) {
-        let weight_info = document.getElementById(i.toString()).value.split(" ");
-        weightedLines.push([weight_info[0], weight_info[1], parseInt(weight_info[2])]);
-        weightedLines.push([weight_info[1], weight_info[0], parseInt(weight_info[2])]);
+        let nodes_info = document.getElementById("nodes" + i).innerHTML.split(" ")
+        let weight = document.getElementById("weight" + i).value
+        if (!isNumeric(weight)) {
+            window.alert("Please check the input in line " + i)
+            return
+        }
+        weightedLines.push([nodes_info[0], nodes_info[1], parseInt(weight)]);
+        weightedLines.push([nodes_info[1], nodes_info[0], parseInt(weight)]);
     }
 
     // the code is to construct a graph bc js doesn't allow multiple constructors
