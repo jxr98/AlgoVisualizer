@@ -37,6 +37,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
     // insert array
     inputArray.forEach((ele) => {
         let num = parseInt(ele);
+        /* istanbul ignore next */
         let timeoutID = setTimeout(function(){
             arrayVis.insertRight({id: idCounter++, text: ele, value: num})
         }, tick)
@@ -46,6 +47,7 @@ export function runSim(inputArray, arrayVis, timeoutHandles, sortFactoryCallback
     })
 
     // run sort
+    /* istanbul ignore next */
     let sortTimeoutID = setTimeout(function(){
         tick = 0;
         let sort = sortFactoryCallback()

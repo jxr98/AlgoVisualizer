@@ -61,7 +61,4 @@ describe('runSim', () => {
     expect(arrayVis.clear).toHaveBeenCalled();
   });
 
-  
-
-
 })
