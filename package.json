@@ -13,7 +13,10 @@
     "transform": {},
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
-      "<rootDir>/js/thirdParty/"
-    ]
+      "<rootDir>/js/thirdParty/",
+      "<rootDir>/js/lib/addRequire.js"
+    ],
+    "collectCoverageFrom": ["<rootDir>/js/lib/*.js"]
+
   }
 }
