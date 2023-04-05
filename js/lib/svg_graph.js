@@ -233,15 +233,9 @@ class ForceSimulationGraph
         })
 
 
-        if ($('#flexSwitchCheckDefault').is(":checked"))
-        {
-            link.style('marker-end', 'url(#end-arrow)')
-        } 
-        else
-        {
-            link.style('marker-end', 'url(#end-arrow)')
-            .style('marker-start', 'url(#start-arrow)')
-        }
+        link.style('marker-end', 'url(#end-arrow)')
+        .style('marker-start', 'url(#start-arrow)')
+
 
         links.exit().remove()
     }
