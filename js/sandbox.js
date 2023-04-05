@@ -1,50 +1,25 @@
-// NOTE: use v7 of D3 library
-import * as d3 from './thirdParty/d3.js';
-import {redirectConsoleOutput} from './lib/Logger.js'
-import {ArrayVisualizer} from './lib/ArrayVisualizer.js'
-import {InsertionSort} from './lib/SortingAlgorithms.js'
+// Get the modal
+var modal = document.getElementById("myModal");
 
-// setup svg
-var width = 800,
-    height = 100;
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("border", "1px solid black")
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
 
-let textArea = d3.select("body").append("textarea")
-textArea.attr("readonly", true)
-.attr("row", 2)
-.attr("cols", 100)
-.style("width", "800px")
-.style("height", "100px")
-redirectConsoleOutput(textArea)
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
 
-let tick = 0;
-let interval = 500; 
-// IMPORTANT: need to sync transition speed with interval, otherwise you transition may occur way too slow/fast with respect to change
-const g = new ArrayVisualizer(svg, interval)
-g.setLeftLabel("left label")
-g.setRightLabel("right label")
-g.setTitle("title")
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
 
-setTimeout(function(){g.insertLeft({id:0, text:1, value:1 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:1, text:5, value:5 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:2, text:4, value:4 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:3, text:0, value:0 })}, tick)
-tick+=interval;
-setTimeout(function(){g.insertLeft({id:4, text:2, value:2 })}, tick)
-tick+=interval;
-
-setTimeout(function(){
-    let sort = new InsertionSort(g)
-    for (let i = 0 ; i < 6; ++i)
-    {
-        setTimeout(function(){sort.step()}, tick)
-        tick+=interval;
-    }
-}, tick)
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
