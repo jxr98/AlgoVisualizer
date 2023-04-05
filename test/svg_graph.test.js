@@ -21,6 +21,9 @@ describe('positive tests', () => {
   
     it('basic graph APIs', () => {
         let g = new ForceSimulationGraph(svg, false)
+
+        // create a chain
+        // a-b-c-d-e
         let a = g.addNode(0,0),
         b = g.addNode(0,0),
         c = g.addNode(0,0),
@@ -35,10 +38,26 @@ describe('positive tests', () => {
         expect(graphModel != null).toBeTruthy()
         expect(graphModel.getNumEdges()).toBe(4)
         expect(graphModel.getNumVertices()).toBe(5)
+
+        // remove c
+        // a-b d-e
+        g.deleteNode(c)
+        expect(graphModel.getNumEdges()).toBe(2)
+        expect(graphModel.getNumVertices()).toBe(5) // num veritices dont decrease because of lazy delete
+
+        // delete a-b edge
+        // a b d-e
+        g.disconnect(a,b)
+        expect(graphModel.getNumEdges()).toBe(1)
+        expect(graphModel.getNumVertices()).toBe(5) // num veritices dont decrease because of lazy delete
     });
   
-    it('does another thing', () => {
-
+    it('change color API', () => {
+        let g = new ForceSimulationGraph(svg, false)
+        let a = g.addNode(0,0)
+        g.changeColor(a, "blue")
+        let graphModel = g.getGraphModel();
+        expect(graphModel.getNodeProperty(a).color).toBe("blue")
     });
 });
   

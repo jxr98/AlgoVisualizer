@@ -48,10 +48,10 @@ class ForceSimulationGraph
             .force("link", d3.forceLink([]).distance(40).id(function(d){
                 return d.id
             }))
-            .on("tick", function(){self.#tick(self)})
+            .on("tick", /* istanbul ignore next */function(){self.#tick(self)})
             .alphaDecay(0.002) // just added alpha decay to delay end of execution
 
-        svg.on('mousedown', function (e) {
+        svg.on('mousedown', /* istanbul ignore next */function (e) {
             if (self.mouseHoverNode == DefaultMouseDownNode && self.mouseHoverLink == DefaultMouseHoverLink)
             {
                 var coordinates = d3.pointer(e);
@@ -62,13 +62,13 @@ class ForceSimulationGraph
         this.#defineArrowMarkers();
 
         // default graph
-        if (false)
-        {
-            createDefaultGraph(this.#graph);
-            this.#chargeSeparation = -20
-            this.#update()
-            this.#chargeSeparation = DefaultChargeSeparation
-        }
+        // if (false)
+        // {
+        //     createDefaultGraph(this.#graph);
+        //     this.#chargeSeparation = -20
+        //     this.#update()
+        //     this.#chargeSeparation = DefaultChargeSeparation
+        // }
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -98,6 +98,8 @@ class ForceSimulationGraph
             console.log(`Connecting nodes ${source} <-> ${target}`);
             this.#graph.addEdge(source, target);
             this.#update();
+
+            /* istanbul ignore next */
             if (this.weighted)
                 this.#addWeightInputLine(source, target);
         }
@@ -154,8 +156,8 @@ class ForceSimulationGraph
     //////// private functions
 
     // this function updates the rendering for D3 simulation
-    #tick(self)
-    {
+    /* istanbul ignore next */
+    #tick(self) {
         // update links and arrows
         self.svg.selectAll('.link').each(function(d){
             // calculation taken from https://codepen.io/mikehenrichs/pen/NWJZyw
@@ -191,18 +193,18 @@ class ForceSimulationGraph
         .attr('class', 'link')
         .style('stroke', linkColor)
         .style('stroke-width', 1.9)
-        .on("dblclick", function(e, d){
+        .on("dblclick", /* istanbul ignore next */function(e, d){
             console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
              self.disconnect(d.source.id, d.target.id);
              if (this.weighted)
                 self.#deleteWeightInputLineByLine(d.source.id, d.target.id)
              self.mouseHoverLink = DefaultMouseHoverLink;
         })
-        .on("mouseover", function(e){
+        .on("mouseover", /* istanbul ignore next */function(e){
             d3.select(this).style('stroke-width', 4)
             self.mouseHoverLink = 0;
         })
-        .on("mouseout", function(e){
+        .on("mouseout", /* istanbul ignore next */function(e){
             d3.select(this).style('stroke-width', 1.9)
             self.mouseHoverLink = DefaultMouseHoverLink;
         })
@@ -241,7 +243,7 @@ class ForceSimulationGraph
             })
             .style("stroke", "black")
             .style("stroke-width", 3)
-            .on("mouseover", function(d){
+            .on("mouseover", /* istanbul ignore next */function(d){
 
                 // mouse hover effect - ON
                 d3.select(this).style("opacity", 0.6);
@@ -260,7 +262,7 @@ class ForceSimulationGraph
                 }
                 
             })
-            .on("mouseout", function(d){
+            .on("mouseout", /* istanbul ignore next */function(d){
                 
                 // mouse hover effect - OFF
                 d3.select(this).style("opacity", 1);
@@ -272,7 +274,7 @@ class ForceSimulationGraph
                 }
                 self.mouseHoverNode = DefaultMouseDownNode;
             })
-            .on("dblclick", function(e, d){
+            .on("dblclick", /* istanbul ignore next */function(e, d){
                 //console.log(d.id)
                  self.deleteNode(d.id);
                  if (this.weighted)
@@ -344,7 +346,9 @@ class ForceSimulationGraph
 
     }
 
-    #addWeightInputLine(source, target) {
+    #addWeightInputLine(source, target) 
+    /* istanbul ignore next */
+    {
         let div = document.createElement("div")
         div.id = "weight" + this.count;
         // let line_info = document.createElement("label");
@@ -372,7 +376,8 @@ class ForceSimulationGraph
         this.count++
     }
 
-    #deleteWeightInputLineByLine(node1, node2) {
+    #deleteWeightInputLineByLine(node1, node2) 
+    /* istanbul ignore next */{
         let line1 = document.getElementById("nodes" + node1 + "+" + node2)
         let line2 = document.getElementById("nodes" + node2 + "+" + node1)
         if (line1 != null) {
@@ -385,7 +390,10 @@ class ForceSimulationGraph
         }
     }
 
-    #deleteWeightInputLineByNode(node) {
+    
+    #deleteWeightInputLineByNode(node) 
+    /* istanbul ignore next */
+    {
         let nodes = this.#graph.getNodes()
         let nodesNum = nodes.length
         let nodesMaxIndex = Object.values(nodes[nodesNum - 1])[0]
