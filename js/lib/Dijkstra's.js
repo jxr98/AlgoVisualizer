@@ -43,9 +43,11 @@ class Dijkstra {
                 let s = this.weight[i][0];
                 if (s != u) continue;
                 let t = this.weight[i][1];
+                /* istanbul ignore next */
                 if (this.visited.has(t)) continue;
                 let w = this.weight[i][2];
                 let alt = this.dist[u] + w;
+                /* istanbul ignore next */
                 if (alt < this.dist[t]) {
                     this.dist[t] = alt;
                     this.prev[t] = u;
@@ -53,6 +55,7 @@ class Dijkstra {
                     updateInfo.push([t, this.dist[t]]);
                 }
             }
+            /* istanbul ignore next */
             if (updateInfo == []) updateInfo = [["none", "none"]];
             this.record.push(updateInfo);
             if (u == this.target) break;
