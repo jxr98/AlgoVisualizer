@@ -3,6 +3,7 @@ import { Dijkstra } from "./lib/Dijkstra's.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
+import {isNumeric} from './lib/Utils.js'
 import {line} from "./thirdParty/d3.js";
 import {isNumeric} from "./lib/Utils.js";
 
@@ -23,10 +24,10 @@ const fGraph = new ForceSimulationGraph(svg, true);
 document.getElementById("start-button").onclick = function()
 {
     let lines = Array.from(fGraph.getGraphModel().getLinks());
-    let weightedLines = [];
-    for (let i = 1; i <= lines.length; i++) {
-        let nodes_info = document.getElementById("nodes" + i).innerHTML.split(" ")
-        let weight = document.getElementById("weight" + i).value
+    let weightedLines = []
+    for (let i = 0; i < lines.length; i++) {
+        let nodes_info = document.getElementsByTagName("label")[i].innerHTML.split(" ")
+        let weight = document.getElementsByTagName("input")[i].value
         if (!isNumeric(weight)) {
             window.alert("Please check the input in line " + i)
             return
