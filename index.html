@@ -20,6 +20,85 @@
 </head>
 
 <body>
+    
+    <!-- The Modal for sign in/sign up -->
+    <!-- Modal taken from https://www.w3schools.com/howto/howto_css_modals.asp -->
+    <!-- Modal content design taken from https://bytewebster.com/frontendprojects/login-signup-form-javascript-css#downloadbtn -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header"><span class="close">&times;</span></div>
+            <div class="modal-body">
+                <div class="wrapper">
+                    <div class="title-text">
+                      <div class="title login">Login Form</div>
+                      <div class="title signup">Signup Form</div>
+                    </div>
+                    <div class="form-container">
+                      <div class="slide-controls">
+                        <input type="radio" name="slide" id="login" checked>
+                        <input type="radio" name="slide" id="signup">
+                        <label for="login" class="slide login">Login</label>
+                        <label for="signup" class="slide signup">Signup</label>
+                        <div class="slider-tab"></div>
+                      </div>
+                      <div class="form-inner">
+                        <form action="#" class="login">
+                            <div class="field">
+                                <input type="text" placeholder="Email Address" required>
+                            </div>
+                            <div class="field">
+                                <input type="password" placeholder="Password" required>
+                            </div>
+                            <div class="field btn">
+                                <div class="btn-layer"></div>
+                                <input type="submit" value="Login">
+                            </div>
+                            <div class="signup-link">
+                                <p>Want to store & access saved data?</p>
+                                <a href="">Signup now</a>
+                            </div>
+                        </form>
+                        <form action="#" class="signup">
+                          <div class="field">
+                            <input type="text" placeholder="Name" required>
+                          </div>
+                          <div class="field">
+                            <input type="text" placeholder="Email Address" required>
+                          </div>
+                          <div class="field">
+                            <input type="password" placeholder="Password" required>
+                          </div>
+                          <div class="field">
+                            <input type="password" placeholder="Confirm password" required>
+                          </div>
+                          <div class="field btn">
+                            <div class="btn-layer"></div>
+                            <input type="submit" value="Signup">
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                <!-- <div class="form-popup" id="myForm">
+                    <form action="/action_page.php" class="form-container">
+                  
+                      <label for="email"><b>Email</b></label>
+                      <input type="text" placeholder="Enter Email" name="email" required>
+                  
+                      <label for="psw"><b>Password</b></label>
+                      <input type="password" placeholder="Enter Password" name="psw" required>
+                  
+                      <button type="submit" class="btn">Login</button>
+                      <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </form>
+                </div> -->
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="container-fluid">
         <div class="row row-eq-height">
             <div class="col-sm-3" style="background-color: #e3f2fd;">
@@ -74,7 +153,11 @@
 
             <div class="col-sm-9">
                 <div class="divider">
-                    Algorithm Visualizer <span class="float-right">ECE651</span>
+                    Algorithm Visualizer - ECE651
+                    <span class="float-right" style="margin-right: 5px;">
+                        <!-- Trigger/Open The Modal -->
+                        <button type="button" class="btn btn-info btn-sm" id="signInSignUp">Sign In/Sign Up </button>
+                    </span>
                 </div>
                 <div>
                     <h2 class="algorithm-name">Breadth First Search</h2>
@@ -239,6 +322,7 @@
         );
     </script>
     <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script type="module" src="./js/index.js"></script>
 
 </body>
 
