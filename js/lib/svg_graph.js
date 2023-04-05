@@ -18,9 +18,9 @@ class ForceSimulationGraph
     simulation; // handle to the force simulation model
     mouseDownNode;
     link;
-    circleRadius;
-    circleColour;
-    markerWH;//marker width and height
+    circleRadius = 25;
+    circleColour = "pink";
+    markerWH = 3;//marker width and height
     weighted; //record the graph if is weighted
     
     #chargeSeparation = DefaultChargeSeparation; // how much repulsion between nodes
@@ -32,9 +32,6 @@ class ForceSimulationGraph
         let temp=document.querySelector ('svg')
             .getBoundingClientRect();
         let width = temp.right-temp.left, height = svg.attr("height");
-        this.circleRadius=25;//default
-        this.circleColour = "white"; //default
-        this.markerWH=3;//default
         const self = this;
         this.#graph = new UndirectedGraph()
         this.svg = svg
@@ -244,10 +241,10 @@ class ForceSimulationGraph
             .style("stroke", "black")
             .style("stroke-width", 3)
             .on("mouseover", function(d){
-                d3.select(this).style("fill", "pink");
+
                 // mouse hover effect - ON
-                //d3.select(this).style("opacity", 0.6);
-                //d3.select(this).style("stroke", "black");
+                d3.select(this).style("opacity", 0.6);
+                d3.select(this).style("stroke-width", 6);
 
                 let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
@@ -266,7 +263,7 @@ class ForceSimulationGraph
                 
                 // mouse hover effect - OFF
                 d3.select(this).style("opacity", 1);
-                d3.select(this).style("stroke", "");
+                d3.select(this).style("stroke-width", 3);
 
 
                 if(d.buttons==1){
