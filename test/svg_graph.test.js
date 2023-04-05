@@ -59,5 +59,16 @@ describe('positive tests', () => {
         let graphModel = g.getGraphModel();
         expect(graphModel.getNodeProperty(a).color).toBe("blue")
     });
+
+    it('highlight links', () => {
+        let g = new ForceSimulationGraph(svg, false)
+        let a = g.addNode(0,0),
+        b = g.addNode(0,0)
+        g.connectNodes(a,b)
+        let links = g.getGraphModel().getLinks()
+        g.highlightLinks(links);
+
+        // expect(graphModel.getNodeProperty(a).color).toBe("blue")
+    });
 });
   

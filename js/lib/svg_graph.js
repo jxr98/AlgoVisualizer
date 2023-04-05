@@ -156,8 +156,9 @@ class ForceSimulationGraph
     //////// private functions
 
     // this function updates the rendering for D3 simulation
+    #tick(self) 
     /* istanbul ignore next */
-    #tick(self) {
+    {
         // update links and arrows
         self.svg.selectAll('.link').each(function(d){
             // calculation taken from https://codepen.io/mikehenrichs/pen/NWJZyw
@@ -223,11 +224,6 @@ class ForceSimulationGraph
         const self = this;
         let node = this.svg.selectAll('.node')
         .data(graphNodes, function(d) {
-            
-            if (d === undefined)
-            {
-                console.log(graphNodes)
-            }
             return d.id; 
         })
 
