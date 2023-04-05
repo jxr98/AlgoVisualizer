@@ -3,19 +3,19 @@ import * as d3 from "../thirdParty/d3.js";
 class Heap
 {
     constructor(svg, data, kind) {
+        this.start = 0
         // 0 - max; 1 - min
         this.kind = kind
         this.process = []
-        this.svg = svg
         this.data = data
         let len = this.data.length
         let count = 0
-        let width = parseInt(this.svg.style("width"));
+        let width = parseInt(svg.style("width"));
         let line_w = 21.5
         let line_h = 100
         let total_h = 50
-        let dataset = []
-        let nodes_x = [width / 2 - 8 * line_w, width /2 + 8 * line_w,
+        this.dataset = []
+        this.nodes_x = [width / 2 - 8 * line_w, width /2 + 8 * line_w,
             width / 2 - 12 * line_w, width / 2 - 4 * line_w, width / 2 + 4 * line_w, width / 2 + 12 * line_w,
             width / 2 - 14 * line_w, width / 2 - 10 * line_w,  width / 2 - 6 * line_w, width / 2 - 2 * line_w,
             width / 2 + 2 * line_w, width / 2 + 6 * line_w, width / 2 + 10 * line_w, width / 2 + 14 * line_w,
@@ -24,9 +24,14 @@ class Heap
             width / 2 + 1 * line_w, width / 2 + 3 * line_w,  width / 2 + 5 * line_w, width / 2 + 7 * line_w,
             width / 2 + 9 * line_w, width / 2 + 11 * line_w, width / 2 + 13 * line_w, width / 2 + 15 * line_w]
 
+        // lines group
+        this.group1 = svg.append('g')
+        // nodes group
+        this.group2 = svg.append('g')
+
         // build tree
         if (len >= 1) {
-            dataset.push([width / 2, total_h, this.data[0]])
+            this.dataset.push([width / 2, total_h, this.data[0]])
             total_h += line_h
             count += 1
         }
@@ -40,15 +45,15 @@ class Heap
             {
                 if (j == 0) continue
                 if (count == len) break
-                dataset.push([nodes_x[count - 1], total_h, this.data[count]])
+                this.dataset.push([this.nodes_x[count - 1], total_h, this.data[count]])
                 count++
-                this.svg.append('line')
+                this.group1.append('line')
                     .style("stroke", "black")
                     .style("stroke-width", 3)
-                    .attr("x1", dataset[count - 1][0])
-                    .attr("y1", dataset[count - 1][1])
-                    .attr("x2", dataset[Math.floor(count / 2) - 1][0])
-                    .attr("y2", dataset[Math.floor(count / 2) - 1][1])
+                    .attr("x1", this.dataset[count - 1][0])
+                    .attr("y1", this.dataset[count - 1][1])
+                    .attr("x2", this.dataset[Math.floor(count / 2) - 1][0])
+                    .attr("y2", this.dataset[Math.floor(count / 2) - 1][1])
                     .attr('id', function() {
                         return "line" + (count - 1) + "-" + (Math.floor(count / 2) - 1)
                     })
@@ -57,8 +62,8 @@ class Heap
         }
 
         // add nodes
-        this.svg.selectAll("circle")
-            .data(dataset)
+        this.group2.selectAll("circle")
+            .data(this.dataset)
             .enter()
             .append("circle")
             .attr("cx", function(d) {
@@ -75,8 +80,8 @@ class Heap
                 return "node" + i
             })
 
-        let texts = this.svg.selectAll("text")
-            .data(dataset)
+        let texts = this.group2.selectAll("text")
+            .data(this.dataset)
             .enter();
 
         // add data
@@ -98,6 +103,7 @@ class Heap
                 return "text" + i
             })
 
+        // add index
         texts
             .append("text")
             .attr("x", function (d) {
@@ -112,161 +118,169 @@ class Heap
                 return i
             })
             .attr("text-anchor", "middle")
+            .attr('id', function(d, i) {
+                return "index" + i
+            })
     }
 
-    buildHeap()
-    {
-        let arr = this.data
-        let N = arr.length;
+    insert(data) {
+        data = parseInt(data)
+        let n = this.data.length
+        this.data.push(data)
+        let x = this.nodes_x[n - 1]
+        let y = 50 + 100 * Math.floor(Math.log2(n + 1))
+        this.dataset.push([x, y, data])
+        console.log("Insertion")
+        // add nodes
+        this.group2
+            .append("circle")
+            .attr("cx", x)
+            .attr("cy", y)
+            .attr("r", 20)
+            .attr('stroke', 'black')
+            .style("stroke-width", 3)
+            .attr('fill', 'pink')
+            .attr('id', "node" + n)
+        // add text
+        this.group2
+            .append("text")
+            .attr("x", x)
+            .attr("y", y + 4)
+            .attr('stroke', 'black')
+            .style("font-size", 12)
+            .text(data)
+            .attr("text-anchor", "middle")
+            .attr('id', "text" + n)
+        // add index
+        this.group2
+            .append("text")
+            .attr("x", x)
+            .attr("y", y - 30)
+            .attr('stroke', 'black')
+            .style("font-size", 12)
+            .text(n)
+            .attr("text-anchor", "middle")
+            .attr('id', "index" + n)
 
+        // add line
+        this.group1.append('line')
+            .style("stroke", "black")
+            .style("stroke-width", 3)
+            .attr("x1", x)
+            .attr("y1", y)
+            .attr("x2", this.dataset[Math.floor((n - 1) / 2)][0])
+            .attr("y2", this.dataset[Math.floor((n - 1) / 2)][1])
+            .attr('id', "line" + n + "-" + Math.floor((n - 1) / 2))
+
+        let i = Math.floor((n - 1) / 2)
+        while (i != -1) {
+            this.heapifyHeap(this.data, n + 1, i)
+            i = Math.floor((i + 1) / 2) - 1
+        }
+        this.buildHeap()
+    }
+
+    delete() {
+        let n = this.data.length - 1
+        this.data[0] = this.data[n]
+        this.data.pop()
+        this.dataset.pop()
+        console.log("Deletion")
+        this.group2.select("#text" + 0).text(this.data[0])
+        // remove nodes
+        this.group2.select("#node" + n).remove()
+        // remove text
+        this.group2.select("#text" + n).remove()
+        // remove index
+        this.group2.select("#index" + n).remove()
+        // remove line
+        this.group1.select("#line" + n + "-" + Math.floor((n - 1) / 2)).remove()
+
+        this.heapifyHeap(this.data, n + 1, 0)
+        this.buildHeap()
+    }
+
+    buildHeap() {
+        let len = this.data.length
         // Build heap (rearrange array)
+        for (let i = Math.floor(len / 2) - 1; i >= 0; i--)
+            this.heapifyHeap(this.data, len, i)
+        let process = this.getProcess()
+        let i = 1
+        for (let j = 0; j < process.length; j++) {
+            let p = process[j]
+            setTimeout(function () {
+                if (p[1] < len && p[2] < len)
+                    console.log("The step " + j + " is checking nodes " + p[0] + ", " + p[1] + ", " + p[2] + ".")
+                else if (p[1] >= len && p[2] < len)
+                    console.log("The step " + j + " is checking nodes " + p[0] + ", " + p[2] + ".")
+                else if (p[2] >= len && p[1] < len)
+                    console.log("The step " + j + " is checking nodes " + p[0] + ", " + p[1] + ".")
+                else if (p[2] >= len && p[1] >= len)
+                    console.log("The step" + j +  " is checking node " + p[0] + ".")
+            }, 1000 * i)
+            // focus three nodes which will be compared
+            this.focusNode(p[0], i);
+            if (p[1] < len)
+                this.focusNode(p[1], i)
+            if (p[2] < len)
+                this.focusNode(p[2], i)
+            i++
+
+            // focus two nodes which will be switch / continue to next 3 nodes
+            if (p[0] != p[3]) {
+                this.focusLine(p[3], p[0], i++)
+                this.swapText(p[3], p[0], i++)
+                this.unfocusLine(p[3], p[0], i)
+            }
+            else
+                setTimeout(function () {
+                    if (this.kind == 0)
+                        console.log("Node " + p[0] + " is the largest in the subtree.")
+                    else console.log("Node " + p[0] + " is the smallest in the subtree.")
+                }, 1000 * i)
+            this.unfocusNode(p[0], i);
+            if (p[1] < len)
+                this.unfocusNode(p[1], i)
+            if (p[2] < len)
+                this.unfocusNode(p[2], i)
+            i++
+        }
+    }
+
+    heapifyHeap(arr, N, i) {
+        let extremum = i; // Initialize largest or smallest as root
+        let l = 2 * i + 1; // left = 2*i + 1
+        let r = 2 * i + 2; // right = 2*i + 2
+
         if (this.kind == 0) {
-            for (let i = Math.floor(N / 2) - 1; i >= 0; i--)
-                this.heapifyMaxHeap(arr, N, i)
-            this.buildMaxHeap()
+            // If left child is larger than root
+            if (l < N && arr[l] > arr[extremum])
+                extremum = l;
+            // If right child is larger than extremum so far
+            if (r < N && arr[r] > arr[extremum])
+                extremum = r;
+        } else {
+            // If left child is smallest than root
+            if (l < N && arr[l] < arr[extremum])
+                extremum = l;
+
+            // If right child is smallest than extremum so far
+            if (r < N && arr[r] < arr[extremum])
+                extremum = r;
         }
-        else {
-            for (let i = Math.floor(N / 2) - 1; i >= 0; i--)
-                this.heapifyMinHeap(arr, N, i)
-            this.buildMinHeap()
-        }
-    }
 
-    heapifyMaxHeap(arr, N, i) {
-        var largest = i; // Initialize largest as root
-        var l = 2 * i + 1; // left = 2*i + 1
-        var r = 2 * i + 2; // right = 2*i + 2
 
-        // If left child is larger than root
-        if (l < N && arr[l] > arr[largest])
-            largest = l;
+        this.process.push([i, l, r, extremum])
 
-        // If right child is larger than largest so far
-        if (r < N && arr[r] > arr[largest])
-            largest = r;
-
-        this.process.push([i, l, r, largest])
-
-        // If largest is not root
-        if (largest != i) {
-            var swap = arr[i];
-            arr[i] = arr[largest];
-            arr[largest] = swap;
+        // If largest or smallest is not root
+        if (extremum != i) {
+            let swap = arr[i];
+            arr[i] = arr[extremum];
+            arr[extremum] = swap;
 
             // Recursively heapify the affected sub-tree
-            this.heapifyMaxHeap(arr, N, largest);
-        }
-    }
-
-    buildMaxHeap() {
-        let len = this.data.length
-        let process = this.getProcess()
-        let i = 1
-        for (let j = 0; j < process.length; j++) {
-            let p = process[j]
-            setTimeout(function () {
-                if (p[1] < len && p[2] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ", " + p[2] + ".")
-                else if (p[1] >= len && p[2] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[2] + ".")
-                else if (p[2] >= len && p[1] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ".")
-                else if (p[2] >= len && p[1] >= len)
-                    console.log("The " + j + " step is checking node " + p[0] + ".")
-            }, 1000 * i)
-            // focus three nodes which will be compared
-            this.focusNode(p[0], i);
-            if (p[1] < len)
-                this.focusNode(p[1], i)
-            if (p[2] < len)
-                this.focusNode(p[2], i)
-            i++
-
-            // focus two nodes which will be switch / continue to next 3 nodes
-            if (p[0] != p[3]) {
-                this.focusLine(p[3], p[0], i++)
-                this.swapText(p[3], p[0], i++)
-                this.unfocusLine(p[3], p[0], i)
-            }
-            else
-                setTimeout(function () {
-                    console.log("Node " + p[0] + " is the largest in the subtree.")
-                }, 1000 * i)
-            this.unfocusNode(p[0], i);
-            if (p[1] < this.data.length)
-                this.unfocusNode(p[1], i)
-            if (p[2] < this.data.length)
-                this.unfocusNode(p[2], i)
-            i++
-        }
-    }
-
-    heapifyMinHeap(arr, N, i) {
-        var smallest = i; // Initialize largest as root
-        var l = 2 * i + 1; // left = 2*i + 1
-        var r = 2 * i + 2; // right = 2*i + 2
-
-        // If left child is larger than root
-        if (l < N && arr[l] < arr[smallest])
-            smallest = l;
-
-        // If right child is larger than largest so far
-        if (r < N && arr[r] < arr[smallest])
-            smallest = r;
-
-        this.process.push([i, l, r, smallest])
-
-        // If largest is not root
-        if (smallest != i) {
-            var swap = arr[i];
-            arr[i] = arr[smallest];
-            arr[smallest] = swap;
-
-            // Recursively heapify the affected sub-tree
-            this.heapifyMinHeap(arr, N, smallest);
-        }
-    }
-
-    buildMinHeap() {
-        let len = this.data.length
-        let process = this.getProcess()
-        let i = 1
-        for (let j = 0; j < process.length; j++) {
-            let p = process[j]
-            setTimeout(function () {
-                if (p[1] < len && p[2] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ", " + p[2] + ".")
-                else if (p[1] >= len && p[2] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[2] + ".")
-                else if (p[2] >= len && p[1] < len)
-                    console.log("The " + j + " step is checking nodes " + p[0] + ", " + p[1] + ".")
-                else if (p[2] >= len && p[1] >= len)
-                    console.log("The " + j + " step is checking node " + p[0] + ".")
-            }, 1000 * i)
-            // focus three nodes which will be compared
-            this.focusNode(p[0], i);
-            if (p[1] < len)
-                this.focusNode(p[1], i)
-            if (p[2] < len)
-                this.focusNode(p[2], i)
-            i++
-
-            // focus two nodes which will be switch / continue to next 3 nodes
-            if (p[0] != p[3]) {
-                this.focusLine(p[3], p[0], i++)
-                this.swapText(p[3], p[0], i++)
-                this.unfocusLine(p[3], p[0], i)
-            }
-            else
-                setTimeout(function () {
-                    console.log("Node " + p[0] + " is the smallest in the subtree.")
-                }, 1000 * i)
-            this.unfocusNode(p[0], i);
-            if (p[1] < this.data.length)
-                this.unfocusNode(p[1], i)
-            if (p[2] < this.data.length)
-                this.unfocusNode(p[2], i)
-            i++
+            this.heapifyHeap(arr, N, extremum);
         }
     }
 
@@ -308,7 +322,9 @@ class Heap
 
     getProcess()
     {
-        return this.process
+        let res = this.process.slice(this.start, this.process.length)
+        this.start = this.process.length
+        return res
     }
 }
 
