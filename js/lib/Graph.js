@@ -8,8 +8,11 @@ export class Graph{
         this.#numEdges=0;
     }
 
+    /* istanbul ignore next */
     addNode(x = 0, y = 0) {}
+    /* istanbul ignore next */
     addEdge(v,w){}
+    /* istanbul ignore next */
     checkConnection(v,w){}
 }
 

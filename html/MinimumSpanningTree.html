@@ -5,28 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="../css/bfs.css">
 
-
-    <title>Depth First Search</title>
+    <title>Minimum Spanning Tree</title>
 </head>
 
 <body style="background:#F0F8FF;">
 <div class="container-fluid">
     <div id="loadNavBar"></div>
-    <h1 class="text-center" style="margin-top: 20px">Depth First Search</h1>
+    <h1 class="text-center" style="margin-top: 20px">Minimum Spanning Tree</h1>
     <div class="row" style="margin-top: 20px">
-        <div class="col-sm-3 border">
-            <h2 class="text-center">Log Panel</h2>
-            <textarea readonly style="width: 100%; height:800px; border: none;outline: none; background:#F0F8FF;" id="logPanel"></textarea>
+        <div class="col-sm-3 border" id="weight-input">
+            <h2 class="text-center">Edge Weights</h2>
         </div>
         <div class="col-sm-6 border">
-            <h2 class="text-center">Graph Panel</h2>
-            <label for="formControlTextarea2">please input start vertex and end vertex(format 0 1 \n)</label>
-            <div class="row" style="padding-left: 15px;padding-right: 15px;margin-bottom: 5px">
-                <textarea id="formControlTextarea2" rows="1" style="width:50%; background:#F0F8FF;"></textarea>
+            <div class="row" style="padding-left: 15px;padding-right: 15px;margin-bottom: 5px;">
                 <div class="ml-auto">
                     <button id="start-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;">Start</button>
                     <button id="reset-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;"
@@ -38,27 +34,30 @@
             </svg>
         </div>
         <div class="col-sm-3 border" id="thirdPanel">
-            <h2>Instruction</h2>How to use this graph simulator?
+            <h2 class="text-center">Instruction</h2>How to use this graph simulator?
             <ol>
                 <li>Draw nodes and links in the Graph Panel</li>
-                <li>Input the source node index and target node index in the second panel</li>
+                <li>Input the weight(which must be an integer) for the source node index and target node index in the second panel</li>
                 <li>Click the Start button</li>
             </ol>
-            <h2>Shortest Path</h2>
+            <h2 class="text-center">Shortest Path</h2>
             <p id="shortestPath"></p>
+            <h2 class="text-center">Log Panel</h2>
+            <textarea readonly style="width: 100%; height:800px; border: none;outline: none;background:#F0F8FF;" id="logPanel"></textarea>
         </div>
     </div>
 </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
-    </script>
-    <script>
-        $('#loadNavBar').load("includings/navbar.html");
-    </script>
-    <script type="module" src="../js/graph_dfs.js"></script>
+</script>
+<script>
+    $('#loadNavBar').load("includings/navbar.html");
+</script>
+<script type="module" src="../js/MinimumSpanningTree.js"></script>
 </body>
+
 </html>

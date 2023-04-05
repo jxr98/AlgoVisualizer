@@ -5,6 +5,7 @@ import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
 import {isNumeric} from './lib/Utils.js'
 import {line} from "./thirdParty/d3.js";
+import {isNumeric} from "./lib/Utils.js";
 
 // TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
 // as opposed to creating svg, textarea, etc. DOM on the fly.

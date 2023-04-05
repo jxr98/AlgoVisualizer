@@ -1,8 +1,8 @@
-import * as d3 from '../js/thirdParty/d3.js';
-import {InsertionSort} from '../js/lib/InsertionSort'
-import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
+import { MergeSort } from '../js/lib/mergeSort';
 import {expect, jest} from '@jest/globals';
-import { arrayVis2Str } from '../js/lib/sortTemplate.js';
+import * as d3 from '../js/thirdParty/d3.js';
+import {ArrayVisualizer} from '../js/lib/ArrayVisualizer'
+
 
 // mock ResizeObserverMock
 class ResizeObserverMock {
@@ -12,7 +12,7 @@ class ResizeObserverMock {
 }
 global.ResizeObserver = ResizeObserverMock;
 
-test('Insertion sort',()=>{
+test('merge sort',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     var svg = d3.select("body").append("svg").attr("width", 800).attr("height", 100)
@@ -30,15 +30,13 @@ test('Insertion sort',()=>{
     }
 
     // sort
-    let sort = new InsertionSort(g)
-    for (let i = 0 ; i < numNode + 1 ; i++)
+    let sort = new MergeSort(g)
+    while (!sort.isDone())
     {
         // verify that sort is indeed not complete
-        if (i < numNode)
-        {
-            expect(sort.isDone()).toBe(false);
-        }
-        sort.step();
+
+        expect(sort.isDone()).toBe(false);
+        sort.detailedStep();
     }
 
     // verify sort is complete
@@ -77,7 +75,7 @@ test('detailed step',()=>{
     }
 
     // sort
-    let sort = new InsertionSort(g)
+    let sort = new MergeSort(g)
     while (!sort.isDone())
     {
         sort.detailedStep();
@@ -100,5 +98,4 @@ test('detailed step',()=>{
     // make sure no error
     expect(consoleSpy).toHaveBeenCalledTimes(0);
     consoleSpy.mockRestore();
-})  
-  
+})

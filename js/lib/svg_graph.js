@@ -11,6 +11,9 @@ class Link{
     target;
 }
 
+const BLACKCOLOR='#000'
+const SLATEGRAY ='#708090'
+
 class ForceSimulationGraph
 {
     #graph; // graph model
@@ -18,9 +21,9 @@ class ForceSimulationGraph
     simulation; // handle to the force simulation model
     mouseDownNode;
     link;
-    circleRadius;
-    circleColour;
-    markerWH;//marker width and height
+    circleRadius = 25;
+    circleColour = "pink";
+    markerWH = 3;//marker width and height
     weighted; //record the graph if is weighted
     
     #chargeSeparation = DefaultChargeSeparation; // how much repulsion between nodes
@@ -32,9 +35,6 @@ class ForceSimulationGraph
         let temp=document.querySelector ('svg')
             .getBoundingClientRect();
         let width = temp.right-temp.left, height = svg.attr("height");
-        this.circleRadius=25;//default
-        this.circleColour = "white"; //default
-        this.markerWH=3;//default
         const self = this;
         this.#graph = new UndirectedGraph()
         this.svg = svg
@@ -120,6 +120,36 @@ class ForceSimulationGraph
         });
     }
 
+    // ret is an array of {source,target, weight} objects
+    highlightLinks(ret){
+        // first make all links gray
+        d3.selectAll('line')
+            .style('stroke', SLATEGRAY);
+
+        let self=this
+
+        //only hightlight nodes in ret
+        d3.selectAll('line')
+            .each(function (d){
+                if(self.checkLinkExistsInRet(ret,d.source.id,d.target.id)){
+                    d3.select(this)
+                        .style('stroke', BLACKCOLOR)
+                        .style('stroke-width', 2.4);
+                }
+            })
+
+    }
+
+    checkLinkExistsInRet(ret,x,y){
+        for(var i=0;i<ret.length;i++){
+            if((x===parseInt(ret[i].source) && y===parseInt(ret[i].target)) ||
+                (y===parseInt(ret[i].source) && x===parseInt(ret[i].target))){
+                return true;
+            }
+        }
+        return false
+    }
+
     ////////////////////////////////////////////////////////////////////
     //////// private functions
 
@@ -151,16 +181,15 @@ class ForceSimulationGraph
         })
     }
 
-    #updateLink(graphLinks)
+    #updateLink(graphLinks,linkColor)
     {
-
         let links = this.svg.selectAll('.link').data(graphLinks)
         let self = this
 
         let link = links.enter()
         .insert('line', '.node')
         .attr('class', 'link')
-        .style('stroke', '#000')
+        .style('stroke', linkColor)
         .style('stroke-width', 1.9)
         .on("dblclick", function(e, d){
             console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
@@ -179,15 +208,9 @@ class ForceSimulationGraph
         })
 
 
-        if ($('#flexSwitchCheckDefault').is(":checked"))
-        {
-            link.style('marker-end', 'url(#end-arrow)')
-        } 
-        else
-        {
-            link.style('marker-end', 'url(#end-arrow)')
-            .style('marker-start', 'url(#start-arrow)')
-        }
+        link.style('marker-end', 'url(#end-arrow)')
+        .style('marker-start', 'url(#start-arrow)')
+
 
         links.exit().remove()
     }
@@ -219,10 +242,10 @@ class ForceSimulationGraph
             .style("stroke", "black")
             .style("stroke-width", 3)
             .on("mouseover", function(d){
-                d3.select(this).style("fill", "pink");
+
                 // mouse hover effect - ON
-                //d3.select(this).style("opacity", 0.6);
-                //d3.select(this).style("stroke", "black");
+                d3.select(this).style("opacity", 0.6);
+                d3.select(this).style("stroke-width", 6);
 
                 let targetID=d.target.id.slice(1);
                 self.mouseHoverNode = targetID;
@@ -241,7 +264,7 @@ class ForceSimulationGraph
                 
                 // mouse hover effect - OFF
                 d3.select(this).style("opacity", 1);
-                d3.select(this).style("stroke", "");
+                d3.select(this).style("stroke-width", 3);
 
 
                 if(d.buttons==1){
@@ -281,7 +304,7 @@ class ForceSimulationGraph
     #update() {
         // update links
         const graphLinks = this.#graph.getLinks();
-        this.#updateLink(graphLinks)
+        this.#updateLink(graphLinks,BLACKCOLOR)
     
         // update nodes
         const graphNodes = this.#graph.getNodes();

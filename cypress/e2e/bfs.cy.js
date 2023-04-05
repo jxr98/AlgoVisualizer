@@ -30,7 +30,7 @@ describe('Home page website', () => {
     /* ==== End Cypress Studio ==== */
 
     // wait for force simulation to move nodes apart
-    // cy.wait(3000)
+    cy.wait(500)
 
     // check the shortest path
     cy.get('#formControlTextarea2').type('0 1');
