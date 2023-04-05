@@ -15,33 +15,7 @@
 
 <body style="background:#F0F8FF;">
 <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #055C9D;">
-        <a class="navbar-brand" href="../index.html">Home</a>
-        <ul class="navbar-nav text-center" style="width: 100%">
-            <li class="nav-item dropdown" id="graphNav">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Graph</a>
-                <ul class="dropdown-menu dropdown-graph text-center">
-                    <li><a class="dropdown-item" href="#"> Breadth First Search</a></li>
-                    <li><a class="dropdown-item" href="dfs.html"> Depth First Search </a></li>
-                    <li><a class="dropdown-item" href="Dijkstra's.html"> Dijkstra's algorithm </a></li>
-                    <li><a class="dropdown-item" href="astar.html"> A* </a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown" id="sortingNav">
-                <a class="nav-link" href="#">Sorting</a>
-                <ul class="dropdown-menu dropdown-sorting text-center">
-                    <li><a class="dropdown-item" href="sort.html"> Insertion</a></li>
-                    <li><a class="dropdown-item" href="#"> Quicksort </a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown" id="treeNav">
-                <a class="nav-link" href="#">Tree</a>
-                <ul class="dropdown-menu dropdown-tree text-center">
-                    <li><a class="dropdown-item" href="heap.html"> Max/Min Heap </a></li>
-                </ul>
-            </li>
-        </ul>
-    </nav>
+    <div id="loadNavBar"></div>
     <h1 class="text-center" style="margin-top: 20px">Dijkstra's Algorithm</h1>
 
     <div class="row" style="margin-top: 20px">
@@ -88,34 +62,7 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
 </script>
 <script>
-    $("#graphNav").hover(
-        function () {
-            $('.dropdown-graph').addClass('show');
-            $('.dropdown-sorting').collapse('hide');
-            $('.dropdown-tree').collapse('hide');
-        }, function () {
-            $('.dropdown-graph').collapse('hide');
-        }
-    );
-
-    $("#sortingNav").hover(
-        function () {
-            $('.dropdown-sorting').addClass('show');
-            $('.dropdown-graph').collapse('hide');
-            $('.dropdown-tree').collapse('hide');
-        }, function () {
-            $('.dropdown-sorting').collapse('hide');
-        }
-    );
-    $("#treeNav").hover(
-        function () {
-            $('.dropdown-tree').addClass('show');
-            $('.dropdown-graph').collapse('hide');
-            $('.dropdown-sorting').collapse('hide');
-        }, function () {
-            $('.dropdown-tree').collapse('hide');
-        }
-    );
+    $('#loadNavBar').load("includings/navbar.html");
 </script>
 <script type="module" src="../js/graph_Dijkstra's.js"></script>
 </body>
