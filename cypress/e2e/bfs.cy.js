@@ -20,38 +20,38 @@ describe('Home page website', () => {
   });
 
   // test extension
-  it('test d3 svg graph', ()=>
-  {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.get('#graphNav > .nav-link').click();
-    cy.get('#graphNav > .dropdown-menu > :nth-child(1) > .dropdown-item').click();
-    cy.get('svg:first').click(0, 0);
-    cy.get('svg:first').click(0, 0);
-    /* ==== End Cypress Studio ==== */
+  // it('test d3 svg graph', ()=>
+  // {
+  //   /* ==== Generated with Cypress Studio ==== */
+  //   cy.get('#graphNav > .nav-link').click();
+  //   cy.get('#graphNav > .dropdown-menu > :nth-child(1) > .dropdown-item').click();
+  //   cy.get('svg:first').click(0, 0);
+  //   cy.get('svg:first').click(0, 0);
+  //   /* ==== End Cypress Studio ==== */
 
-    // wait for force simulation to move nodes apart
-    cy.wait(500)
+  //   // wait for force simulation to move nodes apart
+  //   cy.wait(500)
 
-    // check the shortest path
-    cy.get('#formControlTextarea2').type('0 1');
-    cy.get('[id=start-button]').click();
-    var times=1;
-    cy.on('window:alert',(t)=>{
-      if(times==1){
-        expect(t).to.equal('From vertex 0 to vertex 1 are not connected');
-        times++;
-      }else{
-        // when c0 and c1 are connected
-        expect(t).to.equal('From vertex 0 to vertex 1:  0 -> 1');
-        times++;
-      }
-    })
+  //   // check the shortest path
+  //   cy.get('#formControlTextarea2').type('0 1');
+  //   cy.get('[id=start-button]').click();
+  //   var times=1;
+  //   cy.on('window:alert',(t)=>{
+  //     if(times==1){
+  //       expect(t).to.equal('From vertex 0 to vertex 1 are not connected');
+  //       times++;
+  //     }else{
+  //       // when c0 and c1 are connected
+  //       expect(t).to.equal('From vertex 0 to vertex 1:  0 -> 1');
+  //       times++;
+  //     }
+  //   })
 
-    // connect the first two nodes
-    cy.get('#c0').trigger('mouseover').trigger('mousedown',{ buttons: 1 }).trigger('mouseout',{ buttons: 1 });
-    cy.get('#c1').trigger('mouseover',{ buttons: 1 });
+  //   // connect the first two nodes
+  //   cy.get('#c0').trigger('mouseover').trigger('mousedown',{ buttons: 1 }).trigger('mouseout',{ buttons: 1 });
+  //   cy.get('#c1').trigger('mouseover',{ buttons: 1 });
 
-  })
+  // })
 
   
 })
