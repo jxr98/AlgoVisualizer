@@ -43,7 +43,7 @@
                         <div class="slider-tab"></div>
                       </div>
                       <div class="form-inner">
-                        <form action="#" class="login">
+                        <form class="login">
                             <div class="field">
                                 <input id="loginEmail" type="text" placeholder="Email Address" required>
                             </div>
@@ -52,14 +52,14 @@
                             </div>
                             <div class="field btn">
                                 <div class="btn-layer"></div>
-                                <input id="loginButton" type="button" value="Login">
+                                <input id="loginButton" type="submit" value="Login">
                             </div>
                             <div class="signup-link">
                                 <p>Want to store & access saved data?</p>
                                 <a href="">Signup now</a>
                             </div>
                         </form>
-                        <form action="#" class="signup">
+                        <form class="signup">
                           <div class="field">
                             <input id="signupName" type="text" placeholder="Name" required>
                           </div>
@@ -75,7 +75,7 @@
                           </div>
                           <div class="field btn">
                             <div class="btn-layer"></div>
-                            <input id="signupButton" type="button" value="Signup">
+                            <input id="signupButton" type="submit" value="Signup">
                           </div>
                         </form>
                       </div>
@@ -159,7 +159,9 @@
                     Algorithm Visualizer - ECE651
                     <span class="float-right" style="margin-right: 5px;">
                         <!-- Trigger/Open The Modal -->
-                        <button type="button" class="btn btn-info btn-sm" id="signInSignUp">Sign In/Sign Up </button>
+                        <!-- <button type="button" class="btn btn-info btn-sm" id="signInSignUp">Sign In/Sign Up </button> -->
+                        <a href="#myModal" style="color:white" id="signInSignUp">Sign In/Sign Up </a>
+                        <a href="#myModal" style="color:white" id="signOut"></a>
                     </span>
                 </div>
                 <div>
