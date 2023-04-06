@@ -2,7 +2,8 @@
 import { BFS_search } from "./lib/BFS_search.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
-import {redirectConsoleOutput} from './lib/Logger.js'
+import {redirectConsoleOutput} from './lib/Logger.js';
+import * as inputFormHelper from "./lib/inputFormHelper.js"
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -30,7 +31,12 @@ const fGraph = new ForceSimulationGraph(svg);
 
 document.getElementById("start-button").onclick = function()
 {
-    let vertices=$("#formControlTextarea2").val().split(" ");
+    let vertices = inputFormHelper.readInputsFromTwoVertexInputModule();
+    if (!inputFormHelper.checkInputsFromTwoVertexInputModule())
+    {
+        return;
+    }
+
     let breadthFirstPaths=new BFS_search(fGraph.getGraphModel(), vertices[0])
     let path= "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": "
     if(!breadthFirstPaths.hasPathTo(vertices[1])){
