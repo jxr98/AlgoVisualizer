@@ -1,5 +1,24 @@
 import { UndirectedGraph } from '../js/lib/UndirectedGraph'
-import { jest } from '@jest/globals';
+import {expect, jest} from '@jest/globals';
+
+describe('UndirectedGraph error testing', () => {
+  let consoleSpy;
+  let graph;
+  beforeEach(() => {
+      consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      graph = new UndirectedGraph();
+  });
+  afterEach(() => {
+      expect(consoleSpy).toHaveBeenCalled();
+      consoleSpy.mockRestore();
+  });
+
+  it('bad node ID', () => {
+    let node = graph.addNode();
+    graph.deleteNode("x")
+  });
+
+});
 
 
 describe('UndirectedGraph', () => {

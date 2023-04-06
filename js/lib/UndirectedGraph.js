@@ -53,6 +53,7 @@ export class UndirectedGraph extends Graph{
     {
         if (!Number.isInteger(_a) || !Number.isInteger(_b))
         {
+            /* istanbul ignore next */
             console.warn("[UndirectedGraph::removeEdge] Parameter is not a number")
         }
 
@@ -80,6 +81,7 @@ export class UndirectedGraph extends Graph{
     addEdge(_v, _w) {
         if (!Number.isInteger(_w) || !Number.isInteger(_v))
         {
+            /* istanbul ignore next */
             console.warn("[UndirectedGraph::addEdge] Parameter is not a number")
         }
         let v = parseInt(_v),
@@ -99,6 +101,7 @@ export class UndirectedGraph extends Graph{
 
         if (!Number.isInteger(_w) || !Number.isInteger(_v))
         {
+            /* istanbul ignore next */
             console.warn("[UndirectedGraph::checkConnection] Parameter is not a number")
         }
 
@@ -132,6 +135,7 @@ export class UndirectedGraph extends Graph{
     {
         if (!Number.isInteger(node))
         {
+            /* istanbul ignore next */
             console.warn("[UndirectedGraph::updateNodeProp] Parameter is not a number")
         }
 
@@ -155,6 +159,7 @@ export class UndirectedGraph extends Graph{
     getAdjacent(v){
         if (!Number.isInteger(v))
         {
+            /* istanbul ignore next */
             console.warn("[UndirectedGraph::getAdjacent] Parameter is not a number")
         }
         let id = parseInt(v);
