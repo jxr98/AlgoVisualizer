@@ -1,7 +1,7 @@
 import {ForceSimulationGraph} from "../js/lib/svg_graph";
 import {expect, jest} from '@jest/globals';
 import * as d3 from '../js/thirdParty/d3.js';
-    
+
 describe('positive tests', () => {
     let consoleSpy;
     let svg;

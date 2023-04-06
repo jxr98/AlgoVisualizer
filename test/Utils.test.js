@@ -15,3 +15,15 @@ test('2D coordinate conversion', ()=>
         expect(y).toBe(y_input)
     })
 })
+
+test('isNumeric test', ()=>{
+    expect(utils.isNumeric(1)).toBe(true);
+    expect(utils.isNumeric(0)).toBe(true);
+    expect(utils.isNumeric(-100)).toBe(true);
+    expect(utils.isNumeric(-100.)).toBe(true); // implicit conversion from -100. to -100
+    expect(utils.isNumeric("-100")).toBe(true);
+    expect(utils.isNumeric(0.2)).toBe(false);
+    expect(utils.isNumeric("-100.")).toBe(false);
+    expect(utils.isNumeric("-100.3")).toBe(false);
+    expect(utils.isNumeric("x")).toBe(false);
+})

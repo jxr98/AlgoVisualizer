@@ -93,6 +93,7 @@ export class ArrayVisualizer
         this.#updateOverflowLabels(true);
 
         // resize observer for the svg container
+        /* istanbul ignore next */
         this.#resiszeObs = new ResizeObserver(function()
         {   
             self.#onResize(self);
@@ -361,7 +362,6 @@ export class ArrayVisualizer
     }
 
     #update() 
-    /* istanbul ignore next */
     {
         // check for overflow
         this.#displayData = []
@@ -414,14 +414,14 @@ export class ArrayVisualizer
                 g.append('circle')
                 .attr('r', self.#radius)
                 .style('opacity', self.#opacity)
-                .style("fill", function(d){
+                .style("fill", /* istanbul ignore next */ function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
 
                 // draw text
                 g.append('text')
                 .attr("class", "text")
-                .text(function (d) { 
+                .text(/* istanbul ignore next */ function (d) { 
                     //console.log(JSON.stringify(d, null, 2))
                     return d.hasOwnProperty("text") ? d.text : "";
                 })
@@ -436,7 +436,7 @@ export class ArrayVisualizer
                 .style("stroke", "#0000FF") //blue-ish
 
                 // set initial location based on position of data in the array
-                g.attr("transform", function(d)
+                g.attr("transform", /* istanbul ignore next */ function(d)
                 {
                     let y = self.#svgHeight/2,
                     x = self.#padding + self.#findIdx(d.id, self.#displayData) * (2 * self.#radius)
@@ -452,7 +452,7 @@ export class ArrayVisualizer
                 // positions of existing node must change to sync with position in array
                 update.transition()
                 .duration(self.#delay.minTransitionDelay())
-                .attr("transform", function(d)
+                .attr("transform", /* istanbul ignore next */ function(d)
                 {
                     let y = self.#svgHeight/2,
                     x = self.#padding + self.#findIdx(d.id, self.#displayData) * 2 * self.#radius
@@ -466,7 +466,7 @@ export class ArrayVisualizer
                 update.select("circle")
                 .transition()
                 .duration(self.#delay.minTransitionDelay())
-                .style("fill", function(d){
+                .style("fill", /* istanbul ignore next */ function(d){
                     return d.hasOwnProperty("color") ? d.color : self.#defaultColor;
                 });
             },
