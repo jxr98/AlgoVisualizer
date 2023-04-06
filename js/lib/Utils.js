@@ -18,4 +18,9 @@ function isNumeric(value) {
     return /^-?\d+$/.test(value);
 }
 
+export function isNullOrEmptyStr(str)
+{
+    return str == null || str == "";
+}
+
 export {position2ID, ID2Position, isNumeric}
