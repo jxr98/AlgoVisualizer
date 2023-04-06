@@ -56,6 +56,7 @@ document.getElementById("signupButton").onclick = function () {
             dataType: "json",
             data: data,
             success: function () {
+                loginBtn.click();
                 window.alert("user created!");
             }
         })
