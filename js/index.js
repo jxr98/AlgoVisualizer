@@ -99,6 +99,12 @@ document.getElementById("loginButton").onclick = function () {
             window.alert("user signed in");
             var cookie="id="+user.id+"; " + "email"+ user.email;
             document.cookie=cookie;
+
+
+            sessionStorage.setItem("id", user.id);
+            sessionStorage.setItem("email", user.email);
+
+
             modal.style.display = "none"; // closes modal
 
             // hide the login button
