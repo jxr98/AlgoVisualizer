@@ -3,14 +3,31 @@ import {User} from "./lib/User.js"
 var modal = document.getElementById("myModal");
 
 // Get the button that opens the modal
-var btn = document.getElementById("signInSignUp");
+var openLoginModalBtn = document.getElementById("signInSignUp");
+const openLoginModalBtnLabel = "Sign In/Sign Up";
+
+// Get the sign out button
+var signOutBtn = document.getElementById("signOut");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks the button, open the modal 
-btn.onclick = function() {
+openLoginModalBtn.onclick = function() {
     modal.style.display = "block";
+}
+
+// when user wants to sign out
+signOutBtn.onclick = function()
+{
+    window.alert("Signing out!");
+    // show the login button
+    openLoginModalBtn.textContent=openLoginModalBtnLabel; 
+
+    // hide sign out button
+    signOutBtn.textContent="";
+
+    // TODO: clear cookies?
 }
 
 // When the user clicks on <span> (x), close the modal
@@ -56,8 +73,11 @@ document.getElementById("signupButton").onclick = function () {
             dataType: "json",
             data: data,
             success: function () {
-                loginBtn.click();
+                loginBtn.click(); // on success, move to login
                 window.alert("user created!");
+            },
+            error: function(){
+                window.alert("error!");
             }
         })
     } else {
@@ -79,6 +99,17 @@ document.getElementById("loginButton").onclick = function () {
             window.alert("user signed in");
             var cookie="id="+user.id+"; " + "email"+ user.email;
             document.cookie=cookie;
+            modal.style.display = "none"; // closes modal
+
+            // hide the login button
+            openLoginModalBtn.textContent=""; 
+
+            // show sign out button
+            signOutBtn.textContent="Sign out from "+user.email;
+
+        },
+        error: function(){
+            window.alert("Wrong email or password!");
         }
     })
 }
