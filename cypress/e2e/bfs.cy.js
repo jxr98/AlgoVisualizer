@@ -53,7 +53,39 @@ describe('Home page website', () => {
 
   // })
 
-  
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('travel_to_dfs', function() {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#graphNav > .nav-link').click();
+    cy.get(':nth-child(2) > .dropdown-item').click();
+    /* ==== End Cypress Studio ==== */
+  });
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('travel_to_astar', function() {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#graphNav > .nav-link').click();
+    cy.get(':nth-child(4) > .dropdown-item').click();
+    /* ==== End Cypress Studio ==== */
+  });
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('travel_to_mst', function() {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#graphNav > .nav-link').click();
+    cy.get(':nth-child(5) > .dropdown-item').click();
+    /* ==== End Cypress Studio ==== */
+  });
+
+
+  /* ==== Test Created with Cypress Studio ==== */
+  it('travel_to_heap', function() {
+    /* ==== Generated with Cypress Studio ==== */
+    cy.get('#treeNav > .nav-link').click();
+    cy.get('#treeNav > .dropdown-menu > li > .dropdown-item').click();
+    /* ==== End Cypress Studio ==== */
+  });
 })
 
 
