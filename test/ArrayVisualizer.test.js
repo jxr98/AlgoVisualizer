@@ -9,7 +9,30 @@ class ResizeObserverMock {
     disconnect() {}
 }
 global.ResizeObserver = ResizeObserverMock;
+
+describe('negative tests', () => {
+    let consoleSpy;
+    //let svg;
+    beforeEach(() => {
+        consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+        //svg = d3.select("body").append("svg").attr("width", 800).attr("height", 100)
+    });
+    afterEach(() => {
+        expect(consoleSpy).toHaveBeenCalled();
+        consoleSpy.mockRestore();
+    });
+
+    it('Transition delay non integer constructor', () => {
+        let g = new TransitionDelay("s");
+    });
+    it('Transition delay non integer in setter', () => {
+        let g = new TransitionDelay();
+        g.setDelay(-1.5)
+    });
+
+});
   
+
 test('Transition delay', ()=>
 {
     let g = new TransitionDelay();
@@ -22,7 +45,7 @@ test('Array visualizer',()=>{
     // setup svg
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-    var width = 800,
+    var width = 300,
         height = 100;
     var svg = d3.select("body").append("svg")
         .attr("width", width)
