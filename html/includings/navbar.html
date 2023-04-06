@@ -1,3 +1,8 @@
+<style>
+    .dropdown-menu {
+        top: 91%;  /* if left at 100%, there will be a gap between the menu and the toggle, which can cause jitters */
+    }
+</style>
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #055C9D;">
     <a class="navbar-brand" href="../../index.html">Home</a>
     <ul class="navbar-nav text-center" style="width: 100%">
@@ -12,11 +17,7 @@
             </ul>
         </li>
         <li class="nav-item dropdown" id="sortingNav">
-            <a class="nav-link" href="#">Sorting</a>
-            <ul class="dropdown-menu dropdown-sorting text-center">
-                <li><a class="dropdown-item" href="insertionSort.html"> Insertion</a></li>
-                <li><a class="dropdown-item" href="#"> Quicksort </a></li>
-            </ul>
+            <a class="nav-link" href="sort.html">Sorting</a>
         </li>
         <li class="nav-item dropdown" id="treeNav">
             <a class="nav-link" href="#">Tree</a>
