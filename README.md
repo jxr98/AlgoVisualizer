@@ -4,7 +4,7 @@
 
 [![codecov](https://codecov.io/gh/jxr98/AlgoVisualizer/branch/master/graph/badge.svg?token=0PDTWCHB7U)](https://codecov.io/gh/jxr98/AlgoVisualizer)
 
-https://jxr98.github.io/AlgoVisualizer/
+http://jxr98.github.io/AlgoVisualizer/
 
 sandbox: https://jxr98.github.io/AlgoVisualizer/html/sandbox.html
 
