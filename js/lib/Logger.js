@@ -43,7 +43,6 @@ class Logger
 
     #appendToTextArea(str)
     {
-        if (this.#textAreaHandle == null) return
         this.#textAreaHandle.text(this.#textAreaHandle.text() + "\n" + str)
 
         // scroll to bottom to show new texts
