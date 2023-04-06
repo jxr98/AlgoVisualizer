@@ -3,6 +3,7 @@ import { DFS } from "./lib/DFS.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
+import * as inputFormHelper from "./lib/inputFormHelper.js"
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -17,7 +18,12 @@ const fGraph = new ForceSimulationGraph(svg);
 
 document.getElementById("start-button").onclick = function()
 {
-    let vertices = $("#formControlTextarea2").val().split(" ");
+    let vertices = inputFormHelper.readInputsFromTwoVertexInputModule();
+    if (!inputFormHelper.checkInputsFromTwoVertexInputModule())
+    {
+        return;
+    }
+
     let depthFirstPaths = new DFS(fGraph.getGraphModel(), vertices[0], vertices[1]);
     let path = "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": ";
     if (!depthFirstPaths.havePath()){

@@ -2,10 +2,9 @@
 import { Dijkstra } from "./lib/Dijkstra's.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
-import {redirectConsoleOutput} from './lib/Logger.js'
-import {isNumeric} from './lib/Utils.js'
-import {line} from "./thirdParty/d3.js";
+import {redirectConsoleOutput} from './lib/Logger.js';
 import {isNumeric} from "./lib/Utils.js";
+import * as inputFormHelper from "./lib/inputFormHelper.js";
 
 // TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
 // as opposed to creating svg, textarea, etc. DOM on the fly.
@@ -36,7 +35,12 @@ document.getElementById("start-button").onclick = function()
         weightedLines.push([nodes_info[1], nodes_info[0], parseInt(weight)]);
     }
 
-    let vertices = $("#formControlTextarea2").val().split(" ");
+    let vertices = inputFormHelper.readInputsFromTwoVertexInputModule();
+    if (!inputFormHelper.checkInputsFromTwoVertexInputModule())
+    {
+        return;
+    }
+
     let DijkstraPaths = new Dijkstra(weightedLines, fGraph.getGraphModel(), vertices[0], vertices[1]);
     let path = "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": ";
 
