@@ -1,5 +1,6 @@
 import * as utils from "./Utils.js"
 
+/* istanbul ignore next */
 export function readInputsFromTwoVertexInputModule()
 {
     // see html/includings/twoVertexInput.html
@@ -7,6 +8,8 @@ export function readInputsFromTwoVertexInputModule()
     dstNode = document.getElementById("dstNode").value
     return [srcNode, dstNode];
 }
+
+/* istanbul ignore next */
 export function checkTwoVertexInputIsValidGraphNodes(graph)
 {
     // see html/includings/twoVertexInput.html

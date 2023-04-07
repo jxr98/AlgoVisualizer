@@ -13,6 +13,11 @@ describe('positive tests', () => {
         expect(consoleSpy).toHaveBeenCalledTimes(0);
         consoleSpy.mockRestore();
     });
+
+    it('add legends', ()=> {
+        let g = new ForceSimulationGraph(svg, false)
+        g.setLegend("test", "pink")
+    })
   
     it('constructor', () => {
         let g1 = new ForceSimulationGraph(svg, true)
