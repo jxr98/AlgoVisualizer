@@ -4,6 +4,8 @@ import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js';
 import * as inputFormHelper from "./lib/inputFormHelper.js"
 import * as cm from './lib/common.js'
+import {getValueFromCookie} from "./lib/Utils.js";
+import {Edge} from "./lib/Edge.js";
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -112,3 +114,21 @@ document.getElementById("start-button").onclick = function()
         });
     }
 };
+
+document.getElementById("SaveButton").onclick=function () {
+    var graph=fGraph.getGraphModel();
+    var customerId=getValueFromCookie("id");
+    var graphName="BFS";
+    var numVertices=graph.getNumVertices();
+    var edges= graph.getLinks();
+    var data={"customerId":customerId,"graphName":graphName,"numVertices":numVertices,"edges":JSON.stringify(edges)};
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8080/undirectedGraph/save",
+        dataType: "json",
+        data: data,
+        success:function () {
+
+        }
+    })
+}
