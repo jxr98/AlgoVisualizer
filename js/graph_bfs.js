@@ -32,7 +32,7 @@ const fGraph = new ForceSimulationGraph(svg);
 document.getElementById("start-button").onclick = function()
 {
     let vertices = inputFormHelper.readInputsFromTwoVertexInputModule();
-    if (!inputFormHelper.checkInputsFromTwoVertexInputModule())
+    if (!inputFormHelper.checkTwoVertexInputIsValidGraphNodes(fGraph.getGraphModel()))
     {
         return;
     }
