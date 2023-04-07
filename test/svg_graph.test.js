@@ -1,6 +1,7 @@
 import {ForceSimulationGraph} from "../js/lib/svg_graph";
 import {expect, jest} from '@jest/globals';
 import * as d3 from '../js/thirdParty/d3.js';
+import * as common from '../js/lib/common'
 
 describe('positive tests', () => {
     let consoleSpy;
@@ -63,6 +64,8 @@ describe('positive tests', () => {
         g.changeColor(a, "blue")
         let graphModel = g.getGraphModel();
         expect(graphModel.getNodeProperty(a).color).toBe("blue")
+        g.resetColors()
+        expect(graphModel.getNodeProperty(a).color).toBe(common.default_color)
     });
 
     it('highlight links', () => {
