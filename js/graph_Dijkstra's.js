@@ -19,6 +19,9 @@ var textArea=d3.select("#logPanel");
 redirectConsoleOutput(textArea)
 
 const fGraph = new ForceSimulationGraph(svg, true);
+fGraph.setLegend("unvisited", "pink")
+fGraph.setLegend("search process", "yellow")
+fGraph.setLegend("path", "red")
 
 document.getElementById("start-button").onclick = function()
 {
