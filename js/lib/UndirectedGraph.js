@@ -14,6 +14,16 @@ export class UndirectedGraph extends Graph{
         this.#nodeProp=[];
     }
 
+    isNodeDeleted(nodeID)
+    {
+        return this.isNodeValid(nodeID) && this.#nodeProp[nodeID].delete === true;
+    }
+
+    isNodeValid(nodeID)
+    {
+        return  Number.isInteger(nodeID) && nodeID < this.#numVertices && nodeID >=0;
+    }
+
     getNumVertices(){ return this.#numVertices; }
     getNumEdges(){ return this.#numEdges; }
 

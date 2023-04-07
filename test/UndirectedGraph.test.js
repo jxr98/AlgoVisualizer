@@ -148,7 +148,19 @@ describe('UndirectedGraph', () => {
     expect(graph.getNumVertices()).toBe(1);
   });
 
-
+  test('delete and check', () => {
+    let a = graph.addNode(10, 20),
+    b = graph.addNode(30, 40)
+    graph.deleteNode(a);
+    const nodes = graph.getNodes();
+    expect(nodes.length).toBe(1);
+    expect(graph.isNodeDeleted(a)).toBeTruthy();
+    expect(graph.isNodeValid(a)).toBe(true);
+    expect(graph.isNodeValid(b)).toBe(true);
+    expect(graph.isNodeValid(-1)).toBe(false);
+    expect(graph.isNodeValid(2)).toBe(false);
+    expect(graph.isNodeValid(3.2)).toBe(false);
+  });
 
   test('removeEdge should do nothing if either parameter is invalid', () => {
     graph.addNode();
