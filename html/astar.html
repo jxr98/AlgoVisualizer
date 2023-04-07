@@ -6,41 +6,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 
-  <title>Algorithm Visualization - A*</title>
+    <link rel="stylesheet" type="text/css" href="../css/hideNumberInputArrows.css">
+
+  <title>A* Search</title>
 </head>
 
-<body>
-  <div class="container-fluid">
-    <h1 class="text-center text-primary">A*</h1>
-    <!-- <div class="row">
-      <div class="col-9">
-        <div class="form-group">
-          <label for="formControlTextarea2">please input start vertex and end vertex(format 0 1 \n)</label>
-          <textarea class="form-control" id="formControlTextarea2" rows="1"></textarea>
+<body style="background:#F0F8FF;">
+<div class="container-fluid">
+  <div id="loadNavBar"></div>
+  <h1 class="text-center" style="margin-top: 20px">A* Search</h1>
+  <div class="row" style="margin-top: 20px">
+
+    <!-- simulation area -->
+    <div class="col border">
+      <h2 class="text-center">Simulation</h2>
+
+      <!-- input area -->
+      <div>
+        <div class="form-outline mb-3">
+            
+
+            <!-- Source node input -->
+            <div class="row mb-3">
+                <div class="form-floating col-6">
+                    <input type="number" id="srcX" class="form-control" placeholder="Source X" aria-describedby="srcXFeedback"/>
+                    <label for="srcX" style="margin-left:10px">Source X</label>
+                    <div id="srcXFeedback" class="invalid-feedback">
+                        bad input
+                    </div>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="number" id="srcY" class="form-control" placeholder="Source Y" aria-describedby="srcYFeedback"/>
+                    <label for="srcY" style="margin-left:10px">Source Y</label>
+                    <div id="srcYFeedback" class="invalid-feedback">
+                        bad input
+                    </div>
+                </div>
+                <span>
+            </div>
+
+            <!-- Dst node input -->
+            <div class="row">
+                <div class="form-floating col-6">
+                    <input type="number" id="dstX" class="form-control" placeholder="Destination X" aria-describedby="dstXFeedback"/>
+                    <label for="dstX" style="margin-left:10px">Destination X</label>
+                    <div id="dstXFeedback" class="invalid-feedback">
+                        bad input
+                    </div>
+                </div>
+                <div class="form-floating col-6">
+                    <input type="number" id="dstY" class="form-control" placeholder="Destination Y" aria-describedby="dstYFeedback"/>
+                    <label for="dstY" style="margin-left:10px">Destination Y</label>
+                    <div id="dstYFeedback" class="invalid-feedback">
+                        bad input
+                    </div>
+                </div>
+                <span>
+            </div>
         </div>
       </div>
 
-      <div class="col-3">
-        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-        <label class="form-check-label" for="flexSwitchCheckDefault">Directed Graph</label>
-        <button id="start-button" type="button" class="btn btn-dark">Start</button>
-        <button id="reset-button" type="button" class="btn btn-dark" onclick="javascript:location.reload();">Reset</button>
+      <div class="row mb-3" >
+        <div class="ml-auto">
+          <button id="start-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;">Start</button>
+          <button id="reset-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;"
+                  onclick="javascript:location.reload();">Reset
+          </button>
+        </div>
       </div>
+      <svg height="800" width="100%" style="outline: thin solid black;" id="graphSvg"></svg>
+    </div>
 
-    </div> -->
+    <!-- Additional info area -->
+    <div class="col-sm-3 border">
+      <h2>Instruction</h2>How to use this graph simulator?
+      <ol>
+        <li>Draw nodes and links in the Graph Panel</li>
+        <li>Input the source node index and target node index in the second panel</li>
+        <li>Click the Start button</li>
+      </ol>
+      <h2>Shortest Path</h2>
+      <p id="shortestPath"></p>
+      <h2>Logs</h2>
+      <textarea readonly style="width: 100%; height:800px; border: none;outline: none; background:#F0F8FF;" id="logPanel"></textarea>
+    </div>
   </div>
+</div>
 
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+    integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT" crossorigin="anonymous">
   </script>
-  <script src="../js/thirdParty/jquery.drawsvg.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" 
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
   </script>
-  <script type="module" src="../js/astar.js"></script>
+<script>
+  $('#loadNavBar').load("includings/navbar.html");
+</script>
+  <script type="module" src="../js/graph_astar.js"></script>
 </body>
 
 </html>
