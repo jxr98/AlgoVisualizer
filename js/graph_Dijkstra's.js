@@ -1,10 +1,10 @@
-//import
 import { Dijkstra } from "./lib/Dijkstra's.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js';
 import {isNumeric} from "./lib/Utils.js";
 import * as inputFormHelper from "./lib/inputFormHelper.js";
+import * as cm from './lib/common.js'
 
 // TODO: perhaps its better if DOM elements are present in HTML and we just get handles to them
 // as opposed to creating svg, textarea, etc. DOM on the fly.
@@ -60,8 +60,8 @@ document.getElementById("start-button").onclick = function()
         let size = result.length;
         for (let i = 0; i < size; i++) {
             if (i == 0 || i == size - 1)
-                setTimeout(function(){fGraph.changeColor(result[i][0], "pink");}, 2000 * i);
-            setTimeout(function(){ fGraph.changeColor(result[i][0], "yellow");}, 2000 * i);
+                setTimeout(function(){fGraph.changeColor(result[i][0], cm.default_color);}, cm.long_animation_gap * i);
+            setTimeout(function(){ fGraph.changeColor(result[i][0], cm.process_color);}, cm.long_animation_gap * i);
             setTimeout(function()
             {
                 console.log("Step " + i + ":")
@@ -71,8 +71,8 @@ document.getElementById("start-button").onclick = function()
                 for (let j = 0; j < relaxationSize; j++) {
                     console.log("vertex: " + process[i][j][0] + ", weight: " + process[i][j][1]);
                 }
-            }, 2000 * i);
-            setTimeout(function(){ fGraph.changeColor(result[i][0], "red");}, 2000 * size);
+            }, cm.long_animation_gap * i);
+            setTimeout(function(){ fGraph.changeColor(result[i][0], cm.endpoint_color);}, cm.long_animation_gap * size);
         }
     }
 };

@@ -4,6 +4,7 @@ import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js'
 import * as inputFormHelper from "./lib/inputFormHelper.js"
+import * as cm from './lib/common.js'
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -47,17 +48,17 @@ document.getElementById("start-button").onclick = function()
             if (!visited[processVertices[i]]) {
                 visited[processVertices[i]] = true;
                 if (processVertices[i] != vertices[1])
-                    setTimeout(function(){ fGraph.changeColor(processVertices[i], "yellow");}, 1000 * i);
-                else setTimeout(function(){ fGraph.changeColor(processVertices[i], "red");}, 1000 * i);
+                    setTimeout(function(){ fGraph.changeColor(processVertices[i], cm.process_color);}, cm.short_animation_gap * i);
+                else setTimeout(function(){ fGraph.changeColor(processVertices[i], cm.endpoint_color);}, cm.short_animation_gap * i);
             } else {
                 visited[processVertices[i]] = false;
-                setTimeout(function(){ fGraph.changeColor(processVertices[i], "grey");}, 1000 * i);
+                setTimeout(function(){ fGraph.changeColor(processVertices[i], cm.traversed_color);}, cm.short_animation_gap * i);
             }
         }
         result.forEach(function(vertex) {
             setTimeout(function(){
-                fGraph.changeColor(vertex, "red");
-            }, 1000 * size);
+                fGraph.changeColor(vertex, cm.endpoint_color);
+            }, cm.short_animation_gap * size);
         });
     }
 };
