@@ -88,12 +88,10 @@
       </p>
       <p>
         A* algorithm prioritize its search using a cost function c(n) = g(n) + h(n), where g(n) is known path cost to node n 
-        and h(n) is the estimated cost from node n to target. In this simulation, h(n) is simply the Manhattan distance.
+        and h(n) is the estimated cost from node n to target. In this simulation, h(n) is simply the Manhattan distance scaled by factor of 2 to have impose stronger guidance.
       </p>
       <p>
         A* is said to be admissible, therefore optimal, if and only if the heuristic function h(n) <i>never</i> overestimate the true cost.
-        For this simulation, Manhattan distance always return minimum estimate to target, 
-        thus this simulation will <i>always find an optimal shortest path</i>.
       </p>
       <b>Instructions</b>
       <ol>
