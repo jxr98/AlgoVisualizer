@@ -28,6 +28,9 @@ class ForceSimulationGraph
     
     #chargeSeparation = DefaultChargeSeparation; // how much repulsion between nodes
 
+    // legends handles
+    #legends = []
+
     constructor(svg, weighted=false)
     {
         this.weighted = weighted;
@@ -73,6 +76,33 @@ class ForceSimulationGraph
 
     ////////////////////////////////////////////////////////////////////
     //////// public interface
+
+    setLegend(str, color)
+    {
+        const colorSquareDim = 20;
+
+        // create new legend
+        let newLegendGroup = this.svg.append('g')
+        .attr("class", "legend")
+
+        this.#legends.push(newLegendGroup);
+        newLegendGroup.append("rect")
+        .attr("fill", color)
+        .attr("width", colorSquareDim)
+        .attr("height", colorSquareDim)
+        .attr("x", -25)
+        .attr("y", -15)
+        newLegendGroup.append("text").text(str)
+
+        // legends are fixed on top left side of view
+        const numLegends = this.#legends.length
+        newLegendGroup.attr("transform", function()
+        {
+            let y = numLegends*colorSquareDim + numLegends*5,
+            rightX = 40
+            return "translate(" + rightX + "," + y + ")"
+        })
+    }
 
     deleteNode(nodeID)
     {
