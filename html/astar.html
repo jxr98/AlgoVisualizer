@@ -72,9 +72,9 @@
       <div class="row mb-3" >
         <div class="ml-auto">
           <button id="start-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;">Start</button>
-          <button id="reset-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;"
+          <!-- <button id="reset-button" type="button" class="btn btn-dark" style="background-color: #055C9D; border: none;"
                   onclick="javascript:location.reload();">Reset
-          </button>
+          </button> -->
         </div>
       </div>
       <svg height="800" width="100%" style="outline: thin solid black;" id="graphSvg"></svg>
@@ -82,14 +82,32 @@
 
     <!-- Additional info area -->
     <div class="col-sm-3 border">
-      <h2>Instruction</h2>How to use this graph simulator?
+      <h2>Instruction</h2>
+      <p>
+        A* algorithm is a complete search algorithm, if a solution exists it will find it. 
+      </p>
+      <p>
+        A* algorithm prioritize its search using a cost function c(n) = g(n) + h(n), where g(n) is known path cost to node n 
+        and h(n) is the estimated cost from node n to target. In this simulation, h(n) is simply the Manhattan distance.
+      </p>
+      <p>
+        A* is said to be admissible, therefore optimal, if and only if the heuristic function h(n) <i>never</i> overestimate the true cost.
+        For this simulation, Manhattan distance always return minimum estimate to target, 
+        thus this simulation will <i>always find an optimal shortest path</i>.
+      </p>
+      <b>Instructions</b>
       <ol>
-        <li>Draw nodes and links in the Graph Panel</li>
-        <li>Input the source node index and target node index in the second panel</li>
-        <li>Click the Start button</li>
+        <li>Select source and destination coordinates</li>
+        <li>(Optional) To introduce obstacles, click on any tile. Obstacle tiles are <b>black</b></li>
+        <li>Click the Start button run simulation</li>
       </ol>
-      <h2>Shortest Path</h2>
-      <p id="shortestPath"></p>
+      <b>Color code</b>
+      <p><b style="color: black;">&#9632</b> : Obstacles tile</p>
+      <p><b style="color: blue;">&#9632</b> : Source tile</p>
+      <p><b style="color: yellow;">&#9632</b> : Visited tiles</p>
+      <p><b style="color: red;">&#9632</b> : Target tile & path to target</p>
+      <p><b style="color: grey;">&#9632</b> : Unvisited tiles</p>
+
       <h2>Logs</h2>
       <textarea readonly style="width: 100%; height:800px; border: none;outline: none; background:#F0F8FF;" id="logPanel"></textarea>
     </div>

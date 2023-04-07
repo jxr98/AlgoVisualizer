@@ -1,7 +1,7 @@
 // NOTE: use v7 of D3 library
 import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
-import { GridGraph } from './lib/GridGraph.js';
+import { GridGraph, defaultColor } from './lib/GridGraph.js';
 import * as utils from "./lib/Utils.js"
 import {AStar, Location} from './lib/AStar.js'
 
@@ -14,8 +14,6 @@ const g = new GridGraph(svg);
 const interval = 50
 let timeoutHandles = []
 
-
-
 document.getElementById("start-button").onclick = function()
 {
     if (!checkInputs(g)) return;
@@ -26,6 +24,17 @@ document.getElementById("start-button").onclick = function()
     runSim(startLoc, endLoc);
 }
 
+function clearColoring()
+{
+  for (let x = 0; x < g.getXRange(); x++)
+  {
+    for (let y = 0; y < g.getYRange(); y++)
+    {
+      g.changeColor(g.getNodeID(x,y), defaultColor)
+    }
+  }
+}
+
 function runSim(startLoc, endLoc)
 {
   // clear all timeouts
@@ -34,7 +43,8 @@ function runSim(startLoc, endLoc)
   });
   timeoutHandles.splice(0,timeoutHandles.length)
 
-  // TODO: clear all non-obstacle coloring on graph
+  // clear all non-obstacle coloring on graph
+  clearColoring()
 
   // setup sim
   let sim = new AStar(g, startLoc, endLoc),
