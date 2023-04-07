@@ -1,6 +1,6 @@
 import { UndirectedGraph } from "./UndirectedGraph.js";
 import * as d3 from "../thirdParty/d3.js";
-import {createDefaultGraph} from './Graph.js'
+import * as cm from './common.js'
 
 const DefaultMouseDownNode=-1;
 const DefaultMouseHoverLink=-1;
@@ -22,7 +22,7 @@ class ForceSimulationGraph
     mouseDownNode;
     link;
     circleRadius = 25;
-    circleColour = "pink";
+    circleColour = cm.default_color;
     markerWH = 3;//marker width and height
     weighted; //record the graph if is weighted
     
@@ -169,7 +169,6 @@ class ForceSimulationGraph
                         .style('stroke-width', 2.4);
                 }
             })
-
     }
 
     checkLinkExistsInRet(ret,x,y){
@@ -301,7 +300,7 @@ class ForceSimulationGraph
                 self.mouseHoverNode = DefaultMouseDownNode;
             })
             .on("dblclick", /* istanbul ignore next */function(e, d){
-                //console.log(d.id)
+                 console.log("delete node " +  d.id)
                  self.deleteNode(d.id);
                  if (this.weighted)
                      self.#deleteWeightInputLineByNode(d.id)

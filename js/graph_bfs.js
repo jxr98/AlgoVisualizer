@@ -1,9 +1,9 @@
-//import 
 import { BFS_search } from "./lib/BFS_search.js";
 import * as d3 from "./thirdParty/d3.js";
 import {ForceSimulationGraph} from "./lib/svg_graph.js";
 import {redirectConsoleOutput} from './lib/Logger.js';
 import * as inputFormHelper from "./lib/inputFormHelper.js"
+import * as cm from './lib/common.js'
 
 //set up a svg
 var svg = d3.select("#graphSvg")
@@ -93,18 +93,18 @@ document.getElementById("start-button").onclick = function()
             let n = sameStepVertices.length;
             for (let j = 0; j < n; j++) {
                 setTimeout(function(){
-                    fGraph.changeColor(sameStepVertices[j], "yellow");
+                    fGraph.changeColor(sameStepVertices[j], cm.process_color);
                     var rectangleID="#rect" + sameStepVertices[j];
                     var rectangleTextId="#rectText" + sameStepVertices[j];
                     d3.select(rectangleID).attr('visibility','visible');
                     d3.select(rectangleTextId).attr('visibility','visible');
-                }, 1000 * i);
+                }, cm.short_animation_gap * i);
             }
         }
         result.forEach(function(vertex) {
             setTimeout(function(){
-                fGraph.changeColor(vertex, "red");
-            }, 1000 * size);
+                fGraph.changeColor(vertex, cm.endpoint_color);
+            }, cm.short_animation_gap * size);
         });
     }
 };

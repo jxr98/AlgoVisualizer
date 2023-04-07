@@ -1,4 +1,5 @@
 import * as d3 from "../thirdParty/d3.js";
+import * as cm from './common.js'
 
 class Heap
 {
@@ -48,7 +49,7 @@ class Heap
                 this.dataset.push([this.nodes_x[count - 1], total_h, this.data[count]])
                 count++
                 this.group1.append('line')
-                    .style("stroke", "black")
+                    .style("stroke", cm.default_line_color)
                     .style("stroke-width", 3)
                     .attr("x1", this.dataset[count - 1][0])
                     .attr("y1", this.dataset[count - 1][1])
@@ -73,7 +74,7 @@ class Heap
                 return d[1];
             })
             .attr("r", 20)
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("stroke-width", 3)
             .attr('fill', 'pink')
             .attr('id', function(d, i) {
@@ -93,7 +94,7 @@ class Heap
             .attr("y", function (d) {
                 return d[1] + 4
             })
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("font-size", 12)
             .text(function (d) {
                 return d[2]
@@ -112,7 +113,7 @@ class Heap
             .attr("y", function (d) {
                 return d[1] - 30
             })
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("font-size", 12)
             .text(function (d, i) {
                 return i
@@ -137,7 +138,7 @@ class Heap
             .attr("cx", x)
             .attr("cy", y)
             .attr("r", 20)
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("stroke-width", 3)
             .attr('fill', 'pink')
             .attr('id', "node" + n)
@@ -146,7 +147,7 @@ class Heap
             .append("text")
             .attr("x", x)
             .attr("y", y + 4)
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("font-size", 12)
             .text(data)
             .attr("text-anchor", "middle")
@@ -156,7 +157,7 @@ class Heap
             .append("text")
             .attr("x", x)
             .attr("y", y - 30)
-            .attr('stroke', 'black')
+            .attr('stroke', cm.default_line_color)
             .style("font-size", 12)
             .text(n)
             .attr("text-anchor", "middle")
@@ -164,7 +165,7 @@ class Heap
 
         // add line
         this.group1.append('line')
-            .style("stroke", "black")
+            .style("stroke", cm.default_line_color)
             .style("stroke-width", 3)
             .attr("x1", x)
             .attr("y1", y)
@@ -218,7 +219,7 @@ class Heap
                     console.log("The step " + j + " is checking nodes " + p[0] + ", " + p[1] + ".")
                 else if (p[2] >= len && p[1] >= len)
                     console.log("The step" + j +  " is checking node " + p[0] + ".")
-            }, 1000 * i)
+            }, cm.short_animation_gap * i)
             // focus three nodes which will be compared
             this.focusNode(p[0], i);
             if (p[1] < len)
@@ -238,7 +239,7 @@ class Heap
                     if (this.kind == 0)
                         console.log("Node " + p[0] + " is the largest in the subtree.")
                     else console.log("Node " + p[0] + " is the smallest in the subtree.")
-                }, 1000 * i)
+                }, cm.short_animation_gap * i)
             this.unfocusNode(p[0], i);
             if (p[1] < len)
                 this.unfocusNode(p[1], i)
@@ -270,7 +271,6 @@ class Heap
                 extremum = r;
         }
 
-
         this.process.push([i, l, r, extremum])
 
         // If largest or smallest is not root
@@ -287,27 +287,27 @@ class Heap
     focusNode(i, time) {
         setTimeout(function () {
             d3.select("#node" + i).attr('fill', 'yellow')
-        }, 1000 * time)
+        }, cm.short_animation_gap * time)
     }
 
     unfocusNode(i, time) {
         setTimeout(function () {
             d3.select("#node" + i).attr('fill', 'pink')
-        }, 1000 * time)
+        }, cm.short_animation_gap * time)
     }
 
     focusLine(i, j, time) {
         setTimeout(function () {
-            d3.select("#line" + i + "-" + j).style("stroke", "red")
+            d3.select("#line" + i + "-" + j).style("stroke", cm.focused_line_color)
             console.log("Node " + j + " is smaller than " + " node " + i + ".")
             console.log("So switch nodes " + j + " and " + i + ".")
-        }, time * 1000)
+        }, time * cm.short_animation_gap)
     }
 
     unfocusLine(i, j, time) {
         setTimeout(function () {
-            d3.select("#line" + i + "-" + j).style("stroke", "black")
-        }, 1000 * time)
+            d3.select("#line" + i + "-" + j).style("stroke", cm.default_line_color)
+        }, cm.short_animation_gap * time)
     }
 
     swapText(i, j, time)
@@ -317,7 +317,7 @@ class Heap
             let t2 = d3.select("#text" + j).text()
             d3.select("#text" + i).text(t2)
             d3.select("#text" + j).text(t1)
-        }, time * 1000)
+        }, time * cm.short_animation_gap)
     }
 
     getProcess()
