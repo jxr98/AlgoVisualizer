@@ -77,6 +77,15 @@ class ForceSimulationGraph
     ////////////////////////////////////////////////////////////////////
     //////// public interface
 
+    resetColors()
+    {
+        let size = this.#graph.getNumVertices()
+        for (let i=0; i< size; i++)
+        {
+            this.changeColor(i, this.circleColour)
+        }
+    }
+
     setLegend(str, color)
     {
         const colorSquareDim = 20;

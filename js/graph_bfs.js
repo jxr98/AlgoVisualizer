@@ -21,11 +21,11 @@ visualizationDiv.append("svg")
     .attr('width','100%')
     .style('border','1px solid #000')
     .attr('id','queueSvg');
-    d3.select("#queueSvg")
-        .append('text')
-        .text('Head')
-        .attr('x',1000-45)
-        .attr('y',20);
+d3.select("#queueSvg")
+    .append('text')
+    .text('Head')
+    .attr('x',1000-45)
+    .attr('y',20);
 
 const fGraph = new ForceSimulationGraph(svg);
 fGraph.setLegend("unvisited", "pink")
@@ -39,6 +39,10 @@ document.getElementById("start-button").onclick = function()
     {
         return;
     }
+
+    // reset
+    fGraph.resetColors()
+    d3.select("#queueSvg").selectAll(".recQueue").data([]).exit().remove();
 
     let breadthFirstPaths=new BFS_search(fGraph.getGraphModel(), vertices[0])
     let path= "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": "
