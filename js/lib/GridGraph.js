@@ -23,7 +23,9 @@ class GridGraph
     constructor(svg)
     {
         this.#svg = svg
-        let width = svg.attr("width"), height = svg.attr("height");
+        let width = this.#svg.node().clientWidth;
+        let height = this.#svg.node().clientHeight;
+
         this.#yRange = Math.floor(height / this.#squareSize);
         this.#xRange = Math.floor(width / this.#squareSize);
         let reducedHeight = this.#yRange*this.#squareSize,

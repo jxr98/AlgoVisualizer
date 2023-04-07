@@ -1,25 +1,75 @@
-// Get the modal
-var modal = document.getElementById("myModal");
+// NOTE: use v7 of D3 library
+import * as d3 from './thirdParty/d3.js';
+import {redirectConsoleOutput} from './lib/Logger.js'
+import { GridGraph } from './lib/GridGraph.js';
 
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
+// setup svg
+var svg = d3.select("#graphSvg")
 
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
+let textArea = d3.select("#logPanel")
+redirectConsoleOutput(textArea)
 
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
+const g = new GridGraph(svg);
+let startNode = g.getNodeID(0, 0)
+let endNode = g.getNodeID(8, 4)
+g.changeColor(startNode, "red")
+g.changeColor(endNode, "green")
+
+let visited = new Set()
+visited.add(startNode)
+let stack = []
+let parentMap = new Map()
+stack.push(startNode)
+let tick = 0
+let interval = 50
+
+while (stack.length != 0)
+{
+    // DFS
+    let currNode = stack.pop()
+
+    // BFS
+    //let currNode = stack.shift()
+
+    if (currNode == endNode)
+    {
+        break;
+    }
+
+    g.getAdjacent(currNode).forEach(function(neighbor)
+    {
+        if (!visited.has(neighbor))
+        {
+            visited.add(neighbor)
+            parentMap.set(neighbor, currNode)
+            stack.push(neighbor)
+            if (neighbor != endNode)
+            {
+                setTimeout(function(){
+                    g.changeColor(neighbor, "yellow")
+                }, tick) 
+            } 
+        } 
+    })
+    
+    tick += interval
 }
 
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+// back-track the path and highlight
+if (parentMap.has(endNode))
+{
+    console.log("DONE")
+    let curr = endNode
+    while(curr != startNode)
+    {
+        let parent = parentMap.get(curr)
+        if (parent != startNode)
+        {
+            setTimeout(function(){
+                g.changeColor(parent, "blue")
+            }, tick)
+        }
+        curr = parent
+        tick += interval
+    }
 }
