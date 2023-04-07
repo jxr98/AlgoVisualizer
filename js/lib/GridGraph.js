@@ -65,6 +65,15 @@ class GridGraph
     ////////////////////////////////////////////////////////////////////
     //////// public interface
 
+    isValidX(x)
+    {
+        return x >=0 && x <this.#xRange
+    }
+    isValidY(y)
+    {
+        return y >=0 && y <this.#yRange
+    }
+
     getYRange()
     {
         return this.#yRange;
@@ -75,7 +84,7 @@ class GridGraph
     }
     getNodeID(x, y)
     {
-        if (!this.#isValidX(x) || !this.#isValidY(y))
+        if (!this.isValidX(x) || !this.isValidY(y))
         {
             console.error("Invalid coordinates recieved")
         }
@@ -154,14 +163,7 @@ class GridGraph
 
     ////////////////////////////////////////////////////////////////////
     //////// private functions
-    #isValidX(x)
-    {
-        return x >=0 && x <this.#xRange
-    }
-    #isValidY(y)
-    {
-        return y >=0 && y <this.#yRange
-    }
+    
     #isValidID(nodeID)
     {
         return nodeID >= 0 && nodeID <= this.#maxNodeID
