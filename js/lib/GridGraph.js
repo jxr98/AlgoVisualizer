@@ -1,7 +1,7 @@
 import * as d3 from "../thirdParty/d3.js";
 import {ID2Position, position2ID } from "./Utils.js";
 
-const obstacleNodeID = -1;
+const invalidNodeID = -1;
 
 // graph with well defined coordinate system for each node
 class GridGraph
@@ -102,7 +102,7 @@ class GridGraph
     {
         // if node is out of bound or has obstacle property
         let {x, y} = ID2Position(nodeID, this.#xRange)
-        return this.#getNodeAt(x, y) == obstacleNodeID || this.#nodes[nodeID].isObstacle === true
+        return this.#getNodeAt(x, y) == invalidNodeID || this.#nodes[nodeID].isObstacle === true
     }
     getAdjacent(nodeID)
     {
@@ -118,10 +118,10 @@ class GridGraph
             this.#getNodeAt(x, y-1)
         ]
 
-        // prune obstacle nodes
+        // prune wall
         let ret = []
         neighbors.forEach(function(val){
-            if (val != obstacleNodeID) ret[ret.length] = val
+            if (val != invalidNodeID) ret[ret.length] = val
         })
         return ret
     }
@@ -190,7 +190,7 @@ class GridGraph
     #getNodeAt(x, y)
     {
         
-        if (x<0 || y <0 || x >= this.#xRange || y >= this.#yRange ) return obstacleNodeID;
+        if (x<0 || y <0 || x >= this.#xRange || y >= this.#yRange ) return invalidNodeID;
         return position2ID(x, y, this.#xRange);
     }
 
