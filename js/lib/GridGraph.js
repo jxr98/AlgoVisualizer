@@ -1,6 +1,7 @@
 import * as d3 from "../thirdParty/d3.js";
 import {ID2Position, position2ID } from "./Utils.js";
 
+export const defaultColor = "rgb(217, 217, 217)"
 const invalidNodeID = -1;
 
 // graph with well defined coordinate system for each node
@@ -9,8 +10,8 @@ class GridGraph
     // grid model
     #yRange;
     #xRange;
-    #squareSize = 100; // must be even number
-    #defaultColour = "rgb(217, 217, 217)";
+    #squareSize = 50; // must be even number
+    #defaultColour = defaultColor;
     #obstacleColor = "black";
     #maxNodeID = 0;
     
