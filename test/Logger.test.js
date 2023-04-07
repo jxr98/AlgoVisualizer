@@ -28,7 +28,7 @@ test('logger binded to text area, logs only goes to textarea', ()=>
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     logger.log(1)
     expect(consoleSpy).toHaveBeenCalledTimes(0);
-    expect(textArea.text()).toBe("// Logger attached\n1");
+    expect(textArea.text()).toBe("// Logs:\n1");
     consoleSpy.mockRestore();
 })
 
@@ -40,11 +40,11 @@ test('logger binded to text area, muted then unmuted', ()=>
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
     logger.log(1)
     expect(consoleSpy).toHaveBeenCalledTimes(0);
-    expect(textArea.text()).toBe("// Logger attached");
+    expect(textArea.text()).toBe("// Logs:");
     logger.mute(false)
     logger.log(1)
     expect(consoleSpy).toHaveBeenCalledTimes(0);
-    expect(textArea.text()).toBe("// Logger attached\n1");
+    expect(textArea.text()).toBe("// Logs:\n1");
     consoleSpy.mockRestore();
 })
 
@@ -54,11 +54,11 @@ test('redirect console log', ()=>
     const consoleSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
 
     redirectConsoleOutput(textArea)
-    expect(textArea.text()).toBe("// Mirrored logs:");
+    expect(textArea.text()).toBe("// Logs:");
     console.log(32)
     expect(consoleSpy).toHaveBeenCalledWith(32);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
-    expect(textArea.text()).toBe("// Mirrored logs:\n32");
+    expect(textArea.text()).toBe("// Logs:\n32");
 
     consoleSpy.mockRestore();
 })
@@ -69,11 +69,11 @@ test('redirect console error', ()=>
     const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
     redirectConsoleOutput(textArea)
-    expect(textArea.text()).toBe("// Mirrored logs:");
+    expect(textArea.text()).toBe("// Logs:");
     console.error(32)
     expect(consoleSpy).toHaveBeenCalledWith(32);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
-    expect(textArea.text()).toBe("// Mirrored logs:\nERROR: 32");
+    expect(textArea.text()).toBe("// Logs:\nERROR: 32");
 
     consoleSpy.mockRestore();
 })
