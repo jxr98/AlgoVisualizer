@@ -3,6 +3,7 @@ import * as d3 from './thirdParty/d3.js';
 import {redirectConsoleOutput} from './lib/Logger.js'
 import { GridGraph } from './lib/GridGraph.js';
 import * as utils from "./lib/Utils.js"
+import {AStar, Location} from './lib/AStar.js'
 
 // setup svg
 var svg = d3.select("#graphSvg")
@@ -10,79 +11,47 @@ let textArea = d3.select("#logPanel")
 redirectConsoleOutput(textArea)
 
 const g = new GridGraph(svg);
+const interval = 50
+let timeoutHandles = []
+
 
 
 document.getElementById("start-button").onclick = function()
 {
-  if (!checkInputs(g)) return;
-
-  let [srcX, srcY, dstX, dstY] = readInputs();
-  let startNode = g.getNodeID(srcX, srcY)
-  let endNode = g.getNodeID(dstX, dstY)
-  g.changeColor(startNode, "red")
-  g.changeColor(endNode, "green")
-
-  let visited = new Set()
-  visited.add(startNode)
-  let stack = []
-  let parentMap = new Map()
-  stack.push(startNode)
-  let tick = 0
-  let interval = 50
-
-  while (stack.length != 0)
-  {
-      // DFS
-      let currNode = stack.pop()
-
-      // BFS
-      //let currNode = stack.shift()
-
-      if (currNode == endNode)
-      {
-          break;
-      }
-
-      g.getAdjacent(currNode).forEach(function(neighbor)
-      {
-          if (!visited.has(neighbor))
-          {
-              visited.add(neighbor)
-              parentMap.set(neighbor, currNode)
-              stack.push(neighbor)
-              if (neighbor != endNode)
-              {
-                  setTimeout(function(){
-                      g.changeColor(neighbor, "yellow")
-                  }, tick) 
-              } 
-          } 
-      })
-      
-      tick += interval
-  }
-
-  // back-track the path and highlight
-  if (parentMap.has(endNode))
-  {
-      console.log("DONE")
-      let curr = endNode
-      while(curr != startNode)
-      {
-          let parent = parentMap.get(curr)
-          if (parent != startNode)
-          {
-              setTimeout(function(){
-                  g.changeColor(parent, "blue")
-              }, tick)
-          }
-          curr = parent
-          tick += interval
-      }
-  }
-
+    if (!checkInputs(g)) return;
+    let [srcX, srcY, dstX, dstY] = readInputs(),
+    startLoc = new Location(srcX, srcY),
+    endLoc = new Location(dstX, dstY)
+    
+    runSim(startLoc, endLoc);
 }
 
+function runSim(startLoc, endLoc)
+{
+  // clear all timeouts
+  timeoutHandles.forEach(timeoutID => {
+    clearTimeout(timeoutID);
+  });
+  timeoutHandles.splice(0,timeoutHandles.length)
+
+  // TODO: clear all non-obstacle coloring on graph
+
+  // setup sim
+  let sim = new AStar(g, startLoc, endLoc),
+  numSteps = sim.numAnimationSteps(),
+  tick = 0
+
+  // show animations
+  for (let i =0; i < numSteps; ++i)
+  {
+    let timeoutID = setTimeout(function(){
+      sim.animateStep();
+    }, tick) 
+    timeoutHandles.push(timeoutID)
+    tick += interval
+  }
+  sim.printStats();
+}
 
 function readInputs()
 {

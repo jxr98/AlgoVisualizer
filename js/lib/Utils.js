@@ -23,4 +23,9 @@ export function isNullOrEmptyStr(str)
     return str == null || str == "";
 }
 
+export function manhattanDistance(x1,y1,x2,y2)
+{
+    return Math.abs(x1 - x2) + Math.abs(y1 - y2)
+}
+
 export {position2ID, ID2Position, isNumeric}
