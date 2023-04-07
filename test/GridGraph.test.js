@@ -10,7 +10,12 @@ test('test instantiation', () => {
         .attr("height", height)
         .style("border", "1px solid black")
 
+    const heightSpy = jest.spyOn(svg.node(), 'clientHeight', 'get').mockImplementation(() => height);
+    const widthSpy = jest.spyOn(svg.node(), 'clientWidth', 'get').mockImplementation(() => width);
+
     let g = new GridGraph(svg);
+
+    
 
     // grid property APIs
     expect(g.getYRange()).toBeGreaterThan(0)
