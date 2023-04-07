@@ -33,6 +33,10 @@ export class AStar
     // each element object contains an array of nodeIDs and the color to set to
     #animationQueue = []
 
+
+    // some stats
+    #pathLength = 0;
+
     constructor(gridGraph, src, target)
     {
         this.#gridGraph = gridGraph
@@ -84,7 +88,18 @@ export class AStar
 
     printStats()
     {
-        console.log("Path found: " + this.#pathFound)
+        if (this.#pathFound)
+        {
+            console.log("Path found!")
+            console.log("Number of tiles visited: " + this.#visitedSet.size)
+            console.log("Number of tiles remaining in open queue: " + this.#openSet.size)
+            console.log("Number of tiles expanded: " + (this.#visitedSet.size - this.#openSet.size))
+            console.log("Path length: " + this.#pathLength)
+        }
+        else
+        {
+            console.log("No path exist!")
+        }
     }
 
     ////////////////////////////////////////////////////////////////////
@@ -177,6 +192,8 @@ export class AStar
         queue.forEach((nodeId) => {
             self.#animationQueue.push({nodes: [nodeId], color: common.focused_line_color})
         })
+
+        this.#pathLength = queue.length + 2 // +2 for source and destination tiles
     }
 
     #run()
