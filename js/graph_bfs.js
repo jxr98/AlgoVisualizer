@@ -28,6 +28,9 @@ visualizationDiv.append("svg")
         .attr('y',20);
 
 const fGraph = new ForceSimulationGraph(svg);
+fGraph.setLegend("unvisited", "pink")
+fGraph.setLegend("search process", "yellow")
+fGraph.setLegend("path", "red")
 
 document.getElementById("start-button").onclick = function()
 {
