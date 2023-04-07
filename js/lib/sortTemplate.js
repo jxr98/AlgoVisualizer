@@ -16,4 +16,7 @@ export class TSort
     maxDetailedSteps(){console.error("not implemented")}
     isDone(){console.error("not implemented")}
     detailedStep(){console.error("not implemented")}
+    
+    /* istanbul ignore next */
+    #printStats(){}
 }
