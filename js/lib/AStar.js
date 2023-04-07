@@ -86,6 +86,11 @@ export class AStar
         return this.#isFinished;
     }
 
+    foundPath()
+    {
+        return this.#pathFound;
+    }
+
     printStats()
     {
         if (this.#pathFound)
