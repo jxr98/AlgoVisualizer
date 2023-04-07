@@ -9,7 +9,7 @@ class Logger
         this.#textAreaHandle = textArea
         if (this.#textAreaHandle != null)
         {
-            textArea.text("// Logger attached")    
+            textArea.text("// Logs:")    
         }
     }
 
@@ -80,7 +80,7 @@ function redirectConsoleOutput(textarea)
     }
 
     // messages to indicate attachement
-    if (textarea.text() == "") textarea.text("// Mirrored logs:");
+    if (textarea.text() == "") textarea.text("// Logs:");
 
 }
 
