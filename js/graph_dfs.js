@@ -29,6 +29,8 @@ document.getElementById("start-button").onclick = function()
         return;
     }
 
+    fGraph.resetColors()
+
     let depthFirstPaths = new DFS(fGraph.getGraphModel(), vertices[0], vertices[1]);
     let path = "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": ";
     if (!depthFirstPaths.havePath()){

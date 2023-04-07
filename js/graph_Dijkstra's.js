@@ -44,6 +44,8 @@ document.getElementById("start-button").onclick = function()
         return;
     }
 
+    fGraph.resetColors()
+
     let DijkstraPaths = new Dijkstra(weightedLines, fGraph.getGraphModel(), vertices[0], vertices[1]);
     let path = "From vertex " + vertices[0] + " to vertex " + vertices[1] +  ": ";
 
