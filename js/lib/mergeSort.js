@@ -61,8 +61,11 @@ export class MergeSort extends TSort
             let move = this.#moves.shift(),
             nodeID = move.id,
             position = move.position
+
+            let origPosition = this.#arrayVis.findDataIdxByID(nodeID);
+            if (origPosition != position) this.#numMovesMade++
+
             this.#arrayVis.move(nodeID, position)
-            this.#numMovesMade++
 
             // mark moved item with red to indicate sorted
             let idx = this.#arrayVis.findDataIdxByID(nodeID);
