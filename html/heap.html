@@ -79,6 +79,12 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous">
 </script>
 <script>
+    $("#message-box").on('input', function() {
+        var scroll_height = $("#message-box").get(0).scrollHeight;
+
+        $("#message-box").css('height', scroll_height + 'px');
+    });
+
     $('#loadNavBar').load("includings/navbar.html");
 </script>
 <script type="module" src="../js/tree_heap.js"></script>
