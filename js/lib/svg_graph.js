@@ -6,6 +6,9 @@ const DefaultMouseDownNode=-1;
 const DefaultMouseHoverLink=-1;
 const DefaultChargeSeparation = -2;
 
+const DefaultLinkStrokeWidth = 2;
+const LinkHoverStrokeWidth = 4;
+
 class Link{
     source;
     target;
@@ -165,7 +168,9 @@ class ForceSimulationGraph
     highlightLinks(ret){
         // first make all links gray
         d3.selectAll('line')
-            .style('stroke', SLATEGRAY);
+            .style('stroke', SLATEGRAY)
+            //.style('stroke-width', DefaultLinkStrokeWidth)
+            .style('stroke-dasharray', "4")
 
         let self=this
 
@@ -175,7 +180,8 @@ class ForceSimulationGraph
                 if(self.checkLinkExistsInRet(ret,d.source.id,d.target.id)){
                     d3.select(this)
                         .style('stroke', BLACKCOLOR)
-                        .style('stroke-width', 2.4);
+                        //.style('stroke-width', LinkHoverStrokeWidth)
+                        .style('stroke-dasharray', "")
                 }
             })
     }
@@ -231,7 +237,7 @@ class ForceSimulationGraph
         .insert('line', '.node')
         .attr('class', 'link')
         .style('stroke', linkColor)
-        .style('stroke-width', 1.9)
+        .style('stroke-width', DefaultLinkStrokeWidth)
         .on("dblclick", /* istanbul ignore next */function(e, d){
             console.log("disconnect source " +  d.source.id + ", dst " + d.target.id)
              self.disconnect(d.source.id, d.target.id);
@@ -240,11 +246,11 @@ class ForceSimulationGraph
              self.mouseHoverLink = DefaultMouseHoverLink;
         })
         .on("mouseover", /* istanbul ignore next */function(e){
-            d3.select(this).style('stroke-width', 4)
+            d3.select(this).style('stroke-width', LinkHoverStrokeWidth)
             self.mouseHoverLink = 0;
         })
         .on("mouseout", /* istanbul ignore next */function(e){
-            d3.select(this).style('stroke-width', 1.9)
+            d3.select(this).style('stroke-width', DefaultLinkStrokeWidth)
             self.mouseHoverLink = DefaultMouseHoverLink;
         })
 
