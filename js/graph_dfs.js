@@ -69,7 +69,7 @@ document.getElementById("start-button").onclick = function()
 document.getElementById("SaveButton").onclick=function () {
     var graph=fGraph.getGraphModel();
     var customerId=getValueFromCookie("id");
-    var graphName="BFS";
+    var graphName="DFS";
     var numVertices=graph.getNumVertices();
     var edges= graph.getLinks();
     var nodes=[];
@@ -91,7 +91,7 @@ document.getElementById("SaveButton").onclick=function () {
 
 document.getElementById("loadButton").onclick=function () {
     var customerId=getValueFromCookie("id");
-    var graphName="BFS";
+    var graphName="DFS";
     var data={"customerId":customerId,"graphName":graphName};
     $.ajax({
         type: "POST",
@@ -105,6 +105,9 @@ document.getElementById("loadButton").onclick=function () {
             data.edges.forEach((item)=>{
                 fGraph.connectNodes(item.source,item.target);
             })
+        },
+        error: function(){
+            window.alert("No graph stored");
         }
     });
 }
