@@ -13,10 +13,27 @@ describe('UndirectedGraph error testing', () => {
       consoleSpy.mockRestore();
   });
 
-  it('bad node ID', () => {
+  it('deleteNode:bad node ID', () => {
     let node = graph.addNode();
     graph.deleteNode("x")
   });
+
+  it('deleteNode:bad node ID', () => {
+    let node = graph.addNode();
+    graph.deleteNode("0")
+  });
+
+  it('getAdjacent: bad node ID', () => {
+    let node = graph.addNode();
+    graph.getAdjacent("x")
+  });
+
+  it('updateNodeProp: bad node ID', () => {
+    let node = graph.addNode();
+    graph.updateNodeProp("x", {color:"blue"})
+  });
+
+  
 
 });
 
@@ -26,6 +43,11 @@ describe('UndirectedGraph', () => {
 
   beforeEach(() => {
     graph = new UndirectedGraph();
+  });
+
+  test('getNode prop', () => {
+    graph.addNode(0,0)
+    expect(graph.getNodeProperty(0) != null).toBeTruthy();
   });
 
   test('getNumVertices should return 0 initially', () => {

@@ -40,6 +40,7 @@ test('Insertion sort',()=>{
         }
         sort.step();
     }
+    sort.step();
 
     // verify sort is complete
     expect(sort.isDone()).toBe(true);
@@ -87,6 +88,7 @@ test('detailed step',()=>{
             expect(g.get(sort.dataBeingMoved.id - 1).value <= g.get(sort.dataBeingMoved.id).value).toBe(true);
         }
     }
+    sort.detailedStep();
 
     // verify sort is complete
     expect(sort.isDone()).toBe(true);

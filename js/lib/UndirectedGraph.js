@@ -37,6 +37,7 @@ export class UndirectedGraph extends Graph{
         let node = parseInt(_node);
         if (isNaN(node))
         {
+            /* istanbul ignore next */
             console.error("[UndirectedGraph::deleteNode] node ID is invalid")
             return;
         }
