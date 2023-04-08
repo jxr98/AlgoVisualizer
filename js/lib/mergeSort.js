@@ -115,6 +115,7 @@ export class MergeSort extends TSort
                 idx2++;
             }
             mergedIdx++;
+            this.#numComparisonsMade++;
         }
         this.#sortedRanges.push({low:range1.low, high:range2.high})
 
