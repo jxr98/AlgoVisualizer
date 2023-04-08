@@ -210,7 +210,7 @@ class Heap
         let i = 1
         for (let j = 0; j < process.length; j++) {
             let p = process[j]
-            setTimeout(function () {
+            setTimeout(/* istanbul ignore next */function () {
                 if (p[1] < len && p[2] < len)
                     console.log("The step " + j + " is checking nodes " + p[0] + ", " + p[1] + ", " + p[2] + ".")
                 else if (p[1] >= len && p[2] < len)
@@ -235,7 +235,7 @@ class Heap
                 this.unfocusLine(p[3], p[0], i)
             }
             else
-                setTimeout(function () {
+                setTimeout(/* istanbul ignore next */function () {
                     if (this.kind == 0)
                         console.log("Node " + p[0] + " is the largest in the subtree.")
                     else console.log("Node " + p[0] + " is the smallest in the subtree.")
@@ -285,19 +285,19 @@ class Heap
     }
 
     focusNode(i, time) {
-        setTimeout(function () {
+        setTimeout(/* istanbul ignore next */function () {
             d3.select("#node" + i).attr('fill', 'yellow')
         }, cm.short_animation_gap * time)
     }
 
     unfocusNode(i, time) {
-        setTimeout(function () {
+        setTimeout(/* istanbul ignore next */function () {
             d3.select("#node" + i).attr('fill', 'pink')
         }, cm.short_animation_gap * time)
     }
 
     focusLine(i, j, time) {
-        setTimeout(function () {
+        setTimeout(/* istanbul ignore next */function () {
             d3.select("#line" + i + "-" + j).style("stroke", cm.focused_line_color)
             console.log("Node " + j + " is smaller than " + " node " + i + ".")
             console.log("So switch nodes " + j + " and " + i + ".")
@@ -305,14 +305,14 @@ class Heap
     }
 
     unfocusLine(i, j, time) {
-        setTimeout(function () {
+        setTimeout(/* istanbul ignore next */function () {
             d3.select("#line" + i + "-" + j).style("stroke", cm.default_line_color)
         }, cm.short_animation_gap * time)
     }
 
     swapText(i, j, time)
     {
-        setTimeout(function () {
+        setTimeout(/* istanbul ignore next */function () {
             let t1 = d3.select("#text" + i).text()
             let t2 = d3.select("#text" + j).text()
             d3.select("#text" + i).text(t2)

@@ -27,3 +27,19 @@ test('isNumeric test', ()=>{
     expect(utils.isNumeric("-100.3")).toBe(false);
     expect(utils.isNumeric("x")).toBe(false);
 })
+
+test('isNullOrEmptyStr test', ()=>{
+    expect(utils.isNullOrEmptyStr(null)).toBe(true);
+    expect(utils.isNullOrEmptyStr("")).toBe(true);
+    expect(utils.isNullOrEmptyStr("x")).toBe(false);
+})
+
+test('getValueFromCookie test', ()=>{
+    expect(utils.getValueFromCookie("")).toBe("");
+
+
+    document.cookie = "cname= 1; hello=2"
+    expect(utils.getValueFromCookie("cname")).toBe("1");
+    document.cookie = " hello=2"
+    expect(utils.getValueFromCookie("hello")).toBe("2");
+})

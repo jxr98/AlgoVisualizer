@@ -2,6 +2,8 @@ import { Heap } from "../js/lib/Heap";
 import * as d3 from '../js/thirdParty/d3.js';
 import {expect, jest} from '@jest/globals';
 
+
+
 describe("Heap class", () => {
   let svg;
   let data;
