@@ -69,7 +69,7 @@ document.getElementById("signupButton").onclick = function () {
         var data = {"name": user.getName(), "email": user.getEmail(), "password": user.getPassword()};
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/users/signup",
+            url: "http://155.138.156.192:8080/users/signup",
             dataType: "json",
             data: data,
             success: function () {
@@ -92,8 +92,8 @@ document.getElementById("loginButton").onclick = function () {
     var data = {"email": user.getEmail(), "password": user.getPassword()};
     $.ajax({
         type: "POST",
-        // url: "http://155.138.156.192:8080/users/signin",
-        url:"http://localhost:8080/users/signin",
+        url: "http://155.138.156.192:8080/users/signin",
+        // url:"http://localhost:8080/users/signin",
         dataType: "json",
         data: data,
         success: function (user) {
