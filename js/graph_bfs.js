@@ -121,14 +121,39 @@ document.getElementById("SaveButton").onclick=function () {
     var graphName="BFS";
     var numVertices=graph.getNumVertices();
     var edges= graph.getLinks();
-    var data={"customerId":customerId,"graphName":graphName,"numVertices":numVertices,"edges":JSON.stringify(edges)};
+    var nodes=[];
+    graph.getNodes().forEach((item)=>{
+        nodes.push({index:item.id,x:item.x,y:item.y});
+    });
+    var data={"customerId":customerId,"graphName":graphName,"numVertices":numVertices,
+        "edges":JSON.stringify(edges),"nodes":JSON.stringify(nodes)};
     $.ajax({
         type: "POST",
-        url: "http://localhost:8080/undirectedGraph/save",
+        url: "http://155.138.156.192:8080/undirectedGraph/save",
         dataType: "json",
         data: data,
         success:function () {
 
         }
-    })
+    });
+}
+
+document.getElementById("loadButton").onclick=function () {
+    var customerId=getValueFromCookie("id");
+    var graphName="BFS";
+    var data={"customerId":customerId,"graphName":graphName};
+    $.ajax({
+        type: "POST",
+        url: "http://155.138.156.192:8080/undirectedGraph/loadLastGraph",
+        dataType: "json",
+        data: data,
+        success:function (data) {
+            data.nodes.forEach((item)=>{
+                fGraph.addNode(item.x,item.y);
+            })
+            data.edges.forEach((item)=>{
+                fGraph.connectNodes(item.source,item.target);
+            })
+        }
+    });
 }
