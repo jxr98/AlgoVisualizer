@@ -154,6 +154,9 @@ document.getElementById("loadButton").onclick=function () {
             data.edges.forEach((item)=>{
                 fGraph.connectNodes(item.source,item.target);
             })
+        },
+        error: function(){
+            window.alert("No graph stored");
         }
     });
 }
