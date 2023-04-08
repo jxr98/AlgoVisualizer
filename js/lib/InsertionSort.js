@@ -19,6 +19,7 @@ export class InsertionSort extends TSort
     #originalArrayStr = ""
     #steppingLinearSearch = false;
     #dataBeingMoved = null
+    #numMovesMade = 0
 
     // linear search states
     #linearSearchCurrentIdx = 0;
@@ -61,6 +62,7 @@ export class InsertionSort extends TSort
             let dataNewPosition = this.#linearSearch(dataMoved, this.#sortedIdx)
             dataMoved.color = "red";
             this.#arrayVis.move(dataMoved.id, dataNewPosition)
+            this.#numMovesMade++
             this.#sortedIdx++;
         }
         else
@@ -89,11 +91,13 @@ export class InsertionSort extends TSort
 
                     this.#dataBeingMoved.color = "red";
                     this.#arrayVis.move(this.#dataBeingMoved.id, searchResult)
+                    this.#numMovesMade++
                 }
                 else
                 // still have not found position
                 {
                     this.#arrayVis.move(this.#dataBeingMoved.id, this.#linearSearchCurrentIdx)
+                    this.#numMovesMade++
                 }
             }
             else
@@ -112,6 +116,7 @@ export class InsertionSort extends TSort
                 }
                 this.#linearSearchCurrentIdx = 0;
                 this.#arrayVis.move(this.#dataBeingMoved.id, this.#linearSearchCurrentIdx)
+                this.#numMovesMade++
             }
         }
         else
@@ -157,6 +162,7 @@ export class InsertionSort extends TSort
         this.#logger.log("Insertion sort original sequence: " + this.#originalArrayStr)
         this.#logger.log("Insertion sort final sequence: " + arrayVis2Str(this.#arrayVis))
         this.#logger.log("Number of comparisons: " + this.#numComparisonsMade)
+        this.#logger.log("Number of moves: " + this.#numMovesMade)
 
         
         // console.log("Insertion sort original sequence: " + this.#originalArrayStr);

@@ -17,6 +17,7 @@ export class BinaryInsertionSort extends TSort
     #numComparisonsMade = 0;
     #originalArrayStr = ""
     #dataBeingMoved = null
+    #numMovesMade = 0
 
     // search states
     #stepSearchCurrentIdx = 0;
@@ -62,6 +63,7 @@ export class BinaryInsertionSort extends TSort
             let dataNewPosition = this.#binarySearch(dataMoved, this.#sortedIdx);
             dataMoved.color = "red";
             this.#arrayVis.move(dataMoved.id, dataNewPosition)
+            this.#numMovesMade++
             this.#sortedIdx++;
         }
         else
@@ -90,12 +92,14 @@ export class BinaryInsertionSort extends TSort
 
                     this.#dataBeingMoved.color = "red";
                     this.#arrayVis.move(this.#dataBeingMoved.id, searchResult)
+                    this.#numMovesMade++
                     // console.log("final pos:  " + searchResult)
                 }
                 else
                 // still have not found position
                 {
                     this.#arrayVis.move(this.#dataBeingMoved.id, this.#stepSearchCurrentIdx)
+                    this.#numMovesMade++
                     // console.log("mid pos:  " + this.#stepSearchCurrentIdx)
                 }
             }
@@ -195,5 +199,6 @@ export class BinaryInsertionSort extends TSort
         this.#logger.log("Binary insertion sort original sequence: " + this.#originalArrayStr);
         this.#logger.log("Binary insertion sort final sequence: " + arrayVis2Str(this.#arrayVis));
         this.#logger.log("Number of comparisons: " + this.#numComparisonsMade)
+        this.#logger.log("Number of moves: " + this.#numMovesMade)
     }
 }
