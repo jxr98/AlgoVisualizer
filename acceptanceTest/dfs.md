@@ -10,14 +10,23 @@ General UI
 - [ ] The entire DFS process will be animated in the graph panel. Each animation step is 1000ms. Yellow nodes means nodes visited in this step and red nodes mean that they are in the shortest path
 - [ ] The right part is Instruction and result. Use instruction to learn how to use the website faster.
 
-  Test page defaults:
-1. Visit https://jxr98.github.io/AlgoVisualizer/html/dfs.html
-2. Expect empty in two panels and input boxes and expect instruction shown
-3. Upon click some nodes and lines in graph panel, expect them added and displayed correctly and expect log in log panel
-4. Double click some nodes and lines in graph panel, expect them deleted and not displayed and expect log in log panel
-7. Upon click "Start", expect simulation DFS display with correct nodes, correct color in process and correct shortest path
-6. Upon click "Reset", expect reload this page
 
-[//]: # (7. ) TODO for Xinrui
-7. Upon click "Save The current Graph", expect
-8. Upon click "Load The Last Saved Graph", expect
+Test page defaults:
+1. Visit https://jxr98.github.io/AlgoVisualizer/html/dfs.html
+2. Upon click on the blank space of graph panel, expect a pink bubble with a number in it to appear
+3. Upon drag from one bubble to another, expect an arrow to appear between them
+4. Expect some additional information to be presented in the log panel of depth first search
+5. Double click some nodes and lines in graph panel, expect them deleted and not displayed and expect log in log panel
+6. Expect simulation to begin when enter source node and destination node and click the "start" button
+7. Expect the shortest path to appear on the right side of the DFS page
+8. Expect everything to be cleared after clicking the "reset" button
+9. Expect save the current graph when click the "save the current graph"
+10. Expect load the last saved graph when click the "load the last saved graph"
+
+Test user input interaction:
+1. Visit https://jxr98.github.io/AlgoVisualizer/html/dfs.html
+2. For each simulation, click on the blank space of graph panel, and launch the simulation by clicking the "start" button after entering source code and destination code
+  1. expect the shortest path to be displayed on the right side of the DFS page
+  2. expect extra information about simulation for your search to be printed in the log panel
+  3. expect the nodes on the shortest path to be displayed in red
+  4. when attempting to launch simulation on invalid inputs, expect warnings to appear and the current simulation is undisturbed

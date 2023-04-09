@@ -12,7 +12,7 @@ General UI
 - [ ] The right part is Instruction and Log Panel. Use instruction to learn how to use the website faster. The left one is Log Panel, and it shows the operations of nodes, lines and output
 
   Test page defaults:
-1. Visit https://jxr98.github.io/AlgoVisualizer/html/Dijkstra's.html
+1. Visit https://jxr98.github.io/AlgoVisualizer/html/heap's.html
 2. Expect empty in two panels, input box and expect instruction shown
 3. Expect the input box in heap data grow as the number of lines increases 
 4. Upon click "Create Max Heap", expect simulation of creating max heap display with correct nodes, lines, color and switch and expect log in log panel and expect heap data module changed into data module
@@ -20,3 +20,16 @@ General UI
 6. Expect enter integer into input box in data, upon click "Insert", expect simulation of inserting a node from bottom and creating new heap display with correct nodes, lines, color and switch and expect log in log panel
 7. Upon click "Delete", expect simulation of deleting the root of heap, putting the last leaf node to root and creating new heap display with correct nodes, lines, color and switch and expect log in log panel
 8. Upon click "Reset", expect reload this page
+
+Test user input interaction:
+1. Visit https://jxr98.github.io/AlgoVisualizer/html/heap.html
+2. For each simulation, enter an array in the heap data module on the left side, and launch the simulation by clicking the "create max heap" or "create min heap" button
+  1. expect the simulation of creating max/min heap to be displayed in the tree panel
+  2. expect extra information about simulation to be printed in the log panel
+3. For inserting one node, enter the data on the left side, and launch the simulation by clicking the "insert" button
+  1. expect the simulation of inserting a node to be displayed in the tree panel
+  2. expect extra information about simulation to be printed in the log panel
+4. For deleting the root of the heap, launch the simulation by clicking the "delete" button
+  1. expect the simulation of deleting the root of the heap to be displayed in the tree panel
+  2. expect extra information about simulation to be printed in the log panel
+
