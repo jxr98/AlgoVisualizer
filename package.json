@@ -14,7 +14,8 @@
     "testEnvironment": "jsdom",
     "coveragePathIgnorePatterns": [
       "<rootDir>/js/thirdParty/",
-      "<rootDir>/js/lib/addRequire.js"
+      "<rootDir>/js/lib/addRequire.js",
+      "<rootDir>/js/lib/inputFormHelper.js"
     ],
     "collectCoverageFrom": ["<rootDir>/js/lib/*.js"]
 
