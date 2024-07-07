@@ -80,7 +80,7 @@ document.getElementById("SaveButton").onclick=function () {
         "edges":JSON.stringify(edges),"nodes":JSON.stringify(nodes)};
     $.ajax({
         type: "POST",
-        url: "http://155.138.156.192:8080/undirectedGraph/save",
+        url: "http://54.87.251.156:8080/undirectedGraph/save",
         dataType: "json",
         data: data,
         success:function () {
@@ -95,7 +95,7 @@ document.getElementById("loadButton").onclick=function () {
     var data={"customerId":customerId,"graphName":graphName};
     $.ajax({
         type: "POST",
-        url: "http://155.138.156.192:8080/undirectedGraph/loadLastGraph",
+        url: "http://54.87.251.156:8080/undirectedGraph/loadLastGraph",
         dataType: "json",
         data: data,
         success:function (data) {
